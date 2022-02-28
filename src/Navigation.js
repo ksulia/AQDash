@@ -28,7 +28,7 @@ const Nav = ({loc, title}) => {
             <NavLink to={loc} style={({ isActive }) => ({
                 color: isActive ? '#461660' : '#545e6f',
                 fontWeight: isActive ? "bold" : "none",
-//                 background: isActive ? '#7600dc' : '#ffffff',
+/*                 background: isActive ? '#7600dc' : '#ffffff',*/
                 textDecoration: 'none',
                 fontStyle: isActive? 'italic':'normal',
                 fontSize:20,
