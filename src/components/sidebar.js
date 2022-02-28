@@ -65,53 +65,23 @@ const Sidebar = (props) => {
                             />
                         </div>
                         <button
-                            style={{
-                                   marginTop:15,
-                                   width:'100%',
-                                   fontSize:20,
-                                   fontFamily: 'Roboto',
-                                   fontWeight: 'bold',
-                                   backgroundColor:'white',
-                                   color: '#461660',
-                                   borderRadius:5
-                                   
-                            }}
+                            style={{ marginTop:15, width:'100%', fontSize:20, fontFamily: 'Roboto', fontWeight: 'bold',
+                                   backgroundColor:'white', color: '#461660', borderRadius:5 }}
                             onClick={(e)=>props.handleChange('fetchData',true)}
-                        >
-                            Fetch
-                        </button>
-                        <a
-                            style={{
-                                alignSelf: 'flex-end',
-                                fontSize: 10,
-                                color: fontColor,
-                            }}
-                        >
+                        > Fetch </button>
+                        <a style={{ alignSelf: 'flex-end', fontSize: 10, color: fontColor, }} > 
                             {props.state.fetching}
                         </a>
                     </div>
 
 
                    <div>
-                       {this.props.state.goesDataSmoke ||
-                       this.props.state.goesDataDust ? (
+                       {props.state.goesDataSmoke || props.state.goesDataDust ? (
                            <Row>
-                               <div
-                                   style={{
-                                       alignItems: 'center',
-                                   }}
-                               >
+                               <div style={{ alignItems: 'center', }} >
                                    <Checkbox
-                                       checked={
-                                           this.state.GOESon
-                                       }
-                                       onClick={() =>
-                                           this.setState({
-                                               GOESon: !this
-                                                   .state
-                                                   .GOESon,
-                                           })
-                                       }
+                                       checked={ props.state.GOESon }
+                                       onClick={() => this.setState({ GOESon: !this.props.state.GOESon,})}
                                    />
                                    <a>GOES</a>
                                </div>
@@ -127,12 +97,7 @@ const Sidebar = (props) => {
 
                        {this.state.viirsData48J || this.state.viirsData48S || this.state.viirsData36 ? (
                            <Row style={{ width: '100%' }}>
-                               <div
-                                   style={{
-                                       alignItems: 'center',
-                                       width: '100%',
-                                   }}
-                               >
+                               <div style={{ alignItems: 'center', width: '100%', }} >
                                    <Checkbox
                                        checked={this.state.AODon}
                                        onClick={() =>
@@ -145,11 +110,7 @@ const Sidebar = (props) => {
                                        }
                                    />
                                    <a>VIIRS AOD</a>
-                                   <a
-                                       style={{
-                                           marginLeft: 40,
-                                       }}
-                                   >
+                                   <a style={{ marginLeft: 40, }} >
                                        { this.props.state.viirsTimeNow }
                                    </a>
                                </div>
@@ -161,16 +122,11 @@ const Sidebar = (props) => {
                        {this.state.aodCB48S && this.state.AODon ? this.getAODCB(this.state.aodCB48S,'SNPP'): null}
 
                        {this.state.AODon && this.state.aodCBValSave ? (
-                           <div
-                               style={{ display: 'flex', justifyContent: 'center', }}
-                           >
-                               <Row style={{ width: '100%', justifyContent: 'center', }}
-                               >
+                           <div style={{ display: 'flex', justifyContent: 'center', }} >
+                               <Row style={{ width: '100%', justifyContent: 'center', }}>
                                    {Object.keys(this.state.aodCBValSave).map((k, i) => (
-                                       <div
-                                           key={this.state.aodCBValSave[k].toString()}
-                                           style={{ width: '2.5%', justifyContent: 'center', }}
-                                       >
+                                       <div key={this.state.aodCBValSave[k].toString()}
+                                           style={{ width: '2.5%', justifyContent: 'center', }} >
                                            <a style={{fontSize: 10,}}> 
                                                {i % 4 === 0 ? this.props.state.aodCBValSave[k]: null}
                                            </a>
@@ -202,14 +158,7 @@ const Sidebar = (props) => {
                        ) : null}
 
                        {this.state.Airnowon && this.state.airnowData ? (
-                           <div
-                               style={{
-                                   width: '100%',
-                                   justifyContent: 'center',
-                                   alignItems: 'center',
-                                   paddingLeft: 5,
-                               }}
-                           >
+                           <div style={{ width: '100%', justifyContent: 'center', alignItems: 'center', paddingLeft: 5}}>
                                <Row style={{ display: 'flex', justifyContent: 'center' }}>
                                    <div style={{ backgroundColor: 'rgb(0,228,0)', marginRight: 5, paddingRight: 5,
                                                paddingLeft: 5, borderRadius: 5, }}>
@@ -231,39 +180,12 @@ const Sidebar = (props) => {
                                    </div>
                                    <div style={{ backgroundColor:'rgb(143,63,151)',marginRight: 5,paddingRight: 5,
                                                paddingLeft: 5, borderRadius: 5,}}>
-                                       <p style={{fontSize: 10,color: 'white',marginBottom: 0,}}
-                                       >
-                                           Very
-                                       </p>
-                                       <p
-                                           style={{
-                                               fontSize: 10,
-                                               color: 'white',
-                                               marginBottom: 0,
-                                               marginTop: 0,
-                                           }}
-                                       >
-                                           Unhealthy
-                                       </p>
+                                       <p style={{fontSize: 10,color: 'white',marginBottom: 0,}}>Very</p>
+                                       <p style={{fontSize: 10,color: 'white',marginBottom: 0,marginTop: 0,}}>Unhealthy</p>
                                    </div>
-                                   <div
-                                       style={{
-                                           backgroundColor:
-                                               'rgb(126,0,35)',
-                                           marginRight: 5,
-                                           paddingRight: 5,
-                                           paddingLeft: 5,
-                                           borderRadius: 5,
-                                       }}
-                                   >
-                                       <a
-                                           style={{
-                                               fontSize: 10,
-                                               color: 'white',
-                                           }}
-                                       >
-                                           Hazardous
-                                       </a>
+                                   <div style={{ backgroundColor: 'rgb(126,0,35)', marginRight: 5, paddingRight: 5,
+                                              paddingLeft: 5, borderRadius: 5,}}>
+                                       <a style={{fontSize: 10,color: 'white',}}>Hazardous</a>
                                    </div>
                                </Row>
                            </div>
