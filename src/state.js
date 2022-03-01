@@ -112,5 +112,5 @@ cbHoverValue: null,
 lidarData: null,
 lidarSites: null,
 chosenSite: null,
-    fetchData:true,
+    plotsToDisplay: [],
 };

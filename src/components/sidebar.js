@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Container, Row, Col } from 'reactstrap';
+import Checkbox from '@mui/material/Checkbox'
 import {state, months, hours, res} from '../state.js';
+import {getAODCB, getCB} from '../functions/colorbars.js';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css'
 
@@ -21,7 +23,7 @@ const Sidebar = (props) => {
     let fontColor = 'white'
     
     return (
-            <div id='sidebar' style={{backgroundColor:'#461660',padding:10, flex:1}}>
+            <div id='sidebar' style={{backgroundColor:'#461660',padding:10, width:'170px'}}>
                 <div>
                     <div style={{ margin: 0 }}>
                         <div>
@@ -75,60 +77,61 @@ const Sidebar = (props) => {
                     </div>
 
 
-                   <div>
+                   <div >
                        {props.state.goesDataSmoke || props.state.goesDataDust ? (
-                           <Row>
+                           <div style={{display:'flex',justifyContent:'flex-start'}}>
                                <div style={{ alignItems: 'center', }} >
                                    <Checkbox
-                                       checked={ props.state.GOESon }
-                                       onClick={() => this.setState({ GOESon: !this.props.state.GOESon,})}
+                                        style={{color:"white"}} checked={ props.state.GOESon } onClick={() => 
+                                        props.handleChangeMulti({ GOESon: !props.state.GOESon,})}
                                    />
-                                   <a>GOES</a>
+                                   <a style={{color:"white"}}>GOES</a>
                                </div>
-                           </Row>
+                           </div>
                        ) : null}
-
-                       {this.props.state.goesDataSmoke && this.props.state.smokeCB && this.props.state.GOESon ? 
-                           this.getCB(this.props.state.smokeCB,'blue','Smoke')
-                       : null}
-                       {this.props.state.GOESon && this.props.state.goesDataDust && this.props.state.dustCB ? 
-                           this.getCB(this.props.state.dustCB,'red','Dust')
+                       
+                       {props.state.goesDataSmoke && props.state.smokeCB && props.state.GOESon ? 
+                           getCB( props.state.smokeCB, 'blue', 'Smoke' )
                        : null}
 
-                       {this.state.viirsData48J || this.state.viirsData48S || this.state.viirsData36 ? (
-                           <Row style={{ width: '100%' }}>
-                               <div style={{ alignItems: 'center', width: '100%', }} >
-                                   <Checkbox
-                                       checked={this.state.AODon}
+                       {props.state.GOESon && props.state.goesDataDust && props.state.dustCB ? 
+                            getCB( props.state.dustCB, 'red','Dust')
+                        : null}
+
+                       {props.state.viirsData48J || props.state.viirsData48S || props.state.viirsData36 ? (
+                           <div style={{display:'flex',justifyContent:'flex-start'}}>
+                               <div style={{ alignItems: 'center', }} >
+                                   <Checkbox style={{color:"white"}}
+                                       checked={props.state.AODon}
                                        onClick={() =>
-                                           this.setState({
-                                               AODon: !this.props.state.AODon,
-                                               AODclick36: !this.props.state.AODon? true: false,
-                                               AODclick48J: !this.props.state.AODon? true: false,
-                                               AODclick48S: !this.props.state.AODon? true: false,
+                                           props.handleChangeMulti({
+                                               AODon: !props.state.AODon,
+                                               AODclick36: !props.state.AODon? true: false,
+                                               AODclick48J: !props.state.AODon? true: false,
+                                               AODclick48S: !props.state.AODon? true: false,
                                            })
                                        }
                                    />
-                                   <a>VIIRS AOD</a>
+                                   <a style={{color:"white"}}>VIIRS AOD</a>
                                    <a style={{ marginLeft: 40, }} >
-                                       { this.props.state.viirsTimeNow }
+                                       { props.state.viirsTimeNow }
                                    </a>
                                </div>
-                           </Row>
+                           </div>
                        ) : null}
 
-                       {this.state.aodCB36 && this.state.AODon ? this.getAODCB(this.state.aodCB36,'Hi-Res'): null}
-                       {this.state.aodCB48J && this.state.AODon ? this.getAODCB(this.state.aodCB48J,'JPSS'): null}
-                       {this.state.aodCB48S && this.state.AODon ? this.getAODCB(this.state.aodCB48S,'SNPP'): null}
+                       {props.state.aodCB36 && props.state.AODon ? getAODCB(props.state.aodCB36,'Hi-Res'): null}
+                       {props.state.aodCB48J && props.state.AODon ? getAODCB(props.state.aodCB48J,'JPSS'): null}
+                       {props.state.aodCB48S && props.state.AODon ? getAODCB(props.state.aodCB48S,'SNPP'): null}
 
-                       {this.state.AODon && this.state.aodCBValSave ? (
+                       {props.state.AODon && props.state.aodCBValSave ? (
                            <div style={{ display: 'flex', justifyContent: 'center', }} >
                                <Row style={{ width: '100%', justifyContent: 'center', }}>
-                                   {Object.keys(this.state.aodCBValSave).map((k, i) => (
-                                       <div key={this.state.aodCBValSave[k].toString()}
+                                   {Object.keys(props.state.aodCBValSave).map((k, i) => (
+                                       <div key={props.state.aodCBValSave[k].toString()}
                                            style={{ width: '2.5%', justifyContent: 'center', }} >
                                            <a style={{fontSize: 10,}}> 
-                                               {i % 4 === 0 ? this.props.state.aodCBValSave[k]: null}
+                                               {i % 4 === 0 ? props.state.aodCBValSave[k]: null}
                                            </a>
                                        </div>
                                    ))}
@@ -136,30 +139,30 @@ const Sidebar = (props) => {
                            </div>
                        ) : null}
 
-                       {this.state.airnowData ? (
-                           <Row>
+                       {props.state.airnowData ? (
+                           <div style={{display:'flex',justifyContent:'flex-start'}}>
                                <div style={{ alignItems: 'center',}} >
-                                   <Checkbox
-                                       checked={this.props.state.Airnowon}
-                                       onClick={() => this.setState({Airnowon: !this.props.state.Airnowon,})}/>
-                                   <a>Airnow PM2.5</a>
+                                   <Checkbox style={{color:"white"}}
+                                       checked={props.state.Airnowon}
+                                       onClick={() => props.handleChangeMulti({Airnowon: !props.state.Airnowon,})}/>
+                                   <a style={{color:"white"}}>Airnow PM2.5</a>
                                </div>
-                           </Row>
+                           </div>
                        ) : null}
-                       {this.state.lidarData ? (
-                           <Row>
+                       {props.state.lidarData ? (
+                           <div style={{display:'flex',justifyContent:'flex-start'}}>
                                <div style={{ alignItems: 'center', }} >
-                                   <Checkbox
-                                       checked={ this.props.state.Lidaron }
-                                       onClick={() => this.setState({ Lidaron: !this.props.state.Lidaron,})}/>
-                                   <a>NYSM Lidar</a>
+                                   <Checkbox style={{color:"white"}}
+                                       checked={props.state.Lidaron }
+                                       onClick={() => props.handleChangeMulti({ Lidaron: !props.state.Lidaron,})}/>
+                                   <a style={{color:"white"}}>NYSM Lidar</a>
                                </div>
-                           </Row>
+                           </div>
                        ) : null}
 
-                       {this.state.Airnowon && this.state.airnowData ? (
+                       {props.state.Airnowon && props.state.airnowData ? (
                            <div style={{ width: '100%', justifyContent: 'center', alignItems: 'center', paddingLeft: 5}}>
-                               <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                               <div style={{ display: 'flex', justifyContent: 'center' }}>
                                    <div style={{ backgroundColor: 'rgb(0,228,0)', marginRight: 5, paddingRight: 5,
                                                paddingLeft: 5, borderRadius: 5, }}>
                                        <a style={{ fontSize: 10, }}>Good</a>
@@ -187,7 +190,7 @@ const Sidebar = (props) => {
                                               paddingLeft: 5, borderRadius: 5,}}>
                                        <a style={{fontSize: 10,color: 'white',}}>Hazardous</a>
                                    </div>
-                               </Row>
+                               </div>
                            </div>
                        ) : null}
                    </div>

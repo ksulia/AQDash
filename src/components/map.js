@@ -333,19 +333,15 @@ export class RealTimeMap extends React.Component {
                                             'text-anchor': 'bottom',
                                         }}
                                         symbolOnClick={(e) =>
-                                            this.setState({
-                                                chosenSite:
-                                                    e.features[0].properties
-                                                        .site,
+                                            this.props.handleChangeMulti({
+                                                chosenSite:e.features[0].properties.site,
                                                 scaPlotOn: true,
                                                 cnrPlotOn: true,
                                             })
                                         }
                                         circleOnClick={(e) =>
-                                            this.setState({
-                                                chosenSite:
-                                                    e.features[0].properties
-                                                        .site,
+                                            this.props.handleChangeMulti({
+                                                chosenSite:e.features[0].properties.site,
                                                 scaPlotOn: true,
                                                 cnrPlotOn: true,
                                             })
@@ -365,11 +361,9 @@ export class RealTimeMap extends React.Component {
                             {this.props.state.cbHover ? (
                                 <div
                                     style={{
-                                        backgroundColor:
-                                            'rgba(255,255,255,0.8)',
+                                        backgroundColor:'rgba(255,255,255,0.8)',
                                         borderRadius: 5,
-                                        border:
-                                            '1px solid rgba(160,160,160,0.8)',
+                                        border:'1px solid rgba(160,160,160,0.8)',
                                         padding: 5,
                                         position: 'absolute',
                                         top: this.props.state.cbHoverValue.loc.y,
@@ -399,7 +393,7 @@ export class RealTimeMap extends React.Component {
                                             <div
                                                 key={'riskColors' + k}
                                                 onMouseEnter={(e) => {
-                                                    this.setState({
+                                                    this.props.handleChangeMulti({
                                                         cbHover: true,
                                                         cbHoverValue: {
                                                             value: this.props.state.rawData.risk_colors[k].toFixed(0).toString(),
@@ -408,7 +402,7 @@ export class RealTimeMap extends React.Component {
                                                     })
                                                 }}
                                                 onMouseLeave={(e) =>
-                                                    this.setState({
+                                                    this.props.handleChangeMulti({
                                                         cbHover: false,
                                                     })
                                                 }

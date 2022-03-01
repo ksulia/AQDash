@@ -7,6 +7,7 @@ import Sidebar from '../components/sidebar.js';
 import fetchData from '../functions/fetchData.js';
 import MyFirstGrid from '../components/gridlayout.js';
 import RealTimeMap from '../components/map.js';
+import {GoesPlot, AirnowPlot, LidarPlot} from '../components/graphs.js';
 
 export class RealTime extends React.Component {
 
@@ -31,6 +32,11 @@ export class RealTime extends React.Component {
             clicked: false,
         })
     }
+    
+    updateDimensions = () => {
+        this.setState({ width: window.innerWidth, height: window.innerHeight })
+    }
+
 
     
     
@@ -42,6 +48,7 @@ export class RealTime extends React.Component {
             fetchData(this.state,this.handleChange);
             
         }
+        window.addEventListener('load', this.updateDimensions)
     }
     
 
@@ -54,54 +61,25 @@ export class RealTime extends React.Component {
         if(prevState.rawData != this.state.rawData)
             console.log('rawData', this.state.rawData)
 
+        window.addEventListener('resize', this.updateDimensions)
+        if (prevState.width != this.state.width)console.log('width/height', this.state.width, this.state.height)
+        
+                
+        if(this.state.riskData && this.state.riskClick && this.state.GOESPlotOn && !this.state.plotsToDisplay.includes('goes'))
+            this.setState({ plotsToDisplay: [...this.state.plotsToDisplay, 'goes'] })
+        if(this.state.riskData && this.state.riskClick && this.state.airnowPlotOn&& !this.state.plotsToDisplay.includes('airnow'))
+            this.setState({ plotsToDisplay: [...this.state.plotsToDisplay, 'airnow'] })
+        if(this.state.chosenSite && !this.state.plotsToDisplay.includes('lidar'))
+            this.setState({ plotsToDisplay: [...this.state.plotsToDisplay, 'lidar'] })
+        
+        if(!(this.state.riskData && this.state.riskClick && this.state.GOESPlotOn) && this.state.plotsToDisplay.includes('goes'))
+            this.setState({plotsToDisplay: this.state.plotsToDisplay.filter(function(plot) { return plot !== 'goes' })});
+        if(!(this.state.riskData && this.state.riskClick && this.state.airnowPlotOn) && this.state.plotsToDisplay.includes('airnow'))
+            this.setState({plotsToDisplay: this.state.plotsToDisplay.filter(function(plot) { return plot !== 'airnow' })});
+        if(!this.state.chosenSite && this.state.plotsToDisplay.includes('lidar'))
+            this.setState({plotsToDisplay: this.state.plotsToDisplay.filter(function(plot) { return plot !== 'lidar' })});
 
-
-//         if (
-//             prevState.riskClick !== this.state.riskClick ||
-//             (this.state.vizSize.width !==
-//                 document.getElementById('vizDiv').clientWidth &&
-//                 this.state.vizReady)
-//         ) {
-//             console.log(
-//                 'viz',
-//                 document.getElementById('vizDiv').clientHeight,
-//                 document.getElementById('vizDiv').clientWidth
-//             )
-//             this.setState({
-//                 vizSize: {
-//                     ...this.state.vizSize,
-//                     width: document.getElementById('vizDiv').clientWidth,
-//                     height: document.getElementById('vizDiv').clientHeight,
-//                 },
-//                 vizReady: true,
-//             })
-//         }
-
-//         if (
-//             document.getElementById('lidarComp') &&
-//             prevState.lidarWidth !==
-//                 document.getElementById('lidarComp').clientWidth
-//         ) {
-//             this.setState({
-//                 lidarWidth: document.getElementById('lidarComp').clientWidth,
-//             })
-//         }
-
-//         if (
-//             prevState.aodCB36 != this.state.aodCB36 ||
-//             prevState.aodCB48J != this.state.aodCB48J ||
-//             prevState.aodCB48S != this.state.aodCB48S
-//         ) {
-//             if (this.state.aodCB36)
-//                 this.setState({ aodCBValSave: this.state.aodCB36 })
-//             else if (this.state.aodCB48J)
-//                 this.setState({ aodCBValSave: this.state.aodCB48J })
-//             else if (this.state.aodCB48S)
-//                 this.setState({ aodCBValSave: this.state.aodCB48S })
-//             else this.setState({ aodCBValSave: null })
-//         }
-
-//         window.addEventListener('resize', this.updateDimensions)
+        console.log("plotsToDisplay", this.state.plotsToDisplay,this.state.plotsToDisplay.includes('airnow'))
     }
     
     handleChange(name,value) {
@@ -119,6 +97,15 @@ export class RealTime extends React.Component {
 //         console.log("event",event,name)
 //         this.setState({[name]:event.value,clicked:true});
 //       }
+
+    getPlot(p){
+        switch (p){
+            case 'goes': return <GoesPlot state={this.state}/>
+            case 'airnow': return <AirnowPlot state={this.state}/>
+            case 'lidar': return <LidarPlot state={this.state}/>
+        }
+   
+    }
     
 
     render() {
@@ -127,10 +114,10 @@ export class RealTime extends React.Component {
         return (
             
             <div id='main-body-flex' style={{display:'flex',flexDirection:'row',margin:0, height:undefined,justifyContent:'center'}}>
-                <Sidebar state={this.state} handleChange={this.handleChange} fetchData={fetchData}/>
+                <Sidebar state={this.state} handleChange={this.handleChange} fetchData={fetchData} handleChangeMulti={this.handleChangeMulti}/>
 
                 <div id='body' style={{flex:10,backgroundColor:'#F8F7F7', justifyContent:'center'}}>
-                    <div id='map-above-graphs' style={{display:'flex',flexDirection:'column',
+                    <div id='map-and-graphs' style={{display:'flex',flexDirection:'column',
                                 justifyContent:'center'}}>
                         <div id='map-body' style={{flex:1, borderRadius:5, 
                                                   border:'1px solid rgba(0, 0, 0, 0.1)',
@@ -138,7 +125,27 @@ export class RealTime extends React.Component {
                                                   marginBottom: 10}}>
                             <RealTimeMap id='real-time-map' state={this.state} handleChangeMulti={this.handleChangeMulti}/>
                         </div>
-                        <div style={{flex:1, backgroundColor:'orange', margin:20, marginTop:10}}>Test
+                        <div id='graph-body' style={{flex:1}}>
+                            <div id='graph-body-flex-column' style={{display:'flex', flexDirection:'column'}}>
+                                
+                                    {Array.from(Array(this.state.plotsToDisplay.length), (e, i) => 
+                                        <div key={"column" + i} id={"column" + i} style={{flex:1}}>
+                                            <div key={"row div" + i} id={"row div" + i} style={{display:'flex', flexDirection:'row'}}>
+                                                {console.log("here?", this.state.plotsToDisplay, 
+                                                 this.state.width/this.state.height,e,i)}
+                                                 {this.state.plotsToDisplay.map((p,j)=>
+                                                     this.getPlot(p)
+                                                 
+                                                 )}
+                                                    
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                        )
+                                    }
+                                    
+                            </div>
                         </div>
                     </div>
                     
