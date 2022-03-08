@@ -19,7 +19,6 @@ function getDaysInMonth(props) {
 }
 
 const Sidebar = (props) => {
-//     console.log('sidebar props', props);
     let fontColor = 'white'
     
     return (
@@ -67,7 +66,7 @@ const Sidebar = (props) => {
                         </div>
                         <button
                             style={{ marginTop:15, width:'100%', fontSize:20, fontFamily: 'Roboto', fontWeight: 'bold',
-                                   backgroundColor:'white', color: '#461660', borderRadius:5 }}
+                                   backgroundColor:'white', color: props.realtime ? '#461660': '#EEB211', borderRadius:5 }}
                             onClick={(e)=>props.handleChange({fetchData:true})}
                         > Fetch </button>
                         <a style={{ alignSelf: 'flex-end', fontSize: 10, color: fontColor, }} > 
@@ -77,7 +76,7 @@ const Sidebar = (props) => {
 
 
                    <div >
-                       {props.state.goesDataSmoke || props.state.goesDataDust ? (
+                       {props.realtime && (props.state.goesDataSmoke || props.state.goesDataDust) ? (
                            <div style={{display:'flex',justifyContent:'flex-start'}}>
                                <div style={{ alignItems: 'center', }} >
                                    <Checkbox
@@ -90,7 +89,7 @@ const Sidebar = (props) => {
                        ) : null}
                        
 
-                       {props.state.viirsData48J || props.state.viirsData48S || props.state.viirsData36 ? (
+                       {!props.realtime && (props.state.viirsData48J || props.state.viirsData48S || props.state.viirsData36) ? (
                            <div style={{display:'flex',justifyContent:'flex-start'}}>
                                <div style={{ alignItems: 'center', }} >
                                    <Checkbox style={{color:"white"}}
@@ -112,11 +111,11 @@ const Sidebar = (props) => {
                            </div>
                        ) : null}
 
-                       {props.state.aodCB36 && props.state.AODon ? getAODCB(props.state.aodCB36,'Hi-Res'): null}
-                       {props.state.aodCB48J && props.state.AODon ? getAODCB(props.state.aodCB48J,'JPSS'): null}
-                       {props.state.aodCB48S && props.state.AODon ? getAODCB(props.state.aodCB48S,'SNPP'): null}
+                       {props.realtime && props.state.aodCB36 && props.state.AODon ? getAODCB(props.state.aodCB36,'Hi-Res'): null}
+                       {props.realtime && props.state.aodCB48J && props.state.AODon ? getAODCB(props.state.aodCB48J,'JPSS'): null}
+                       {props.realtime && props.state.aodCB48S && props.state.AODon ? getAODCB(props.state.aodCB48S,'SNPP'): null}
 
-                       {props.state.AODon && props.state.aodCBValSave ? (
+                       {props.realtime && props.state.AODon && props.state.aodCBValSave ? (
                            <div style={{ display: 'flex', justifyContent: 'center', }} >
                                <Row style={{ width: '100%', justifyContent: 'center', }}>
                                    {Object.keys(props.state.aodCBValSave).map((k, i) => (
@@ -131,7 +130,7 @@ const Sidebar = (props) => {
                            </div>
                        ) : null}
 
-                       {props.state.airnowData ? (
+                       {props.realtime && props.state.airnowData ? (
                            <div style={{display:'flex',justifyContent:'flex-start'}}>
                                <div style={{ alignItems: 'center',}} >
                                    <Checkbox style={{color:"white"}}
@@ -141,7 +140,7 @@ const Sidebar = (props) => {
                                </div>
                            </div>
                        ) : null}
-                       {props.state.lidarData ? (
+                       {props.realtime && props.state.lidarData ? (
                            <div style={{display:'flex',justifyContent:'flex-start'}}>
                                <div style={{ alignItems: 'center', }} >
                                    <Checkbox style={{color:"white"}}

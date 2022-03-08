@@ -115,5 +115,4 @@ export const state = {
     chosenSite: null,
     lidarRes:'10',
     plotsToDisplay: [],
-    plotsToDisplayTemp: null
 };

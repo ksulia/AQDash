@@ -42,7 +42,7 @@ export class RealTimeMap extends React.Component {
                 style={{
                     position: 'absolute',
                     opacity: 0.8,
-//                     width: '25vw',
+//                     width: 'undefined',
                     top: 0,
                     margin: 10,
                     padding: 10,
@@ -51,16 +51,20 @@ export class RealTimeMap extends React.Component {
                     borderRadius: 5,
                 }}
             >
-                <Row style={{ paddingLeft: 20 }}>
-                    <a style={{ color: 'white' }}>
-                        Lon: {Math.round(this.state.mouseMoveLL.lng * 10) / 10}
-                    </a>
-                </Row>
-                <Row style={{ paddingLeft: 20 }}>
-                    <a style={{ color: 'white' }}>
-                        Lat: {Math.round(this.state.mouseMoveLL.lat * 10) / 10}
-                    </a>
-                </Row>
+                <Col >
+                    <Row>
+                        <a style={{ color: 'white' }}>
+                            Lon: {Math.round(this.state.mouseMoveLL.lng * 10) / 10}
+                        </a>
+                    </Row>
+                    <Row >
+                        <a style={{ color: 'white' }}>
+                            Lat: {Math.round(this.state.mouseMoveLL.lat * 10) / 10}
+                        </a>
+                    </Row>
+                        
+                </Col>
+                
                 {this.props.state.Windon && this.props.state.mouseMoveWS ? (
                     <Row style={{ paddingLeft: 20 }}>
                         <a style={{ color: 'white' }}>
@@ -203,169 +207,164 @@ export class RealTimeMap extends React.Component {
     
     render(){
         
-//         console.log('map!', this.props.state)
         return (
         
             <div style={{ width: '100%'}}>
-                            <Map
-                                style={styles.light}
-                                center={[this.props.state.lng, this.props.state.lat]}
-                                zoom={[this.props.state.zoom]}
-                                containerStyle={mapStyle}
-                                onMouseMove={this._onMouseMove}
-                                onClick={this._onClick}
-                                onMove={this._onMove}
-                                onStyleImageMissing={this._onStyleImageMissing}
-                                onStyleLoad={this._onLoad}
-                            >
+                <Map
+                    style={styles.light}
+                    center={[this.props.state.lng, this.props.state.lat]}
+                    zoom={[this.props.state.zoom]}
+                    containerStyle={mapStyle}
+                    onMouseMove={this._onMouseMove}
+                    onClick={this._onClick}
+                    onMove={this._onMove}
+                    onStyleImageMissing={this._onStyleImageMissing}
+                    onStyleLoad={this._onLoad}
+                >
 
-                                {this.props.state.rawData &&
-                                this.props.state.rawData.data_risk ? (
-                                    <GeoJSONLayer
-                                        key={'riskPolygons'}
-                                        id={'riskPolygons'}
-                                        data={this.props.state.rawData.data_risk}
-                                        fillPaint={{
-                                            'fill-color': ['get', 'color'],
-                                            'fill-opacity': ['get', 'alpha'],
-                                        }}
-                                    />
-                                ) : null}
+                    {this.props.state.rawData &&
+                    this.props.state.rawData.data_risk ? (
+                        <GeoJSONLayer
+                            key={'riskPolygons'}
+                            id={'riskPolygons'}
+                            data={this.props.state.rawData.data_risk}
+                            fillPaint={{
+                                'fill-color': ['get', 'color'],
+                                'fill-opacity': ['get', 'alpha'],
+                            }}
+                        />
+                    ) : null}
 
-                                {this.props.state.goesDataSmoke != null &&
-                                this.props.state.GOESon ? (
-                                    <GeoJSONLayer
-                                        key={'goessmoke'}
-                                        id={'goessmoke'}
-                                        data={this.props.state.goesDataSmoke}
-                                        circlePaint={{
-                                            'circle-color': ['get', 'color'],
-                                            'circle-radius': 1.75,
-                                        }}
-                                    />
-                                ) : null}
-                                {this.props.state.goesDataDust != null &&
-                                this.props.state.GOESon ? (
-                                    <GeoJSONLayer
-                                        key={'goesdust'}
-                                        id={'goesdust'}
-                                        data={this.props.state.goesDataDust}
-                                        circlePaint={{
-                                            'circle-color': ['get', 'color'],
-                                            'circle-radius': 1.75,
-                                        }}
-                                    />
-                                ) : null}
+                    {this.props.state.goesDataSmoke != null &&
+                    this.props.state.GOESon ? (
+                        <GeoJSONLayer
+                            key={'goessmoke'}
+                            id={'goessmoke'}
+                            data={this.props.state.goesDataSmoke}
+                            circlePaint={{
+                                'circle-color': ['get', 'color'],
+                                'circle-radius': 1.75,
+                            }}
+                        />
+                    ) : null}
+                    {this.props.state.goesDataDust != null &&
+                    this.props.state.GOESon ? (
+                        <GeoJSONLayer
+                            key={'goesdust'}
+                            id={'goesdust'}
+                            data={this.props.state.goesDataDust}
+                            circlePaint={{
+                                'circle-color': ['get', 'color'],
+                                'circle-radius': 1.75,
+                            }}
+                        />
+                    ) : null}
 
-                                {this.props.state.viirsObj != null &&
-                                this.props.state.AODon ? (
-                                    <GeoJSONLayer
-                                        id={'viirsobj'}
-                                        key={'viirsobj'}
-                                        data={this.props.state.viirsObjnow}
-                                        circlePaint={{
-                                            'circle-color': ['get', 'color'],
-                                            'circle-radius': 2,
-                                            'circle-stroke-color': 'grey',
-                                            'circle-stroke-width': 1,
-                                        }}
-                                    />
-                                ) : null}
+                    {this.props.state.viirsObj != null &&
+                    this.props.state.AODon ? (
+                        <GeoJSONLayer
+                            id={'viirsobj'}
+                            key={'viirsobj'}
+                            data={this.props.state.viirsObjnow}
+                            circlePaint={{
+                                'circle-color': ['get', 'color'],
+                                'circle-radius': 2,
+                                'circle-stroke-color': 'grey',
+                                'circle-stroke-width': 1,
+                            }}
+                        />
+                    ) : null}
 
-                                {this.props.state.geoJsonWind != null &&
-                                this.props.state.Windon ? (
-                                    <GeoJSONLayer
-                                        key={'WIND'}
-                                        data={
-                                            this.props.state.geoJsonWind[
-                                                this.props.state.Windkeys[0]
-                                            ]
-                                        }
-                                        symbolLayout={{
-                                            'icon-image': 'wind-arrow',
-                                            'icon-size': ['get', 'speed'],
-                                            'icon-rotate': ['get', 'dir'],
-                                            'icon-allow-overlap': true,
-                                        }}
-                                    />
-                                ) : null}
+                    {this.props.state.geoJsonWind != null &&
+                    this.props.state.Windon ? (
+                        <GeoJSONLayer
+                            key={'WIND'}
+                            data={
+                                this.props.state.geoJsonWind[
+                                    this.props.state.Windkeys[0]
+                                ]
+                            }
+                            symbolLayout={{
+                                'icon-image': 'wind-arrow',
+                                'icon-size': ['get', 'speed'],
+                                'icon-rotate': ['get', 'dir'],
+                                'icon-allow-overlap': true,
+                            }}
+                        />
+                    ) : null}
 
-                                {this.props.state.airnowData != null &&
-                                this.props.state.Airnowon ? (
-                                    <GeoJSONLayer
-                                        key={'pm2.5'}
-                                        id={'pm2.5'}
-                                        data={this.props.state.airnowData}
-                                        symbolLayout={{
-                                            'text-field': ['get', 'value'],
-                                            'text-size': 5,
-                                            'text-allow-overlap': true,
-                                        }}
-                                        circlePaint={{
-                                            'circle-color': ['get', 'color'],
-                                            'circle-opacity': 0.3,
-                                            'circle-radius': 5.5,
-                                            'circle-stroke-color': 'grey',
-                                            'circle-stroke-width': 1,
-                                        }}
-                                    />
-                                ) : null}
+                    {this.props.state.airnowData != null &&
+                    this.props.state.Airnowon ? (
+                        <GeoJSONLayer
+                            key={'pm2.5'}
+                            id={'pm2.5'}
+                            data={this.props.state.airnowData}
+                            symbolLayout={{
+                                'text-field': ['get', 'value'],
+                                'text-size': 5,
+                                'text-allow-overlap': true,
+                            }}
+                            circlePaint={{
+                                'circle-color': ['get', 'color'],
+                                'circle-opacity': 0.3,
+                                'circle-radius': 5.5,
+                                'circle-stroke-color': 'grey',
+                                'circle-stroke-width': 1,
+                            }}
+                        />
+                    ) : null}
 
-                                {this.props.state.riskHighlight ? (
-                                    <GeoJSONLayer
-                                        key={'riskHighlight'}
-                                        id={'riskHighlight'}
-                                        data={this.props.state.riskHighlight}
-                                        linePaint={{
-                                            'line-color': 'red',
-                                            'line-width': 3,
-                                        }}
-                                    />
-                                ) : null}
+                    {this.props.state.riskHighlight ? (
+                        <GeoJSONLayer
+                            key={'riskHighlight'}
+                            id={'riskHighlight'}
+                            data={this.props.state.riskHighlight}
+                            linePaint={{
+                                'line-color': 'red',
+                                'line-width': 3,
+                            }}
+                        />
+                    ) : null}
 
-                                {this.props.state.lidarSites && this.props.state.Lidaron ? (
-                                    <GeoJSONLayer
-                                        key={'lidarSites'}
-                                        id={'lidarSites'}
-                                        data={this.props.state.lidarSites}
-                                        symbolLayout={{
-                                            'text-field': ['get', 'site'],
-                                            'text-size': 15,
-                                            'text-allow-overlap': true,
-                                            'text-anchor': 'bottom',
-                                        }}
-                                        symbolOnClick={(e) =>
-                                            this.props.handleChange({
-                                                chosenSite:e.features[0].properties.site,
-                                                scaPlotOn: true,
-                                                cnrPlotOn: true,
-                                            })
-                                        }
-                                        circleOnClick={(e) =>
-                                            this.props.handleChange({
-                                                chosenSite:e.features[0].properties.site,
-                                                scaPlotOn: true,
-                                                cnrPlotOn: true,
-                                            })
-                                        }
-                                        circlePaint={{
-                                            'circle-color': 'green',
-                                            'circle-opacity': 0.3,
-                                            'circle-radius': 5.5,
-                                            'circle-stroke-color': 'grey',
-                                            'circle-stroke-width': 1,
-                                        }}
-                                    />
-                                ) : null}
+                    {this.props.state.lidarSites && this.props.state.Lidaron ? (
+                        <GeoJSONLayer
+                            key={'lidarSites'}
+                            id={'lidarSites'}
+                            data={this.props.state.lidarSites}
+                            symbolLayout={{
+                                'text-field': ['get', 'site'],
+                                'text-size': 15,
+                                'text-allow-overlap': true,
+                                'text-anchor': 'bottom',
+                            }}
+                            symbolOnClick={(e) =>
+                                this.props.handleChange({
+                                    chosenSite:e.features[0].properties.site,
+                                    scaPlotOn: true,
+                                    cnrPlotOn: true,
+                                })
+                            }
+                            circleOnClick={(e) =>
+                                this.props.handleChange({
+                                    chosenSite:e.features[0].properties.site,
+                                    scaPlotOn: true,
+                                    cnrPlotOn: true,
+                                })
+                            }
+                            circlePaint={{
+                                'circle-color': 'blue',
+                                'circle-opacity': 0.3,
+                                'circle-radius': 5.5,
+                                'circle-stroke-color': 'grey',
+                                'circle-stroke-width': 1,
+                            }}
+                        />
+                    ) : null}
 
-                                {this.getLegend()}
-                                
-                            </Map>
-                            
-                            
-                            
-
-                        </div>
+                    {this.getLegend()}
+                    
+                </Map>
+            </div>
                         
         
         )

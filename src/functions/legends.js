@@ -1,10 +1,13 @@
 import * as React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 
-export function getRiskLegend(props){
-    console.log('risklegend',props)
+
+
+export function getRiskLegend(state,handleChange){
+    console.log('risklegend',state, handleChange)
     return(
-        <div>
-        {props.cbHover ? (
+        <div style={{width:'100%'}}>
+        {state.cbHover ? (
             <div
                 style={{
                     backgroundColor:'rgba(255,255,255,0.8)',
@@ -12,21 +15,21 @@ export function getRiskLegend(props){
                     border:'1px solid rgba(160,160,160,0.8)',
                     padding: 5,
                     position: 'absolute',
-                    top: props.cbHoverValue.loc.y,
-                    left: props.cbHoverValue.loc.x,
+                    top: state.cbHoverValue.loc.y,
+                    left: state.cbHoverValue.loc.x,
                 }}
             >
                 <a style={{ fontSize: 10 }}>
-                    {props.cbHoverValue.value}
+                    {state.cbHoverValue.value}
                 </a>
             </div>
         ) : null}
 
-        {props.rawData &&
-        props.rawData.data_risk ? (
+        {state.rawData &&
+        state.rawData.data_risk ? (
             <div
                 style={{
-                       position: 'relative',
+                    position: 'relative',
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'center',
@@ -34,21 +37,21 @@ export function getRiskLegend(props){
             >
 
                     {Object.keys(
-                        props.rawData.risk_colors
+                        state.rawData.risk_colors
                     ).map((k, i) => (
                         <div
                             key={'riskColors' + k}
                             onMouseEnter={(e) => {
-                                props.handleChange({
+                                handleChange({
                                     cbHover: true,
                                     cbHoverValue: {
-                                        value: props.rawData.risk_colors[k].toFixed(0).toString(),
+                                        value: state.rawData.risk_colors[k].toFixed(0).toString(),
                                         loc: {x: e.pageX,y: e.pageY - 40,},
                                     },
                                 })
                             }}
                             onMouseLeave={(e) =>
-                                props.handleChange({
+                                handleChange({
                                     cbHover: false,
                                 })
                             }
@@ -74,8 +77,8 @@ export function getRiskLegend(props){
 
             </div>
         ) : null}
-        {props.rawData &&
-        props.rawData.data_risk ? (
+        {state.rawData &&
+        state.rawData.data_risk ? (
             <div>
             <div
                 style={{
@@ -87,10 +90,10 @@ export function getRiskLegend(props){
             >
         
                     {Object.keys(
-                        props.rawData.risk_colors
+                        state.rawData.risk_colors
                     ).map((k, i) => (
                         <div
-                            key={props.rawData.risk_colors[
+                            key={state.rawData.risk_colors[
                                 k
                             ]
                                 .toFixed(1)
@@ -102,7 +105,7 @@ export function getRiskLegend(props){
                         >
                             <a style={{ fontSize: 10 }}>
                                 {i % 4 === 0
-                                    ? props.rawData.risk_colors[
+                                    ? state.rawData.risk_colors[
                                           k
                                       ].toFixed(1)
                                     : null}
@@ -117,32 +120,32 @@ export function getRiskLegend(props){
     )
 }
 
-export function getAirnowLegend(props){
-    if(props.Airnowon && props.airnowData){
+export function getAirnowLegend(state){
+    if(state.Airnowon && state.airnowData){
         return (
-            <div style={{alignItems:'center',position:'absolute',right:20}}>
-                    <Row style={{}}>
-                        <Col md={'auto'} style={{ backgroundColor: 'rgb(0,228,0)',borderRadius: 5, 
-                                                lineHeight:'10px'}}>
-                            <a style={{ fontSize: 10, }}>Good</a>
-                        </Col>
-                        <Col md={'auto'} style={{ backgroundColor: 'rgb(255,255,0)',borderRadius: 5,lineHeight:'10px'}}>
-                            <a style={{ fontSize: 10,}}>Moderate</a>
-                        </Col>
-                        <Col md={'auto'} style={{backgroundColor:'rgb(255,126,0)',borderRadius: 5,lineHeight:'10px'}}>
-                            <a style={{ fontSize: 10, color: 'white', padding:0}}>Unhealthy<br/>Sensitive<br/>Groups</a>
-                        </Col>
-                        <Col md={'auto'} style={{ backgroundColor: 'rgb(255,0,0)', borderRadius: 5,lineHeight:'10px'}}>
-                            <a style={{ fontSize: 10, color: 'white'}}>Unhealthy</a>
-                        </Col>
-                        <Col md={'auto'} style={{ backgroundColor:'rgb(143,63,151)',borderRadius: 5,lineHeight:'10px'}}>
-                            <a style={{ fontSize: 10, color: 'white', }}>Very<br/>Unhealthy</a>
-                        </Col>
-                        <Col md={'auto'} style={{ backgroundColor: 'rgb(126,0,35)', borderRadius: 5,lineHeight:'10px'}}>
-                            <a style={{fontSize: 10,color: 'white',}}>Hazardous</a>
-                        </Col>
-                    </Row>
-                </div>
+            <div style={{alignItems:'center',position:'absolute',right:30,margin:5}}>
+                <Row style={{}}>
+                    <Col md={'auto'} style={{ backgroundColor: 'rgb(0,228,0)',borderRadius: 5, 
+                                            lineHeight:'10px'}}>
+                        <a style={{ fontSize: 10, }}>Good</a>
+                    </Col>
+                    <Col md={'auto'} style={{ backgroundColor: 'rgb(255,255,0)',borderRadius: 5,lineHeight:'10px'}}>
+                        <a style={{ fontSize: 10,}}>Moderate</a>
+                    </Col>
+                    <Col md={'auto'} style={{backgroundColor:'rgb(255,126,0)',borderRadius: 5,lineHeight:'10px'}}>
+                        <a style={{ fontSize: 10, color: 'white', padding:0}}>Unhealthy<br/>Sensitive<br/>Groups</a>
+                    </Col>
+                    <Col md={'auto'} style={{ backgroundColor: 'rgb(255,0,0)', borderRadius: 5,lineHeight:'10px'}}>
+                        <a style={{ fontSize: 10, color: 'white'}}>Unhealthy</a>
+                    </Col>
+                    <Col md={'auto'} style={{ backgroundColor:'rgb(143,63,151)',borderRadius: 5,lineHeight:'10px'}}>
+                        <a style={{ fontSize: 10, color: 'white', }}>Very<br/>Unhealthy</a>
+                    </Col>
+                    <Col md={'auto'} style={{ backgroundColor: 'rgb(126,0,35)', borderRadius: 5,lineHeight:'10px'}}>
+                        <a style={{fontSize: 10,color: 'white',}}>Hazardous</a>
+                    </Col>
+                </Row>
+            </div>
         )
     }else return null
     

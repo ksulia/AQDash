@@ -11,9 +11,9 @@ const Navigation = () => {
            </div>
            <div style={{flex:1}}>
                <div style={{display:'flex',flexDirection:'row',margin:0,justifyContent:'flex-end'}}>
-                   <Nav loc="/" title="Real Time"/>
-                   <Nav loc="/forecast" title="Forecast"/>
-                   <Nav loc="/about" title="About"/>
+                   <Nav loc="/" title="Real Time" color='#461660'/>
+                   <Nav loc="/forecast" title="Forecast" color='#EEB211'/>
+                   <Nav loc="/about" title="About" color='#461660'/>
                 </div>
             </div>
        </div>
@@ -22,11 +22,11 @@ const Navigation = () => {
  
 export default Navigation;
 
-const Nav = ({loc, title}) => {
+const Nav = ({loc, title, color}) => {
     return (
         <div style={{margin:5}}> 
             <NavLink to={loc} style={({ isActive }) => ({
-                color: isActive ? '#461660' : '#545e6f',
+                color: isActive ? color : '#545e6f',
                 fontWeight: isActive ? "bold" : "none",
 /*                 background: isActive ? '#7600dc' : '#ffffff',*/
                 textDecoration: 'none',

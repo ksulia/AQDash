@@ -6,7 +6,10 @@ import Navigation from './Navigation.js';
 import Forecast from './pages/forecast.js';
 import RealTime from './pages/realtime.js';
 import About from './pages/About.js';
-import {state} from './state.js';
+import {state, years, months, hours, res} from './state.js';
+import fetchData from './functions/fetchData.js';
+
+
 
 class App extends Component {
     
@@ -14,6 +17,56 @@ class App extends Component {
         super(props)
         this.handleChange = this.handleChange.bind(this);
         this.state = state
+    }
+    
+    
+    getCompleteTime(){
+        console.log('getcompletetime', this.state)
+        let i = months.indexOf(this.state.month) + 1,
+                month_num,
+                day_num
+        if (i < 10) month_num = `0${i}`
+        else month_num = `${i}`
+        if (this.state.day < 10) day_num = `0${this.state.day}`
+        else day_num = `${this.state.day}`
+
+        this.handleChange({
+            completeTime: `${this.state.year}-${month_num}-${day_num}T${this.state.hour}`,
+            clicked: false,
+        })
+    }
+    
+    updateDimensions = () => {
+        this.handleChange({ width: window.innerWidth, height: window.innerHeight })
+    }
+
+
+    
+    componentDidMount(prevState,prevPops) {
+        if(this.props) console.log('getcompletetime', this.state)
+        this.getCompleteTime()
+        if (this.state.completeTime && this.state.fetchData) {
+            console.log('fetch1',this.state.fetchData)
+            this.handleChange({fetchData:false});
+            fetchData(this.state,this.handleChange);
+            
+        }
+        window.addEventListener('load', this.updateDimensions)
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log('did update', this.state)
+                
+        if (this.state.clicked) this.getCompleteTime()
+        if (this.state.fetchData && this.state.completeTime) {
+            this.handleChange({fetchData:false});
+            fetchData(this.state,this.handleChange);
+        }
+        if(prevState.rawData != this.state.rawData)
+            console.log('rawData', this.state.rawData)
+
+        window.addEventListener('resize', this.updateDimensions)
+        if (prevState.width != this.state.width)console.log('width/height', this.state.width, this.state.height)
     }
     
     
@@ -29,8 +82,14 @@ class App extends Component {
         <div id='header'>
           <Navigation />
             <Routes>
-             <Route path="/" element={<RealTime state={this.state} handleChange={this.handleChange} handleChange={this.handleChange}/>} exact/>
-             <Route path="/forecast" element={<Forecast/>}/>
+             <Route path="/" element={<RealTime 
+                                        state={this.state} 
+                                        handleChange={this.handleChange}/>} exact
+                                        />
+             <Route path="/forecast" element={<Forecast
+                                                state={this.state} 
+                                                handleChange={this.handleChange}/>}
+                                                />
              <Route path="/about" element={<About/>}/>
            </Routes>
         </div> 

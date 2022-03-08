@@ -91,7 +91,42 @@ export function AirnowPlot (props) {
 }
 
 
-export function LidarPlot (props) {
+export function LidarPlotSca (props) {
+    console.log('getting to LidarPlot')
+    if(props.state.plotsToDisplay.includes('lidar'))
+    return(
+        <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
+        backgroundColor:'white',}}>
+         {props.state.lidarData &&
+         props.state.chosenSite &&
+         props.state.scaPlotOn ? (
+             <LidarComponent
+                 name=" SCA [m/s]"
+                 width={props.state.scawidth}
+                 height={props.state.scaheight}
+                 x={props.state.scax}
+                 y={props.state.scay}
+                 data={props.state.lidarData[props.state.chosenSite].SCA}
+                 site={props.state.chosenSite}
+                 onPositionChange={(e) =>
+                     this.setState({ scax: e.x, scay: e.y })
+                 }
+                 onSizeChange={(e) =>
+                     this.setState({
+                         scawidth: e.width,
+                         scaheight: e.height,
+                     })
+                 }
+                 onClick={() => this.setState({ scaPlotOn: false })}
+             />
+         ) : null}  
+         </Col>
+        
+    )
+    else return null
+}
+
+export function LidarPlotCnr (props) {
     console.log('getting to LidarPlot')
     if(props.state.plotsToDisplay.includes('lidar'))
     return(
@@ -120,30 +155,6 @@ export function LidarPlot (props) {
                  onClick={() => this.setState({ cnrPlotOn: false })}
              />
          ) : null}
-
-         {props.state.lidarData &&
-         props.state.chosenSite &&
-         props.state.scaPlotOn ? (
-             <LidarComponent
-                 name=" SCA [m/s]"
-                 width={props.state.scawidth}
-                 height={props.state.scaheight}
-                 x={props.state.scax}
-                 y={props.state.scay}
-                 data={props.state.lidarData[props.state.chosenSite].SCA}
-                 site={props.state.chosenSite}
-                 onPositionChange={(e) =>
-                     this.setState({ scax: e.x, scay: e.y })
-                 }
-                 onSizeChange={(e) =>
-                     this.setState({
-                         scawidth: e.width,
-                         scaheight: e.height,
-                     })
-                 }
-                 onClick={() => this.setState({ scaPlotOn: false })}
-             />
-         ) : null}  
          </Col>
         
     )
