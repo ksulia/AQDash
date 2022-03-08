@@ -6,15 +6,30 @@ import Navigation from './Navigation.js';
 import Forecast from './pages/forecast.js';
 import RealTime from './pages/realtime.js';
 import About from './pages/About.js';
+import {state} from './state.js';
 
 class App extends Component {
+    
+    constructor(props) {
+        super(props)
+        this.handleChange = this.handleChange.bind(this);
+        this.state = state
+    }
+    
+    
+    handleChange (obj){
+        console.log("handleChange1",obj)
+        this.setState(obj)
+        console.log("handleChange2",this.state.fetchData)
+    }
+    
   render() {
     return (      
        <BrowserRouter>
         <div id='header'>
           <Navigation />
             <Routes>
-             <Route path="/" element={<RealTime/>} exact/>
+             <Route path="/" element={<RealTime state={this.state} handleChange={this.handleChange} handleChange={this.handleChange}/>} exact/>
              <Route path="/forecast" element={<Forecast/>}/>
              <Route path="/about" element={<About/>}/>
            </Routes>

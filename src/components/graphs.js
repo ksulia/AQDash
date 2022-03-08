@@ -1,13 +1,14 @@
 import * as React from 'react';
 import Plot from 'react-plotly.js'
+import { Container, Row, Col } from 'react-bootstrap';
+
 
 
 export function GoesPlot (props) {
+    if(props.state.plotsToDisplay.includes('goes'))
     return( 
-                <div style={{flex:1, borderRadius:5, 
-                                                  border:'1px solid rgba(0, 0, 0, 0.1)',
-                                                  padding:20,backgroundColor:'white', margin: 20,
-                                                  marginBottom: 10}}>
+                <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)',
+                                                  padding:20,backgroundColor:'white'}}>
                     {console.log("goes!!")}
                     <Plot
                         style={{
@@ -46,15 +47,19 @@ export function GoesPlot (props) {
                         }}
                     />
 
-                </div>
+                </Col>
         )
+        else return null
 }
 
 export function AirnowPlot (props) {
+    console.log('airnow props',props)
+    
+    if (props.state.plotsToDisplay.includes('airnow'))
     return(
-         
-        <div style={{flex:1, borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
-        backgroundColor:'white', margin: 20,marginBottom: 10}}>
+        props.state.riskData?
+        <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
+        backgroundColor:'white',}}>
              <ScatterComponent
                  name="AIRNOW"
                  width={props.state.airnowwidth}
@@ -80,14 +85,19 @@ export function AirnowPlot (props) {
                      this.setState({ airnowPlotOn: false })
                  }
              />
-        </div>
+        </Col>:null
     )
+    else return null
 }
 
 
 export function LidarPlot (props) {
+    console.log('getting to LidarPlot')
+    if(props.state.plotsToDisplay.includes('lidar'))
     return(
-        <div>
+        <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
+        backgroundColor:'white',}}>
+        {props.state.lidarData &&
          props.state.chosenSite &&
          props.state.cnrPlotOn ? (
              <LidarComponent
@@ -133,21 +143,22 @@ export function LidarPlot (props) {
                  }
                  onClick={() => this.setState({ scaPlotOn: false })}
              />
-         ) : null}
-         </div>
-        
+         ) : null}  
+         </Col>
         
     )
+    else return null
 }
                 
 
 const LidarComponent = (props) => {
+    console.log('lidarcomp',props)
 
         return (
                 <Plot
                     style={{
                         width: '100%',
-                        height: '100%',
+                        height: undefined
                     }}
                     data={[
                         {
@@ -163,9 +174,7 @@ const LidarComponent = (props) => {
                     useResizeHandler={true}
                     layout={{
                         title: props.site + props.name,
-                        autosize: true,
-                        width: undefined,
-                        height: undefined,
+                        
                         xaxis: {
                             title: 'Time [UTC]',
                             ticktext: props.data.Y.filter((e, i) => {
@@ -180,7 +189,7 @@ const LidarComponent = (props) => {
                                     0
                                 )
                             }),
-                            automargin: true,
+                            
                         },
                         yaxis: { automargin: true, title: 'Range [m]' },
                         margin: {

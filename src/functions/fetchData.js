@@ -26,11 +26,14 @@ export default async function fetchData(state,handleChange) {
             GOESon: false,
             Airnowon: false,
             Lidaron: false,
+            plotsToDisplay: [],
         };
 
-    Object.keys(setStates).map(k=>{
-        handleChange(k,setStates[k])
-    });
+//     Object.keys(setStates).map(k=>{
+//         handleChange(k,setStates[k])
+//     });
+    
+    handleChange(setStates)
     
     console.log('fetch2',state.fetchData,state.completeTime,state.res)
 
@@ -236,8 +239,9 @@ export default async function fetchData(state,handleChange) {
         Lidaron: Lidaron,
     };
     
-    Object.keys(setStates).map(k=>{
-        handleChange(k,setStates[k])
-    });
+//     Object.keys(setStates).map(k=>{
+//         handleChange(k,setStates[k])
+//     });
+    handleChange(setStates)
 
 };

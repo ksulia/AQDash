@@ -7,7 +7,7 @@ import ReactMapboxGl, {
     Feature,
 } from 'react-mapbox-gl';
 import * as MapboxGL from 'mapbox-gl';
-import { Container, Row, Col } from 'reactstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import getRiskData from '../functions/getRiskData.js';
 
 const { token, styles } = require('./config.json')
@@ -98,6 +98,8 @@ export class RealTimeMap extends React.Component {
         )
     }
     
+
+    
     _onMouseMove = (map, e) => {
         const features = map.queryRenderedFeatures(e.point)
         this._queryFeatures(features)
@@ -146,7 +148,7 @@ export class RealTimeMap extends React.Component {
     }
 
     _onClick = (map, e) => {
-        this.props.handleChangeMulti({ riskClick: false })
+        this.props.handleChange({ riskClick: false })
 //         this.setState({ riskClick: false })
         const features = map.queryRenderedFeatures(e.point)
         console.log('FEATURES', features)
@@ -179,7 +181,7 @@ export class RealTimeMap extends React.Component {
                             break
                     }
 
-                    this.props.handleChangeMulti({
+                    this.props.handleChange({
                         riskData: riskObj,
                         riskClick: true,
                         GOESPlotOn: riskObj.times.length > 0 ? true : false,
@@ -333,14 +335,14 @@ export class RealTimeMap extends React.Component {
                                             'text-anchor': 'bottom',
                                         }}
                                         symbolOnClick={(e) =>
-                                            this.props.handleChangeMulti({
+                                            this.props.handleChange({
                                                 chosenSite:e.features[0].properties.site,
                                                 scaPlotOn: true,
                                                 cnrPlotOn: true,
                                             })
                                         }
                                         circleOnClick={(e) =>
-                                            this.props.handleChangeMulti({
+                                            this.props.handleChange({
                                                 chosenSite:e.features[0].properties.site,
                                                 scaPlotOn: true,
                                                 cnrPlotOn: true,
@@ -357,116 +359,9 @@ export class RealTimeMap extends React.Component {
                                 ) : null}
 
                                 {this.getLegend()}
+                                
                             </Map>
-                            {this.props.state.cbHover ? (
-                                <div
-                                    style={{
-                                        backgroundColor:'rgba(255,255,255,0.8)',
-                                        borderRadius: 5,
-                                        border:'1px solid rgba(160,160,160,0.8)',
-                                        padding: 5,
-                                        position: 'absolute',
-                                        top: this.props.state.cbHoverValue.loc.y,
-                                        left: this.props.state.cbHoverValue.loc.x,
-                                    }}
-                                >
-                                    <a style={{ fontSize: 10 }}>
-                                        {this.props.state.cbHoverValue.value}
-                                    </a>
-                                </div>
-                            ) : null}
-
-                            {this.props.state.rawData &&
-                            this.props.state.rawData.data_risk ? (
-                                <div
-                                    style={{
-//                                         position: 'relative',
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-
-                                        {Object.keys(
-                                            this.props.state.rawData.risk_colors
-                                        ).map((k, i) => (
-                                            <div
-                                                key={'riskColors' + k}
-                                                onMouseEnter={(e) => {
-                                                    this.props.handleChangeMulti({
-                                                        cbHover: true,
-                                                        cbHoverValue: {
-                                                            value: this.props.state.rawData.risk_colors[k].toFixed(0).toString(),
-                                                            loc: {x: e.pageX,y: e.pageY - 40,},
-                                                        },
-                                                    })
-                                                }}
-                                                onMouseLeave={(e) =>
-                                                    this.props.handleChangeMulti({
-                                                        cbHover: false,
-                                                    })
-                                                }
-                                                style={{
-                                                    backgroundColor: k,
-                                                    border:
-                                                        '1px solid rgba(160,160,160,0.5)',
-                                                    flex:1,
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <a
-                                                    style={{
-                                                        color: 'rgba(0,0,0,0)',
-                                                        textAlign: 'center',
-                                                    }}
-                                                >
-                                                    {'0'}
-                                                </a>
-                                            </div>
-                                        ))}
-
-                                </div>
-                            ) : null}
-                            {this.props.state.rawData &&
-                            this.props.state.rawData.data_risk ? (
-                                <div>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        justifyContent: 'center',
-                                        position: 'relative',
-                                    }}
-                                >
-                    
-                                        {Object.keys(
-                                            this.props.state.rawData.risk_colors
-                                        ).map((k, i) => (
-                                            <div
-                                                key={this.props.state.rawData.risk_colors[
-                                                    k
-                                                ]
-                                                    .toFixed(1)
-                                                    .toString()}
-                                                style={{
-                                                    width: '2.5%',
-                                                    justifyContent: 'center',
-                                                }}
-                                            >
-                                                <a style={{ fontSize: 10 }}>
-                                                    {i % 4 === 0
-                                                        ? this.props.state.rawData.risk_colors[
-                                                              k
-                                                          ].toFixed(1)
-                                                        : null}
-                                                </a>
-                                            </div>
-                                        ))}
-                                </div>
-                                <div>Risk Count</div>
-                                </div>
-                            ) : null}
+                            
                             
                             
 
