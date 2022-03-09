@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactMapboxGl, {
+import ReactMapboxGl, { 
     GeoJSONLayer,
     Marker,
     Image,
