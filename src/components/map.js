@@ -10,9 +10,9 @@ import * as MapboxGL from 'mapbox-gl';
 import { Container, Row, Col } from 'react-bootstrap'
 import getRiskData from '../functions/getRiskData.js';
 
-const { token, styles } = require('./config.json')
+const { token_real, styles } = require('./config.json')
 
-const Map = ReactMapboxGl({ accessToken: token })
+const Map = ReactMapboxGl({ accessToken: token_real })
 const mapStyle = {height: '50vh', borderRadius:5}
 
 
@@ -260,20 +260,6 @@ export class RealTimeMap extends React.Component {
                         />
                     ) : null}
 
-                    {this.props.state.viirsObj != null &&
-                    this.props.state.AODon ? (
-                        <GeoJSONLayer
-                            id={'viirsobj'}
-                            key={'viirsobj'}
-                            data={this.props.state.viirsObjnow}
-                            circlePaint={{
-                                'circle-color': ['get', 'color'],
-                                'circle-radius': 2,
-                                'circle-stroke-color': 'grey',
-                                'circle-stroke-width': 1,
-                            }}
-                        />
-                    ) : null}
 
                     {this.props.state.geoJsonWind != null &&
                     this.props.state.Windon ? (

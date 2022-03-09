@@ -8,9 +8,9 @@ import ReactMapboxGl, {
 } from 'react-mapbox-gl';
 import * as MapboxGL from 'mapbox-gl';
 import { Container, Row, Col } from 'react-bootstrap'
-const { token, styles } = require('./config.json')
+const { token_fore, styles } = require('./config.json')
 
-const Map = ReactMapboxGl({ accessToken: token })
+const Map = ReactMapboxGl({ accessToken: token_fore })
 const mapStyle = {height: '50vh', borderRadius:5}
 
 
@@ -34,6 +34,7 @@ export default class ForecastMap extends React.Component {
         return (
 
             <div style={{ width: '100%'}}>
+                {console.log('virrsobjnow',this.props.state.viirsObjnow)}
                 <Map
                     style={styles.light}
                     center={[this.props.state.lng, this.props.state.lat]}
@@ -44,7 +45,21 @@ export default class ForecastMap extends React.Component {
                     onMove={this._onMove}
                     onStyleImageMissing={this._onStyleImageMissing}
                     onStyleLoad={this._onLoad}
-                />
+                >
+                    {this.props.state.viirsObj != null && this.props.state.AODon ? (
+                        <GeoJSONLayer
+                            id={'viirsobj'}
+                            key={'viirsobj'}
+                            data={this.props.state.viirsObjnow}
+                            circlePaint={{
+                                'circle-color': ['get', 'color'],
+                                'circle-radius': 2,
+                                'circle-stroke-color': 'grey',
+                                'circle-stroke-width': 1,
+                            }}
+                        />
+                    ) : null}
+                </Map>
             </div>
         )
     }

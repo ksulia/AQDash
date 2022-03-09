@@ -1,5 +1,6 @@
 {
-  "token": "pk.eyJ1Ijoia3N1bGlhIiwiYSI6ImNqdWE5a2xmNTAwZG80M213NXF2eW81bzQifQ.LmGPYr2NaoRJXgdHdLs6uA",
+  "token_real": "pk.eyJ1Ijoia3N1bGlhIiwiYSI6ImNqdWE5a2xmNTAwZG80M213NXF2eW81bzQifQ.LmGPYr2NaoRJXgdHdLs6uA",
+  "token_fore": "pk.eyJ1Ijoia3N1bGlhIiwiYSI6ImNsMGpyZW5rZjA5cjYzZW5lc2x3cG9lZTIifQ.GFjtPwPBPu4jLgvSbBHdJg",
   "styles": {
     "londonCycle": "mapbox://styles/mapbox/light-v9",
     "light": "mapbox://styles/mapbox/light-v9",

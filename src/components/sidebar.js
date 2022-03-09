@@ -2,19 +2,14 @@ import * as React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import Checkbox from '@mui/material/Checkbox'
 import {state, months, hours, res} from '../state.js';
-import {getAODCB, getCB} from '../functions/colorbars.js';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css'
 
 
 function getDaysInMonth(props) {
-     let daysInMonth = new Date(
-         parseInt(props.state.year),
-         months.indexOf(props.state.month) + 1,
-         0
-     ).getDate()
+     let daysInMonth = new Date(parseInt(props.state.year),months.indexOf(props.state.month) + 1,0).getDate()
      let arr = []
-     for (var i = 1; i <= daysInMonth; i++) arr.push(i.toString())
+     for (var i = 1; i <= daysInMonth; i++) arr.push(('0'+i.toString()).slice(-2))
      return arr
 }
 
@@ -28,7 +23,7 @@ const Sidebar = (props) => {
                             <a style={{color:fontColor}}>Year</a>
                             <Dropdown
                                 options={['2020', '2021', '2022']}
-                                onChange={(e)=>props.handleChange({year:e.value})}
+                                onChange={(e)=>props.handleChange({year:e.value,clicked:true})}
                                 value={props.state.year}
                             />
                         </div>
@@ -36,7 +31,7 @@ const Sidebar = (props) => {
                             <a style={{color:fontColor}}>Month</a>
                             <Dropdown
                                 options={months}
-                                onChange={(e)=>props.handleChange({month:e.value})}
+                                onChange={(e)=>props.handleChange({month:e.value,clicked:true})}
                                 value={props.state.month}
                             />
                         </div>
@@ -44,7 +39,7 @@ const Sidebar = (props) => {
                             <a style={{color:fontColor}}>Day</a>
                             <Dropdown
                                 options={getDaysInMonth(props)}
-                                onChange={(e)=>props.handleChange({day:e.value})}
+                                onChange={(e)=>props.handleChange({day:e.value,clicked:true})}
                                 value={props.state.day}
                             />
                         </div>
@@ -52,7 +47,7 @@ const Sidebar = (props) => {
                             <a style={{color:fontColor}}>Hour (Z)</a>
                             <Dropdown
                                 options={hours}
-                                onChange={(e)=>props.handleChange({hour:e.value})}
+                                onChange={(e)=>props.handleChange({hour:e.value,clicked:true})}
                                 value={props.state.hour}
                             />
                         </div>
@@ -90,8 +85,7 @@ const Sidebar = (props) => {
                        
 
                        {!props.realtime && (props.state.viirsData48J || props.state.viirsData48S || props.state.viirsData36) ? (
-                           <div style={{display:'flex',justifyContent:'flex-start'}}>
-                               <div style={{ alignItems: 'center', }} >
+                           <div style={{display:'flex',justifyContent:'flex-start',alignItems:'center'}}>
                                    <Checkbox style={{color:"white"}}
                                        checked={props.state.AODon}
                                        onClick={() =>
@@ -103,17 +97,11 @@ const Sidebar = (props) => {
                                            })
                                        }
                                    />
-                                   <a style={{color:"white"}}>VIIRS AOD</a>
-                                   <a style={{ marginLeft: 40, }} >
-                                       { props.state.viirsTimeNow }
-                                   </a>
-                               </div>
+                                   <a style={{color:"white"}}>VIIRS AOD<br/>{props.state.AODon? props.state.viirsTimeNow :null}</a>
+                         
                            </div>
                        ) : null}
 
-                       {props.realtime && props.state.aodCB36 && props.state.AODon ? getAODCB(props.state.aodCB36,'Hi-Res'): null}
-                       {props.realtime && props.state.aodCB48J && props.state.AODon ? getAODCB(props.state.aodCB48J,'JPSS'): null}
-                       {props.realtime && props.state.aodCB48S && props.state.AODon ? getAODCB(props.state.aodCB48S,'SNPP'): null}
 
                        {props.realtime && props.state.AODon && props.state.aodCBValSave ? (
                            <div style={{ display: 'flex', justifyContent: 'center', }} >

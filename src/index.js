@@ -22,16 +22,11 @@ class App extends Component {
     
     getCompleteTime(){
         console.log('getcompletetime', this.state)
-        let i = months.indexOf(this.state.month) + 1,
-                month_num,
-                day_num
-        if (i < 10) month_num = `0${i}`
-        else month_num = `${i}`
-        if (this.state.day < 10) day_num = `0${this.state.day}`
-        else day_num = `${this.state.day}`
+        let i = months.indexOf(this.state.month) + 1,month_num,day_num
+        month_num = ('0'+i).slice(-2)
 
         this.handleChange({
-            completeTime: `${this.state.year}-${month_num}-${day_num}T${this.state.hour}`,
+            completeTime: `${this.state.year}-${month_num}-${this.state.day}T${this.state.hour}`,
             clicked: false,
         })
     }

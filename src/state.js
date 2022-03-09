@@ -77,14 +77,10 @@ export const state = {
     mouseMoveGoesDust: null,
     mouseMovePM: null,
     mouseMoveRiskBox: null,
-    year: new Date(moment().subtract(1, 'days'))
-        .getUTCFullYear()
-        .toString(),
+    year: new Date(moment().subtract(1, 'days')).getUTCFullYear().toString(),
     month: months[new Date(moment().subtract(1, 'days')).getUTCMonth()],
-    day: new Date(moment().subtract(1, 'days')).getUTCDate().toString(),
-    hour: new Date(moment().subtract(1, 'days'))
-        .getUTCHours()
-        .toString(),
+    day: ('0'+new Date(moment().subtract(1, 'days')).getUTCDate().toString()).slice(-2),
+    hour: ('0'+new Date(moment().subtract(1, 'days')).getUTCHours().toString()).slice(-2),
     res: '0.5',
     completeTime: null,
     rawData: null,

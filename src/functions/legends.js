@@ -123,7 +123,7 @@ export function getRiskLegend(state,handleChange){
 export function getAirnowLegend(state){
     if(state.Airnowon && state.airnowData){
         return (
-            <div style={{alignItems:'center',position:'absolute',right:30,margin:5}}>
+            <div style={{alignItems:'center',position:'absolute',right:75,margin:5}}>
                 <Row style={{}}>
                     <Col md={'auto'} style={{ backgroundColor: 'rgb(0,228,0)',borderRadius: 5, 
                                             lineHeight:'10px'}}>

@@ -1,42 +1,30 @@
 import * as React from 'react';
+import { Container, Row, Col } from 'reactstrap'
+
+
 
 export function getAODCB(cb, name) {
     return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{ width: '100%', justifyContent: 'center' }}>
-                <a
-                    style={{
-                        position: 'absolute',
-                        color: 'white',
-                        marginRight: 5,
-                        fontSize: 10,
-                    }}
-                >
-                    {name}
-                </a>
+        <Row style={{width:'100%',justifyContent:'center'}}>
+                <Col className='col-12' style={{alignItems:'center'}}>
+                    <a style={{color: 'black',marginRight: 5,}}>{name} </a>
+                </Col>
                 {Object.keys(cb).map((k, i) => (
-                    <div
+                    <Col 
                         key={'AODcb' + k}
                         style={{
                             backgroundColor: k,
                             border: '1px solid rgba(160,160,160,0.5)',
-                            width: '2.5%',
                             justifyContent: 'center',
                             alignItems: 'center',
+                            width:100/Object.keys(cb).length+'%',
+                            padding:0
                         }}
                     >
-                        <a
-                            style={{
-                                color: 'rgba(0,0,0,0)',
-                                textAlign: 'center',
-                            }}
-                        >
-                            {cb[k]}
-                        </a>
-                    </div>
+                        <a style={{display:'block'}}>{cb[k]}</a>
+                    </Col>
                 ))}
-            </div>
-        </div>
+        </Row>
     )
 }
 
@@ -61,3 +49,5 @@ export function getCB(cb, color, name) {
         </div>
     )
 }
+
+

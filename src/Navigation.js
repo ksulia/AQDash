@@ -33,7 +33,7 @@ const Nav = ({loc, title, color}) => {
                 fontStyle: isActive? 'italic':'normal',
                 fontSize:20,
                 padding:2,
-            })}>{title}</NavLink> 
+            })}>{title}</NavLink>
         </div>
     )
 }

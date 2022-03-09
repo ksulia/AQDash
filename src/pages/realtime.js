@@ -7,7 +7,7 @@ import Sidebar from '../components/sidebar.js';
 import fetchData from '../functions/fetchData.js';
 import RealTimeMap from '../components/map.js';
 import {GoesPlot, AirnowPlot, LidarPlotSca, LidarPlotCnr} from '../components/graphs.js';
-import {getAODCB, getCB} from '../functions/colorbars.js';
+import {getCB} from '../functions/colorbars.js';
 import {getRiskLegend, getAirnowLegend} from '../functions/legends.js';
 
 
@@ -62,7 +62,7 @@ export class RealTime extends React.Component {
                 </Col>
                 <Col id='body' xs={10} md={20} lg={30} style={{width:'100%',backgroundColor:'#F8F7F7', justifyContent:'center'}}>
                         
-                            <Row id='map-body' style={{borderRadius:5, width:'100%',
+                            <Row id='map-body' style={{borderRadius:5, 
                                                       border:'1px solid rgba(0, 0, 0, 0.1)',
                                                       padding:20,backgroundColor:'white', margin: 20,
                                                       marginBottom: 10}}>
