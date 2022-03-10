@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom'; 
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'; 
 
 import Navigation from './Navigation.js';
 import Forecast from './pages/forecast.js';
@@ -77,15 +77,16 @@ class App extends Component {
         <div id='header'>
           <Navigation />
             <Routes>
-             <Route path="/" element={<RealTime 
+             <Route path="/aqdash" element={<Navigate to="/aqdash/realtime" />}/>
+             <Route path="/aqdash/realtime" element={<RealTime 
                                         state={this.state} 
                                         handleChange={this.handleChange}/>} exact
                                         />
-             <Route path="/forecast" element={<Forecast
+             <Route path="/aqdash/forecast" element={<Forecast
                                                 state={this.state} 
-                                                handleChange={this.handleChange}/>}
+                                                handleChange={this.handleChange}/>} exact
                                                 />
-             <Route path="/about" element={<About/>}/>
+             <Route path="/aqdash/about" element={<About/>} exact/>
            </Routes>
         </div> 
         <div id='footer' style={{paddingTop:5, display:'flex', flexDirection: 'row', width: '100%'}}>

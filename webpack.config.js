@@ -18,5 +18,10 @@ mode: 'development',
    use: ["style-loader", "css-loader"]
   }
 ]},
- plugins: [htmlPlugin]
+ plugins: [htmlPlugin],
+ devServer: {
+   compress:true,
+   allowedHosts: 'all',
+ },
 };
+

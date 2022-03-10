@@ -92,15 +92,12 @@ export default async function fetchData(state,handleChange) {
                     let temp_time = Object.keys(rawData.data[k])[0]
                     console.log('VIIRSEnt1',k,rawData.data[k])
                     console.log('temp_time', temp_time)
-                    let minaod = rawData.data[k][temp_time].features[0].properties.minaod
-                    console.log('minaod', minaod)
-                    let maxaod = rawData.data[k][temp_time].features[0].properties.maxAOD
-                    console.log('maxaod', maxaod)
+                    let minp = rawData.data[k][temp_time].features[0].properties.minP
+                    let maxp = rawData.data[k][temp_time].features[0].properties.maxP
                     let cbcolors = rawData.data[k][temp_time].features[0].properties.cb
-                    console.log('cbcolors', cbcolors)
-                    let val = (maxaod - minaod) / cbcolors.length
+                    let val = (maxp - minp) / cbcolors.length
                     cbcolors.forEach((c, i) => {
-                        aodCB1[c] = (minaod + val * i).toFixed(2)
+                        aodCB1[c] = (minp + val * i).toFixed(2)
                     })
                     console.log('aodCB1', aodCB1)
                     viirsData36 = rawData.data[k] //setState
@@ -113,15 +110,12 @@ export default async function fetchData(state,handleChange) {
                     console.log('VIIRSJ1', k,rawData.data[k])
                     let temp_time = Object.keys(rawData.data[k])[0]
                     console.log('temp_time', temp_time)
-                    let minaod = rawData.data[k][temp_time].features[0].properties.minaod
-                    console.log('minaod', minaod)
-                    let maxaod = rawData.data[k][temp_time].features[0].properties.maxAOD
-                    console.log('maxaod', maxaod)
+                    let minp = rawData.data[k][temp_time].features[0].properties.minP
+                    let maxp = rawData.data[k][temp_time].features[0].properties.maxP
                     let cbcolors = rawData.data[k][temp_time].features[0].properties.cb
-                    console.log('cbcolors', cbcolors)
-                    let val = (maxaod - minaod) / cbcolors.length
+                    let val = (maxp - minp) / cbcolors.length
                     cbcolors.forEach((c, i) => {
-                        aodCB2[c] = (minaod + val * i).toFixed(2)
+                        aodCB2[c] = (minp + val * i).toFixed(2)
                     })
                     console.log('aodCB2', aodCB2)
                     viirsData48J = rawData.data[k] //setState
@@ -134,12 +128,12 @@ export default async function fetchData(state,handleChange) {
                 ) {
                     console.log( 'VIIRSS1', k,rawData.data[k])
                     let temp_time = Object.keys(rawData.data[k])[0]
-                    let minaod = rawData.data[k][temp_time].features[0].properties.minaod
-                    let maxaod = rawData.data[k][temp_time].features[0].properties.maxAOD
+                    let minp = rawData.data[k][temp_time].features[0].properties.minP
+                    let maxp = rawData.data[k][temp_time].features[0].properties.maxP
                     let cbcolors = rawData.data[k][temp_time].features[0].properties.cb
-                    let val = (maxaod - minaod) / cbcolors.length
+                    let val = (maxp - minp) / cbcolors.length
                     cbcolors.forEach((c, i) => {
-                        aodCB3[c] = (minaod + val * i).toFixed(2)
+                        aodCB3[c] = (minp + val * i).toFixed(2)
                     })
                     viirsData48S =rawData.data[k] //setState
                     aodCB48S = aodCB3 //setState

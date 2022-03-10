@@ -11,9 +11,9 @@ const Navigation = () => {
            </div>
            <div style={{flex:1}}>
                <div style={{display:'flex',flexDirection:'row',margin:0,justifyContent:'flex-end'}}>
-                   <Nav loc="/" title="Real Time" color='#461660'/>
-                   <Nav loc="/forecast" title="Forecast" color='#EEB211'/>
-                   <Nav loc="/about" title="About" color='#461660'/>
+                   <Nav loc="/aqdash/realtime" title="Real Time" color='#461660'/>
+                   <Nav loc="/aqdash/forecast" title="Forecast" color='#EEB211'/>
+                   <Nav loc="/aqdash/about" title="About" color='#461660'/>
                 </div>
             </div>
        </div>

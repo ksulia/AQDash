@@ -52,7 +52,7 @@ export default class ForecastMap extends React.Component {
                             key={'viirsobj'}
                             data={this.props.state.viirsObjnow}
                             circlePaint={{
-                                'circle-color': ['get', 'color'],
+                                'circle-color': ['get', 'color_pres'],
                                 'circle-radius': 2,
                                 'circle-stroke-color': 'grey',
                                 'circle-stroke-width': 1,
