@@ -70,7 +70,7 @@ export class Forecast extends React.Component {
                             <Row id='map-body' style={{borderRadius:5, 
                                                       border:'1px solid rgba(0, 0, 0, 0.1)',
                                                       padding:20,backgroundColor:'white', margin: 20,
-                                                      marginBottom: 10, width:'100%'}}>
+                                                      marginBottom: 10}}>
                                 <ForecastMap id='forecast-map' state={this.props.state} handleChange={this.handleChange}/>
                                 <Col style={{width:'100%',justifyContent:'center'}}>
                                 {this.props.state.aodCB36 && this.props.state.AODon ? getAODCB(this.props.state.aodCB36,'Hi-Res'): null}

@@ -22,6 +22,8 @@ mode: 'development',
  devServer: {
    compress:true,
    allowedHosts: 'all',
+   historyApiFallback: true,
+   port:'3000'
  },
 };
 

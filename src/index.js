@@ -77,22 +77,21 @@ class App extends Component {
         <div id='header'>
           <Navigation />
             <Routes>
-             <Route path="/aqdash" element={<Navigate to="/aqdash/realtime" />}/>
-             <Route path="/aqdash/realtime" element={<RealTime 
+             <Route path="/" element={<RealTime 
                                         state={this.state} 
                                         handleChange={this.handleChange}/>} exact
                                         />
-             <Route path="/aqdash/forecast" element={<Forecast
+             <Route path="/forecast" element={<Forecast
                                                 state={this.state} 
                                                 handleChange={this.handleChange}/>} exact
                                                 />
-             <Route path="/aqdash/about" element={<About/>} exact/>
+             <Route path="/about" element={<About/>} exact/>
            </Routes>
         </div> 
         <div id='footer' style={{paddingTop:5, display:'flex', flexDirection: 'row', width: '100%'}}>
             <div id='footer-right' style={{width: '100%',display:'flex',flexDirection:'row',justifyContent: 'flex-end'}}>
                 &copy; {new Date().getFullYear()} Copyright: 
-                <a href="https://www.albany.edu/atmospheric-sciences-research-center/xcite-laboratory"> xCITE Lab </a>
+                <a href="https://www.albany.edu/atmospheric-sciences-research-center/xcite-laboratory"> xCITE Lab1 </a>
             </div>
         </div>
       </BrowserRouter>

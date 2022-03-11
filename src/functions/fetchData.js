@@ -47,7 +47,7 @@ export default async function fetchData(state,handleChange) {
     let riskHighlight = false, riskData = null, rawData = null;
     let AODon = false, GOESon = false, Airnowon = false, Lidaron = false;
     
-    await fetch(`http://169.226.68.133:3005?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
+    await fetch(`https://xcitedb.asrc.albany.edu/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
     .then(async (response) => await response.json())
     .then(async (responseJson) => rawData = responseJson) //setState
     .then(async () => {

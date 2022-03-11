@@ -7,13 +7,13 @@ const Navigation = () => {
     return (
        <div id='page-header-flex' style={{display:'flex',flexDirection:'row',margin:0, padding:5, height:'100%',alignItems:'center'}}>
            <div style={{}}>
-               <h1>AQ Dashboard</h1>
+               <h1>AQ3 Dashboard</h1>
            </div>
            <div style={{flex:1}}>
                <div style={{display:'flex',flexDirection:'row',margin:0,justifyContent:'flex-end'}}>
-                   <Nav loc="/aqdash/realtime" title="Real Time" color='#461660'/>
-                   <Nav loc="/aqdash/forecast" title="Forecast" color='#EEB211'/>
-                   <Nav loc="/aqdash/about" title="About" color='#461660'/>
+                   <Nav loc="/" title="Real Time" color='#461660'/>
+                   <Nav loc="/forecast" title="Forecast" color='#EEB211'/>
+                   <Nav loc="/about" title="About" color='#461660'/>
                 </div>
             </div>
        </div>
