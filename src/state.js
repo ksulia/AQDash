@@ -85,6 +85,7 @@ export const state = {
     completeTime: null,
     rawData: null,
     airnowData: null,
+    airnow24hr: null,
     goesDataDust: null,
     dustDB: null,
     GOESon: false,
@@ -109,6 +110,6 @@ export const state = {
     lidarData: null,
     lidarSites: null,
     chosenSite: null,
-    lidarRes:'10',
+    lidarRes:'20',
     plotsToDisplay: [],
 };

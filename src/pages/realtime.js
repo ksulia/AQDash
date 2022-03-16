@@ -6,7 +6,7 @@ import 'react-dropdown/style.css';
 import Sidebar from '../components/sidebar.js';
 import fetchData from '../functions/fetchData.js';
 import RealTimeMap from '../components/map.js';
-import {GoesPlot, AirnowPlot, LidarPlotSca, LidarPlotCnr} from '../components/graphs.js';
+import {GoesPlot, AirnowPlot, AirnowPlot24hr, LidarPlotSca, LidarPlotCnr} from '../components/graphs.js';
 import {getCB} from '../functions/colorbars.js';
 import {getRiskLegend, getAirnowLegend} from '../functions/legends.js';
 
@@ -32,6 +32,8 @@ export class RealTime extends React.Component {
         if(this.props.state.riskData && this.props.state.riskClick && 
            this.props.state.airnowPlotOn&& !this.props.state.plotsToDisplay.includes('airnow'))
             this.handleChange({ plotsToDisplay: [...this.props.state.plotsToDisplay, 'airnow'] })
+        if(this.props.state.Airnowon&&this.props.state.airnow24hr && !this.props.state.plotsToDisplay.includes('airnow24hr'))
+            this.handleChange({ plotsToDisplay: [...this.props.state.plotsToDisplay, 'airnow24hr'] })
         if(this.props.state.chosenSite && !this.props.state.plotsToDisplay.includes('lidar'))
             this.handleChange({ plotsToDisplay: [...this.props.state.plotsToDisplay, 'lidar'] })
         
@@ -41,8 +43,13 @@ export class RealTime extends React.Component {
         if(!(this.props.state.riskData && this.props.state.riskClick && 
              this.props.state.airnowPlotOn) && this.props.state.plotsToDisplay.includes('airnow'))
             this.handleChange({plotsToDisplay: this.props.state.plotsToDisplay.filter(function(plot) { return plot !== 'airnow' })});
+        if(!(this.props.state.Airnowon&&this.props.state.airnow24hr) &&
+           this.props.state.plotsToDisplay.includes('airnow24hr'))
+            this.handleChange({plotsToDisplay: this.props.state.plotsToDisplay.filter(function(plot) { return plot !== 'airnow24hr' })});
         if(!this.props.state.chosenSite && this.props.state.plotsToDisplay.includes('lidar'))
             this.handleChange({plotsToDisplay: this.props.state.plotsToDisplay.filter(function(plot) { return plot !== 'lidar' })});
+        
+        console.log('plotstodisplay', this.props.state.plotsToDisplay)
         
         
     }
@@ -84,7 +91,7 @@ export class RealTime extends React.Component {
                             {this.props.state.plotsToDisplay.length>0?
                                 <Row id='graph-body' md={2} style={{marginTop:10, margin:20}}>
                                     <GoesPlot state={this.props.state}/>
-                                    <AirnowPlot state={this.props.state}/>
+                                    <AirnowPlot24hr state={this.props.state}/>
                                     <LidarPlotSca state={this.props.state}/>
                                     <LidarPlotCnr state={this.props.state}/>
                                 </Row>

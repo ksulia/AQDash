@@ -4,6 +4,7 @@ export default async function fetchData(state,handleChange) {
     let setStates = {
             fetching: 'Fetching data, please wait...',
             airnowData: null,
+            airnow24hr: null,
             lidarData: null,
             lidarSites: null,
             goesDataDust: null,
@@ -46,6 +47,7 @@ export default async function fetchData(state,handleChange) {
     let aodCB36 = null, aodCB48J = null, aodCB48S = null;
     let riskHighlight = false, riskData = null, rawData = null;
     let AODon = false, GOESon = false, Airnowon = false, Lidaron = false;
+    let airnow24hr = {}
     
     await fetch(`https://xcitedb.asrc.albany.edu/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
     .then(async (response) => await response.json())
@@ -57,10 +59,17 @@ export default async function fetchData(state,handleChange) {
             console.log('here1')
             Object.keys(rawData.data).map((k) => {
                 console.log('here2', k)
-                if (k.includes('airnow')) {
-                    console.log( 'airnow1', k, rawData.data[k] )
+                if (k.includes('airnow_pm2.5')) {
+                    console.log( 'airnowpm1', k, rawData.data[k] )
                     airnowData = rawData.data[k] //setState
-                    console.log( 'airnow2', k, rawData.data[k] )
+                    console.log( 'airnowpm2', k, rawData.data[k] )
+                } else if (k.includes('airnow_24hr')){
+                    console.log('airnow_24hr',rawData.data[k].features)
+                    rawData.data[k].features.map((an)=>{
+                        let airnow_time = an.properties.UTC
+                        if(!(airnow_time in airnow24hr)) airnow24hr[airnow_time]=[]
+                        airnow24hr[airnow_time].push(an)
+                    })
                 } else if (k.includes('GOES')) {
                     console.log('GOES1', k, rawData.data[k])
                     if (rawData.data[k].smoke) {
@@ -209,6 +218,7 @@ export default async function fetchData(state,handleChange) {
     setStates = {
         fetching: fetching,
         airnowData: airnowData,
+        airnow24hr: airnow24hr,
         lidarData: lidarData,
         lidarSites: lidarSites,
         goesDataDust: goesDataDust,

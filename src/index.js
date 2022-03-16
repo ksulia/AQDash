@@ -91,7 +91,7 @@ class App extends Component {
         <div id='footer' style={{paddingTop:5, display:'flex', flexDirection: 'row', width: '100%'}}>
             <div id='footer-right' style={{width: '100%',display:'flex',flexDirection:'row',justifyContent: 'flex-end'}}>
                 &copy; {new Date().getFullYear()} Copyright: 
-                <a href="https://www.albany.edu/atmospheric-sciences-research-center/xcite-laboratory"> xCITE Lab1 </a>
+                <a href="https://www.albany.edu/atmospheric-sciences-research-center/xcite-laboratory"> xCITE Lab </a>
             </div>
         </div>
       </BrowserRouter>
