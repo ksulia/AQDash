@@ -70,30 +70,32 @@ export default async function fetchData(state,handleChange) {
                         if(!(airnow_time in airnow24hr)) airnow24hr[airnow_time]=[]
                         airnow24hr[airnow_time].push(an)
                     })
-                } else if (k.includes('GOES')) {
-                    console.log('GOES1', k, rawData.data[k])
-                    if (rawData.data[k].smoke) {
-                        rawData.data[k].smoke.features.map(
-                            (s) => {
-                                smokeCB[s.properties.color] =
-                                    s.properties.start
-                            }
-                        )
-                    }
-                    if (rawData.data[k].dust) {
-                        rawData.data[k].dust.features.map(
-                            (s) => {
-                                dustCB[s.properties.color] =
-                                    s.properties.start
-                            }
-                        )
-                    }
-                    goesDataSmoke = rawData.data[k].smoke //setState
-                    goesDataDust = rawData.data[k].dust //setState
-                    smokeCB = smokeCB //setState
-                    dustCB = dustCB //setState
+                } else if (k.includes('GOES_ADP')) {
+                    console.log('GOES_ADP', k, rawData.data[k])
+//                     if (rawData.data[k].smoke) {
+//                         rawData.data[k].smoke.features.map(
+//                             (s) => {
+//                                 smokeCB[s.properties.color] =
+//                                     s.properties.start
+//                             }
+//                         )
+//                     }
+//                     if (rawData.data[k].dust) {
+//                         rawData.data[k].dust.features.map(
+//                             (s) => {
+//                                 dustCB[s.properties.color] =
+//                                     s.properties.start
+//                             }
+//                         )
+//                     }
+                    goesDataSmoke = JSON.parse(rawData.data[k].smoke) //setState
+                    goesDataDust = JSON.parse(rawData.data[k].dust) //setState
+//                     smokeCB = smokeCB //setState
+//                     dustCB = dustCB //setState
                     
-                    console.log('GOES2', k, rawData.data[k])
+                    console.log('GOES2', k, goesDataSmoke)
+                } else if (k.includes('GOES_AOD')) {
+                    console.log('GOES_AOD', k, rawData.data[k])
                 } else if (
                     k.includes('VIIRSaerosolEntHRS') &&
                     Object.keys(rawData.data[k]).length > 0

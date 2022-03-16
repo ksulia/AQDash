@@ -241,9 +241,10 @@ export class RealTimeMap extends React.Component {
                             key={'goessmoke'}
                             id={'goessmoke'}
                             data={this.props.state.goesDataSmoke}
-                            circlePaint={{
-                                'circle-color': ['get', 'color'],
-                                'circle-radius': 1.75,
+                            fillPaint={{
+                                'fill-color': ['get', 'fill'],
+                                'fill-opacity': ['get','fill-opacity'],
+                                'fill-outline-color':['get','stroke']
                             }}
                         />
                     ) : null}
@@ -253,9 +254,10 @@ export class RealTimeMap extends React.Component {
                             key={'goesdust'}
                             id={'goesdust'}
                             data={this.props.state.goesDataDust}
-                            circlePaint={{
-                                'circle-color': ['get', 'color'],
-                                'circle-radius': 1.75,
+                            fillPaint={{
+                                'fill-color': ['get', 'fill'],
+                                'fill-opacity': ['get','fill-opacity'],
+                                'fill-outline-color':['get','stroke']
                             }}
                         />
                     ) : null}
