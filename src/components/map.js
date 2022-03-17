@@ -234,13 +234,13 @@ export class RealTimeMap extends React.Component {
                             }}
                         />
                     ) : null}
-
-                    {this.props.state.goesDataSmoke != null &&
-                    this.props.state.GOESon ? (
+                    
+                    {this.props.state.goesDataAOD &&
+                    this.props.state.GOESa ? (
                         <GeoJSONLayer
-                            key={'goessmoke'}
-                            id={'goessmoke'}
-                            data={this.props.state.goesDataSmoke}
+                            key={'goesaod'}
+                            id={'goesaod'}
+                            data={this.props.state.goesDataAOD}
                             fillPaint={{
                                 'fill-color': ['get', 'fill'],
                                 'fill-opacity': ['get','fill-opacity'],
@@ -248,12 +248,27 @@ export class RealTimeMap extends React.Component {
                             }}
                         />
                     ) : null}
-                    {this.props.state.goesDataDust != null &&
-                    this.props.state.GOESon ? (
+
+                    {this.props.state.goesDataDust &&
+                    this.props.state.GOESd ? (
                         <GeoJSONLayer
                             key={'goesdust'}
                             id={'goesdust'}
                             data={this.props.state.goesDataDust}
+                            fillPaint={{
+                                'fill-color': ['get', 'fill'],
+                                'fill-opacity': ['get','fill-opacity'],
+                                'fill-outline-color':['get','stroke']
+                            }}
+                        />
+                    ) : null}
+                    
+                    {this.props.state.goesDataSmoke&&
+                    this.props.state.GOESs ? (
+                        <GeoJSONLayer
+                            key={'goessmoke'}
+                            id={'goessmoke'}
+                            data={this.props.state.goesDataSmoke}
                             fillPaint={{
                                 'fill-color': ['get', 'fill'],
                                 'fill-opacity': ['get','fill-opacity'],

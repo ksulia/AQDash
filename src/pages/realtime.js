@@ -9,7 +9,9 @@ import RealTimeMap from '../components/map.js';
 import {GoesPlot, AirnowPlot, AirnowPlot24hr, LidarPlotSca, LidarPlotCnr} from '../components/graphs.js';
 import {getCB} from '../functions/colorbars.js';
 import {getRiskLegend, getAirnowLegend} from '../functions/legends.js';
-
+import dustCB from '../images/dust_colorbar.png';
+import smokeCB from '../images/smoke_colorbar.png';
+import aodCB from '../images/aod_colorbar.png';
 
 
 export class RealTime extends React.Component {
@@ -77,15 +79,11 @@ export class RealTime extends React.Component {
                                     
                                 {getRiskLegend(this.props.state, this.handleChange)}
                                 {getAirnowLegend(this.props.state)}
-                                
-                                {this.props.state.goesDataSmoke && this.props.state.smokeCB && this.props.state.GOESon ? 
-                                   getCB( this.props.state.smokeCB, 'blue', 'Smoke' )
-                               : null}
-
-                               {this.props.state.GOESon && this.props.state.goesDataDust && this.props.state.dustCB ? 
-                                    getCB( this.props.state.dustCB, 'red','Dust')
-                                : null}
-
+                                <Col style={{position:'absolute', right:0}}>
+                                    <Row><img src={dustCB} style={{left:0, width:'75px'}}/></Row>
+                                    <Row><img src={smokeCB} style={{left:0, width:'75px'}}/></Row>
+                                    <Row><img src={aodCB} style={{left:0, width:'35px'}}/></Row>
+                                </Col>
 
                             </Row>
                             {this.props.state.plotsToDisplay.length>0?

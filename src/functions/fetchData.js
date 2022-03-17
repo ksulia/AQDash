@@ -9,6 +9,7 @@ export default async function fetchData(state,handleChange) {
             lidarSites: null,
             goesDataDust: null,
             goesDataSmoke: null,
+            goesDataAOD: null,
             dustCB: null,
             smokeCB: null,
             viirsData36: null,
@@ -40,7 +41,7 @@ export default async function fetchData(state,handleChange) {
 
     let fetching = 'Fetching data, please wait...';
     let smokeCB = {},dustCB = {},aodCB1 = {},aodCB2 = {},aodCB3 = {};
-    let airnowData = null,goesDataDust = null, lidarData = null;
+    let airnowData = null,goesDataDust = null, goesDataAOD = null, lidarData = null;
     let goesDataSmoke = null,dustDB = null, viirsData36 = null, lidarSites = null;
     let viirsData48J = null, viirsData48S = null, viirsTimeNow = '';
     let viirsObj = null, viirsObjnow = { type: 'FeatureCollection', features: [] };
@@ -96,6 +97,7 @@ export default async function fetchData(state,handleChange) {
                     console.log('GOES2', k, goesDataSmoke)
                 } else if (k.includes('GOES_AOD')) {
                     console.log('GOES_AOD', k, rawData.data[k])
+                    goesDataAOD = JSON.parse(rawData.data[k])
                 } else if (
                     k.includes('VIIRSaerosolEntHRS') &&
                     Object.keys(rawData.data[k]).length > 0
@@ -225,6 +227,7 @@ export default async function fetchData(state,handleChange) {
         lidarSites: lidarSites,
         goesDataDust: goesDataDust,
         goesDataSmoke: goesDataSmoke,
+        goesDataAOD: goesDataAOD,
         dustCB: dustCB,
         smokeCB: smokeCB,
         viirsData36: viirsData36,

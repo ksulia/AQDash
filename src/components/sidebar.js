@@ -71,14 +71,38 @@ const Sidebar = (props) => {
 
 
                    <div >
-                       {props.realtime && (props.state.goesDataSmoke || props.state.goesDataDust) ? (
+                       {props.realtime && (props.state.goesDataAOD) ? (
                            <div style={{display:'flex',justifyContent:'flex-start'}}>
                                <div style={{ alignItems: 'center', }} >
                                    <Checkbox
-                                        style={{color:"white"}} checked={ props.state.GOESon } onClick={() => 
-                                        props.handleChange({ GOESon: !props.state.GOESon,})}
+                                        style={{color:"white"}} checked={ props.state.GOESa } onClick={() => 
+                                        props.handleChange({ GOESon: !props.state.GOESon, GOESa: !props.state.GOESa})}
                                    />
-                                   <a style={{color:"white"}}>GOES</a>
+                                   <a style={{color:"white"}}>GOES AOD</a>
+                               </div>
+                           </div>
+                       ) : null}
+                       
+                        {props.realtime && (props.state.goesDataSmoke ) ? (
+                           <div style={{display:'flex',justifyContent:'flex-start'}}>
+                               <div style={{ alignItems: 'center', }} >
+                                   <Checkbox
+                                        style={{color:"white"}} checked={ props.state.GOESs } onClick={() => 
+                                        props.handleChange({ GOESon: !props.state.GOESon, GOESs: !props.state.GOESs})}
+                                   />
+                                   <a style={{color:"white"}}>GOES Smoke</a>
+                               </div>
+                           </div>
+                       ) : null}
+                       
+                        {props.realtime && (props.state.goesDataDust) ? (
+                           <div style={{display:'flex',justifyContent:'flex-start'}}>
+                               <div style={{ alignItems: 'center', }} >
+                                   <Checkbox
+                                        style={{color:"white"}} checked={ props.state.GOESd } onClick={() => 
+                                        props.handleChange({ GOESon: !props.state.GOESon,GOESd: !props.state.GOESd})}
+                                   />
+                                   <a style={{color:"white"}}>GOES Dust</a>
                                </div>
                            </div>
                        ) : null}
