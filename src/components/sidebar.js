@@ -71,6 +71,18 @@ const Sidebar = (props) => {
 
 
                    <div >
+                            
+                       {props.realtime && (props.state.rawData && props.state.rawData.data_risk) ? (
+                           <div style={{display:'flex',justifyContent:'flex-start'}}>
+                               <div style={{ alignItems: 'center', }} >
+                                   <Checkbox
+                                        style={{color:"white"}} checked={ props.state.riskChecked } onClick={() => 
+                                        props.handleChange({ riskChecked: !props.state.riskChecked})}
+                                   />
+                                   <a style={{color:"white"}}>Risk</a>
+                               </div>
+                           </div>
+                       ) : null}
                        {props.realtime && (props.state.goesDataAOD) ? (
                            <div style={{display:'flex',justifyContent:'flex-start'}}>
                                <div style={{ alignItems: 'center', }} >

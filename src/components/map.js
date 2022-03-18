@@ -223,7 +223,8 @@ export class RealTimeMap extends React.Component {
                 >
 
                     {this.props.state.rawData &&
-                    this.props.state.rawData.data_risk ? (
+                    this.props.state.rawData.data_risk &&
+                     this.props.state.riskChecked ? (
                         <GeoJSONLayer
                             key={'riskPolygons'}
                             id={'riskPolygons'}

@@ -106,6 +106,7 @@ export const state = {
     vizSize: { width: 0, height: 0 },
     riskClick: false,
     riskHighlight: null,
+    riskChecked:true,
     vizReady: false,
     fetching: '',
     fetchData:true,

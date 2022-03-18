@@ -7,11 +7,8 @@ import Sidebar from '../components/sidebar.js';
 import fetchData from '../functions/fetchData.js';
 import RealTimeMap from '../components/map.js';
 import {GoesPlot, AirnowPlot, AirnowPlot24hr, LidarPlotSca, LidarPlotCnr} from '../components/graphs.js';
-import {getCB} from '../functions/colorbars.js';
-import {getRiskLegend, getAirnowLegend} from '../functions/legends.js';
-import dustCB from '../images/dust_colorbar.png';
-import smokeCB from '../images/smoke_colorbar.png';
-import aodCB from '../images/aod_colorbar.png';
+import {getRiskLegend, getAirnowLegend, getGOESCB,getCB} from '../functions/legends.js';
+
 
 
 export class RealTime extends React.Component {
@@ -28,8 +25,7 @@ export class RealTime extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         
                 
-        if(this.props.state.riskData && this.props.state.riskClick && 
-           this.props.state.GOESPlotOn && !this.props.state.plotsToDisplay.includes('goes'))
+        if(this.props.state.GOESon && !this.props.state.plotsToDisplay.includes('goes'))
             this.handleChange({ plotsToDisplay: [...this.props.state.plotsToDisplay, 'goes'] })
         if(this.props.state.riskData && this.props.state.riskClick && 
            this.props.state.airnowPlotOn&& !this.props.state.plotsToDisplay.includes('airnow'))
@@ -39,8 +35,7 @@ export class RealTime extends React.Component {
         if(this.props.state.chosenSite && !this.props.state.plotsToDisplay.includes('lidar'))
             this.handleChange({ plotsToDisplay: [...this.props.state.plotsToDisplay, 'lidar'] })
         
-        if(!(this.props.state.riskData && this.props.state.riskClick && 
-             this.props.state.GOESPlotOn) && this.props.state.plotsToDisplay.includes('goes'))
+        if(!(this.props.state.GOESon) && this.props.state.plotsToDisplay.includes('goes'))
             this.handleChange({plotsToDisplay: this.props.state.plotsToDisplay.filter(function(plot) { return plot !== 'goes' })});
         if(!(this.props.state.riskData && this.props.state.riskClick && 
              this.props.state.airnowPlotOn) && this.props.state.plotsToDisplay.includes('airnow'))
@@ -74,16 +69,13 @@ export class RealTime extends React.Component {
                             <Row id='map-body' style={{borderRadius:5, 
                                                       border:'1px solid rgba(0, 0, 0, 0.1)',
                                                       padding:20,backgroundColor:'white', margin: 20,
-                                                      marginBottom: 10}}>
+                                                      marginBottom: 10, justifyContent:'center'}}>
                                 <RealTimeMap id='real-time-map' state={this.props.state} handleChange={this.handleChange}/>
                                     
                                 {getRiskLegend(this.props.state, this.handleChange)}
                                 {getAirnowLegend(this.props.state)}
-                                <Col style={{position:'absolute', right:0}}>
-                                    <Row><img src={dustCB} style={{left:0, width:'75px'}}/></Row>
-                                    <Row><img src={smokeCB} style={{left:0, width:'75px'}}/></Row>
-                                    <Row><img src={aodCB} style={{left:0, width:'35px'}}/></Row>
-                                </Col>
+                                {getGOESCB(this.props.state)}
+                                
 
                             </Row>
                             {this.props.state.plotsToDisplay.length>0?

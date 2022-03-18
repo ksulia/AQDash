@@ -5,11 +5,12 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 
 export function GoesPlot (props) {
+    console.log('goes!',props)
+    
     if(props.state.plotsToDisplay.includes('goes'))
     return( 
                 <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)',
                                                   padding:20,backgroundColor:'white'}}>
-                    {console.log("goes!!")}
                     <Plot
                         style={{
                             width: '100%',
@@ -17,15 +18,15 @@ export function GoesPlot (props) {
                         }}
                         data={[
                             {
-                                x: props.state.riskData.times,
-                                y: props.state.riskData.smoke,
+                                x: [0,1,2,3],
+                                y: [0,1,2,3],
                                 type: 'line',
                                 line: { width: 2, color: 'blue' },
                                 name: 'smoke',
                             },
                             {
-                                x: props.state.riskData.times,
-                                y: props.state.riskData.dust,
+                                x: [0,1,2,3],
+                                y: [0,1,2,3],
                                 type: 'line',
                                 line: { width: 2, color: 'red' },
                                 name: 'dust',
@@ -169,70 +170,63 @@ export function AirnowPlot24hr (props) {
 export function LidarPlotSca (props) {
     console.log('getting to LidarPlot')
     if(props.state.plotsToDisplay.includes('lidar'))
-    return(
-        <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
-        backgroundColor:'white',}}>
-         {props.state.lidarData &&
-         props.state.chosenSite &&
-         props.state.scaPlotOn ? (
-             <LidarComponent
-                 name=" SCA [m/s]"
-                 width={props.state.scawidth}
-                 height={props.state.scaheight}
-                 x={props.state.scax}
-                 y={props.state.scay}
-                 data={props.state.lidarData[props.state.chosenSite].SCA}
-                 site={props.state.chosenSite}
-                 onPositionChange={(e) =>
-                     this.setState({ scax: e.x, scay: e.y })
-                 }
-                 onSizeChange={(e) =>
-                     this.setState({
-                         scawidth: e.width,
-                         scaheight: e.height,
-                     })
-                 }
-                 onClick={() => this.setState({ scaPlotOn: false })}
-             />
-         ) : null}  
-         </Col>
-        
-    )
+        return(
+            props.state.Lidaron && props.state.lidarData && 
+            props.state.chosenSite && props.state.scaPlotOn?
+                <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
+                    backgroundColor:'white',}}>
+                    <LidarComponent
+                        name=" SCA [m/s]"
+                        width={props.state.scawidth}
+                        height={props.state.scaheight}
+                        x={props.state.scax}
+                        y={props.state.scay}
+                        data={props.state.lidarData[props.state.chosenSite].SCA}
+                        site={props.state.chosenSite}
+                        onPositionChange={(e) =>
+                            this.setState({ scax: e.x, scay: e.y })
+                        }
+                        onSizeChange={(e) =>
+                            this.setState({
+                                scawidth: e.width,
+                                scaheight: e.height,
+                            })
+                        }
+                        onClick={() => this.setState({ scaPlotOn: false })}/>
+                </Col>:null
+        )
     else return null
 }
 
 export function LidarPlotCnr (props) {
     console.log('getting to LidarPlot')
     if(props.state.plotsToDisplay.includes('lidar'))
-    return(
-        <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
-        backgroundColor:'white',}}>
-        {props.state.lidarData &&
-         props.state.chosenSite &&
-         props.state.cnrPlotOn ? (
-             <LidarComponent
-                 name=" CNR [DB]"
-                 width={props.state.cnrwidth}
-                 height={props.state.cnrheight}
-                 x={props.state.cnrx}
-                 y={props.state.cnry}
-                 data={props.state.lidarData[props.state.chosenSite].CNR}
-                 site={props.state.chosenSite}
-                 onPositionChange={(e) =>
-                     this.setState({ cnrx: e.x, cnry: e.y })
-                 }
-                 onSizeChange={(e) =>
-                     this.setState({
-                         cnrwidth: e.width,
-                         cnrheight: e.height,
-                     })
-                 }
-                 onClick={() => this.setState({ cnrPlotOn: false })}
-             />
-         ) : null}
-         </Col>
-        
-    )
+        return(
+            props.state.Lidaron && props.state.lidarData && 
+            props.state.chosenSite && props.state.cnrPlotOn?
+                <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
+                backgroundColor:'white',}}>
+                     <LidarComponent
+                         name=" CNR [DB]"
+                         width={props.state.cnrwidth}
+                         height={props.state.cnrheight}
+                         x={props.state.cnrx}
+                         y={props.state.cnry}
+                         data={props.state.lidarData[props.state.chosenSite].CNR}
+                         site={props.state.chosenSite}
+                         onPositionChange={(e) =>
+                             this.setState({ cnrx: e.x, cnry: e.y })
+                         }
+                         onSizeChange={(e) =>
+                             this.setState({
+                                 cnrwidth: e.width,
+                                 cnrheight: e.height,
+                             })
+                         }
+                         onClick={() => this.setState({ cnrPlotOn: false })}
+                     />
+                 </Col>:null
+        )
     else return null
 }
                 
