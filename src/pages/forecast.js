@@ -14,7 +14,6 @@ export class Forecast extends React.Component {
     }
 
 
-    
 
     componentDidUpdate(prevProps, prevState) {
         console.log('did update forecast',this.props.state.viirsObj)
@@ -68,9 +67,9 @@ export class Forecast extends React.Component {
                                                       marginBottom: 10}}>
                                 <ForecastMap id='forecast-map' state={this.props.state} handleChange={this.handleChange}/>
                                 <Col style={{width:'100%',justifyContent:'center'}}>
-                                {this.props.state.aodCB36 && this.props.state.AODon ? getAODCB(this.props.state.aodCB36,'Hi-Res'): null}
-                                {this.props.state.aodCB48J && this.props.state.AODon ? getAODCB(this.props.state.aodCB48J,'JPSS'): null}
-                                {this.props.state.aodCB48S && this.props.state.AODon ? getAODCB(this.props.state.aodCB48S,'SNPP'): null}
+                                {this.props.state.aodCB36 && this.props.state.AODon ? getAODCB(this.props.state.aodCB36,'Hi-Res Trajectory Pressure (mb)'): null}
+                                {this.props.state.aodCB48J && this.props.state.AODon ? getAODCB(this.props.state.aodCB48J,'JPSS Trajectory Pressure (mb)'): null}
+                                {this.props.state.aodCB48S && this.props.state.AODon ? getAODCB(this.props.state.aodCB48S,'SNPP Trajectory Pressure (mb)'): null}
                                 </Col>
                             </Row>
                                             

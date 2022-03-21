@@ -91,7 +91,23 @@ export function getAODCB(cb, name) {
                             padding:0
                         }}
                     >
-                        <a style={{display:'block'}}>{cb[k]}</a>
+                        <a style={{color:'rgba(0,0,0,0)',display:'block'}}>{cb[k]}</a>
+                    </Col>
+                ))}
+                {Object.keys(cb).map((k, i) => (
+                    <Col 
+                        key={'AODcb' + k}
+                        style={{
+                            backgroundColor: 'rgba(0,0,0,0)',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width:100/Object.keys(cb).length+'%',
+                            padding:0,
+                            transform: "rotate(90deg)"
+                        }}
+                    >
+                        <a style={{color:'black',display:'block'}}>
+                            {Math.round(cb[k],0)}</a>
                     </Col>
                 ))}
         </Row>
