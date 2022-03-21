@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap'
 import Sidebar from '../components/sidebar.js';
 import fetchData from '../functions/fetchData.js';
 import ForecastMap from '../components/map_forecast.js';
+import {getAODCB} from '../functions/legends.js'
 
 export class Forecast extends React.Component {
 

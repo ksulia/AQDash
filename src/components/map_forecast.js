@@ -9,6 +9,9 @@ import ReactMapboxGl, {
 import * as MapboxGL from 'mapbox-gl';
 import { Container, Row, Col } from 'react-bootstrap'
 const { token_fore, styles } = require('./config.json')
+import {getLegend} from '../functions/legends.js';
+import {_onMouseMove,_onClick} from '../functions/mouseFunctions.js';
+
 
 const Map = ReactMapboxGl({ accessToken: token_fore })
 const mapStyle = {height: '50vh', borderRadius:5}
@@ -18,15 +21,6 @@ export default class ForecastMap extends React.Component {
     
     constructor(props) {
         super(props)
-        this.state = {
-            mouseMoveLL: { lng: -77.093, lat: 43.3802 },
-            mouseMoveWS: null,
-            mouseMoveWD: null,
-            mouseMoveGoesSmoke: null,
-            mouseMoveGoesDust: null,
-            mouseMovePM: null,
-            mouseMoveRiskBox: null,
-        }
     }
     
     render(){
@@ -40,11 +34,10 @@ export default class ForecastMap extends React.Component {
                     center={[this.props.state.lng, this.props.state.lat]}
                     zoom={[this.props.state.zoom]}
                     containerStyle={mapStyle}
-                    onMouseMove={this._onMouseMove}
-                    onClick={this._onClick}
-                    onMove={this._onMove}
-                    onStyleImageMissing={this._onStyleImageMissing}
-                    onStyleLoad={this._onLoad}
+                    onMouseMove={(map,e)=>_onMouseMove(
+                        map,e,this.props)}
+                    onClick={(map,e)=>_onClick(
+                        map,e,this.props)}
                 >
                     {this.props.state.viirsObj != null && this.props.state.AODon ? (
                         <GeoJSONLayer
@@ -59,6 +52,8 @@ export default class ForecastMap extends React.Component {
                             }}
                         />
                     ) : null}
+                    
+                    {getLegend(this.props.state, this.state)}
                 </Map>
             </div>
         )

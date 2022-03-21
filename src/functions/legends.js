@@ -6,6 +6,97 @@ import aodCB from '../images/aod_colorbar_h.png';
 
 
 
+export function getLegend(props) {
+    return (
+        <div
+            style={{
+                position: 'absolute',
+                opacity: 0.8,
+                   width: 'undefined',
+                top: 0,
+                margin: 10,
+                padding: 10,
+                backgroundColor: 'grey',
+                borderWidth: 5,
+                borderRadius: 5,
+            }}
+        >
+            <Col >
+                <Row>
+                    <a style={{ color: 'white' }}>
+                        Lon: {Math.round(props.mouseMoveLL.lng * 10) / 10}
+                    </a>
+                </Row>
+                <Row >
+                    <a style={{ color: 'white' }}>
+                        Lat: {Math.round(props.mouseMoveLL.lat * 10) / 10}
+                    </a>
+                </Row>
+                    
+            </Col>
+            
+            {props.Windon && props.mouseMoveWS ? (
+                <Row style={{ paddingLeft: 20 }}>
+                    <a style={{ color: 'white' }}>
+                        Wind: {props.mouseMoveWD} at{' '}
+                        {Math.round(props.mouseMoveWS * 100) / 100} m
+                        s⁻¹
+                    </a>
+                </Row>
+            ) : null}
+            {props.Airnowon && props.mouseMovePM ? (
+                <Row style={{ paddingLeft: 20 }}>
+                    <a style={{ color: 'white' }}>
+                        PM2.5: {props.mouseMovePM} μg m⁻³
+                    </a>
+                </Row>
+            ) : null}
+            {props.mouseMoveGoesDust ? (
+                <Row style={{ paddingLeft: 20 }}>
+                    <a style={{ color: 'white' }}>GOES Dust Detected</a>
+                </Row>
+            ) : null}
+            {props.mouseMoveGoesSmoke ? (
+                <Row style={{ paddingLeft: 20 }}>
+                    <a style={{ color: 'white' }}>GOES Smoke Detected</a>
+                </Row>
+            ) : null}
+            {props.mouseMoveRiskBox ? (
+                <Row style={{ paddingLeft: 20 }}>
+                    <a style={{ color: 'white' }}>
+                        Risk Data Count: {props.mouseMoveRiskBox}
+                    </a>
+                </Row>
+            ) : null}
+        </div>
+    )
+}
+
+
+export function getAODCB(cb, name) {
+    return (
+        <Row style={{width:'100%',justifyContent:'center'}}>
+                <Col className='col-12' style={{alignItems:'center'}}>
+                    <a style={{color: 'black',marginRight: 5,}}>{name} </a>
+                </Col>
+                {Object.keys(cb).map((k, i) => (
+                    <Col 
+                        key={'AODcb' + k}
+                        style={{
+                            backgroundColor: k,
+                            border: '1px solid rgba(160,160,160,0.5)',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width:100/Object.keys(cb).length+'%',
+                            padding:0
+                        }}
+                    >
+                        <a style={{display:'block'}}>{cb[k]}</a>
+                    </Col>
+                ))}
+        </Row>
+    )
+}
 export function getRiskLegend(state,handleChange){
     console.log('risklegend',state, handleChange)
     return(
