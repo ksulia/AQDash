@@ -88,7 +88,7 @@ const Sidebar = (props) => {
                                <div style={{ alignItems: 'center', }} >
                                    <Checkbox
                                         style={{color:"white"}} checked={ props.state.GOESa } onClick={() => 
-                                        props.handleChange({ GOESon: !props.state.GOESon, GOESa: !props.state.GOESa})}
+                                        props.handleChange({ GOESa: !props.state.GOESa})}
                                    />
                                    <a style={{color:"white"}}>GOES AOD</a>
                                </div>
@@ -100,7 +100,7 @@ const Sidebar = (props) => {
                                <div style={{ alignItems: 'center', }} >
                                    <Checkbox
                                         style={{color:"white"}} checked={ props.state.GOESs } onClick={() => 
-                                        props.handleChange({ GOESon: !props.state.GOESon, GOESs: !props.state.GOESs})}
+                                        props.handleChange({ GOESs: !props.state.GOESs})}
                                    />
                                    <a style={{color:"white"}}>GOES Smoke</a>
                                </div>
@@ -112,7 +112,7 @@ const Sidebar = (props) => {
                                <div style={{ alignItems: 'center', }} >
                                    <Checkbox
                                         style={{color:"white"}} checked={ props.state.GOESd } onClick={() => 
-                                        props.handleChange({ GOESon: !props.state.GOESon,GOESd: !props.state.GOESd})}
+                                        props.handleChange({ GOESd: !props.state.GOESd})}
                                    />
                                    <a style={{color:"white"}}>GOES Dust</a>
                                </div>

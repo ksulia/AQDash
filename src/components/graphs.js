@@ -6,6 +6,21 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 export function GoesPlot (props) {
     console.log('goes!',props)
+    let times = [], aod = [], dust = [], smoke = []
+    if(props.state.rawData && props.state.rawData.aod_adp_timeseries){
+        Object.entries(props.state.rawData.aod_adp_timeseries).map((e)=>{
+            times.push(e[0])
+            aod.push(e[1].aod_avg)
+            smoke.push(e[1].smoke_count)
+            dust.push(e[1].dust_count)
+        })
+    }
+    
+    console.log(times,aod,dust,smoke)
+    let data = []
+    if(props.state.GOESa) data.push({x:times,y:aod,type:'line',line:{width:2,color:'blue'},name:'AOD'})
+    if(props.state.GOESs) data.push({x:times,y:smoke,type:'line',line:{width:2,color:'black'},name:'Smoke',yaxis:'y2',})
+    if(props.state.GOESd) data.push({x:times,y:dust,type:'line',line:{width:2,color:'orange'},name:'Dust',yaxis:'y2',})
     
     if(props.state.plotsToDisplay.includes('goes'))
     return( 
@@ -16,22 +31,7 @@ export function GoesPlot (props) {
                             width: '100%',
                             height: '100%',
                         }}
-                        data={[
-                            {
-                                x: [0,1,2,3],
-                                y: [0,1,2,3],
-                                type: 'line',
-                                line: { width: 2, color: 'blue' },
-                                name: 'smoke',
-                            },
-                            {
-                                x: [0,1,2,3],
-                                y: [0,1,2,3],
-                                type: 'line',
-                                line: { width: 2, color: 'red' },
-                                name: 'dust',
-                            },
-                        ]}
+                        data={data}
                         useResizeHandler={true}
                         layout={{
                             title: 'GOES',
@@ -39,7 +39,12 @@ export function GoesPlot (props) {
                             width: undefined,
                             height: undefined,
                             xaxis: { title: 'Time [UTC]' },
-                            yaxis: { title: 'Count' },
+                            yaxis: { title: 'Domain Average AOD' },
+                            yaxis2: {
+                                title: 'Dust/Smoke Count',
+                                overlaying: 'y',
+                                side: 'right'
+                              },
                             margin: {
                                 r: 0,
                                 t: 30,

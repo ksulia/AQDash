@@ -25,7 +25,7 @@ export class RealTime extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         
                 
-        if(this.props.state.GOESon && !this.props.state.plotsToDisplay.includes('goes'))
+        if((this.props.state.GOESs||this.props.state.GOESd||this.props.state.GOESa) && !this.props.state.plotsToDisplay.includes('goes'))
             this.handleChange({ plotsToDisplay: [...this.props.state.plotsToDisplay, 'goes'] })
         if(this.props.state.riskData && this.props.state.riskClick && 
            this.props.state.airnowPlotOn&& !this.props.state.plotsToDisplay.includes('airnow'))
@@ -35,7 +35,7 @@ export class RealTime extends React.Component {
         if(this.props.state.chosenSite && !this.props.state.plotsToDisplay.includes('lidar'))
             this.handleChange({ plotsToDisplay: [...this.props.state.plotsToDisplay, 'lidar'] })
         
-        if(!(this.props.state.GOESon) && this.props.state.plotsToDisplay.includes('goes'))
+        if(!(this.props.state.GOESs||this.props.state.GOESd||this.props.state.GOESa) && this.props.state.plotsToDisplay.includes('goes'))
             this.handleChange({plotsToDisplay: this.props.state.plotsToDisplay.filter(function(plot) { return plot !== 'goes' })});
         if(!(this.props.state.riskData && this.props.state.riskClick && 
              this.props.state.airnowPlotOn) && this.props.state.plotsToDisplay.includes('airnow'))
@@ -46,7 +46,7 @@ export class RealTime extends React.Component {
         if(!this.props.state.chosenSite && this.props.state.plotsToDisplay.includes('lidar'))
             this.handleChange({plotsToDisplay: this.props.state.plotsToDisplay.filter(function(plot) { return plot !== 'lidar' })});
         
-        console.log('plotstodisplay', this.props.state.plotsToDisplay)
+//         console.log('plotstodisplay', this.props.state.plotsToDisplay)
         
         
     }

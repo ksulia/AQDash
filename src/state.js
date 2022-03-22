@@ -88,7 +88,6 @@ export const state = {
     airnow24hr: null,
     goesDataDust: null,
     dustDB: null,
-    GOESon: false,
     GOESd: false,
     GOESs: false,
     GOESa: false,

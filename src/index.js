@@ -66,9 +66,7 @@ class App extends Component {
     
     
     handleChange (obj){
-        console.log("handleChange1",obj)
         this.setState(obj)
-        console.log("handleChange2",this.state.fetchData)
     }
     
   render() {

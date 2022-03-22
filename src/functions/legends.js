@@ -114,7 +114,7 @@ export function getAODCB(cb, name) {
     )
 }
 export function getRiskLegend(state,handleChange){
-    console.log('risklegend',state, handleChange)
+//     console.log('risklegend',state, handleChange)
     return(
         state.rawData && state.rawData.data_risk && state.riskChecked?
             <div style={{width:'100%'}}>
@@ -273,7 +273,7 @@ export function getAirnowLegend(state){
 
 
 export function getGOESCB(props) {
-    console.log('AODCD',props)
+//     console.log('AODCD',props)
     return (
         <Row style={{width:'100%', justifyContent:'center'}}>
             {props.GOESd?

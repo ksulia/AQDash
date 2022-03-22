@@ -25,7 +25,9 @@ export default async function fetchData(state,handleChange) {
             riskData: null,
             rawData: null,
             AODon: false,
-            GOESon: false,
+            GOESd: false,
+            GOESs: false,
+            GOESa: false,
             Airnowon: false,
             Lidaron: false,
             plotsToDisplay: [],
@@ -47,7 +49,7 @@ export default async function fetchData(state,handleChange) {
     let viirsObj = null, viirsObjnow = { type: 'FeatureCollection', features: [] };
     let aodCB36 = null, aodCB48J = null, aodCB48S = null;
     let riskHighlight = false, riskData = null, rawData = null;
-    let AODon = false, GOESon = false, Airnowon = false, Lidaron = false;
+    let AODon = false, Airnowon = false, Lidaron = false;
     let airnow24hr = {}
     
     await fetch(`https://xcitedb.asrc.albany.edu/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
@@ -58,6 +60,22 @@ export default async function fetchData(state,handleChange) {
 
         if (rawData && rawData.status === 0) {
             console.log('here1')
+//             if (rawData.data_risk && rawData.data_risk.features){
+//                 Object.entries(rawData.data_risk.features).map((e)=>{
+//                     if(e[1].properties.data.length>0){
+// //                         console.log('feature1',e[1].properties.data)
+//                         Object.entries(e[1].properties.data).map((e1)=>{
+// //                             console.log(e1[1].props)
+//                             if(Object.keys(e1[1].props).includes('aod_avg')){
+//                                 console.log('aod_avg',e1[1])
+//                             }
+//                         })
+//                     }
+//                 })
+//             }
+            
+            
+            
             Object.keys(rawData.data).map((k) => {
                 console.log('here2', k)
                 if (k.includes('airnow_pm2.5')) {
@@ -243,7 +261,6 @@ export default async function fetchData(state,handleChange) {
         riskData: riskData,
         rawData: rawData,
         AODon: AODon,
-        GOESon: GOESon,
         Airnowon: Airnowon,
         Lidaron: Lidaron,
     };
