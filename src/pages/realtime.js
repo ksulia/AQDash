@@ -58,9 +58,9 @@ export class RealTime extends React.Component {
         
         
         return (
-            <div style={{justifyContent:'center',width:'100%',padding:0, maxWidth:'100%'}}>
+            <div style={{justifyContent:'center',width:'100%',maxWidth:'100%'}}>
             <Row id='main-body-flex' style={{width:'100%',height:undefined,justifyContent:'center'}}>
-                <Col id='sidebar' style={{width:'100px',backgroundColor:'#461660',padding:10}}>
+                <Col id='sidebar' style={{width:'100px',backgroundColor:'#461660',padding:10,paddingLeft:'20px'}}>
                     <Sidebar state={this.props.state} fetchData={fetchData} handleChange={this.handleChange}
                              realtime={true}/>
                 </Col>

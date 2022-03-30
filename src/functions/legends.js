@@ -33,41 +33,41 @@ export function getLegend(props) {
                     </a>
                 </Row>
                     
-            </Col>
             
-            {props.Windon && props.mouseMoveWS ? (
-                <Row style={{ paddingLeft: 20 }}>
-                    <a style={{ color: 'white' }}>
-                        Wind: {props.mouseMoveWD} at{' '}
-                        {Math.round(props.mouseMoveWS * 100) / 100} m
-                        s⁻¹
-                    </a>
-                </Row>
-            ) : null}
-            {props.Airnowon && props.mouseMovePM ? (
-                <Row style={{ paddingLeft: 20 }}>
-                    <a style={{ color: 'white' }}>
-                        PM2.5: {props.mouseMovePM} μg m⁻³
-                    </a>
-                </Row>
-            ) : null}
-            {props.mouseMoveGoesDust ? (
-                <Row style={{ paddingLeft: 20 }}>
-                    <a style={{ color: 'white' }}>GOES Dust Detected</a>
-                </Row>
-            ) : null}
-            {props.mouseMoveGoesSmoke ? (
-                <Row style={{ paddingLeft: 20 }}>
-                    <a style={{ color: 'white' }}>GOES Smoke Detected</a>
-                </Row>
-            ) : null}
-            {props.mouseMoveRiskBox ? (
-                <Row style={{ paddingLeft: 20 }}>
-                    <a style={{ color: 'white' }}>
-                        Risk Data Count: {props.mouseMoveRiskBox}
-                    </a>
-                </Row>
-            ) : null}
+                {props.Windon && props.mouseMoveWS ? (
+                    <Row >
+                        <a style={{ color: 'white' }}>
+                            Wind: {props.mouseMoveWD} at{' '}
+                            {Math.round(props.mouseMoveWS * 100) / 100} m
+                            s⁻¹
+                        </a>
+                    </Row>
+                ) : null}
+                {props.Airnowon && props.mouseMovePM ? (
+                    <Row >
+                        <a style={{ color: 'white' }}>
+                            PM2.5: {props.mouseMovePM} μg m⁻³
+                        </a>
+                    </Row>
+                ) : null}
+                {props.mouseMoveGoesDust ? (
+                    <Row >
+                        <a style={{ color: 'white' }}>GOES Dust Detected</a>
+                    </Row>
+                ) : null}
+                {props.mouseMoveGoesSmoke ? (
+                    <Row >
+                        <a style={{ color: 'white' }}>GOES Smoke Detected</a>
+                    </Row>
+                ) : null}
+                {props.mouseMoveRiskBox ? (
+                    <Row >
+                        <a style={{ color: 'white' }}>
+                            Risk Data Count: {props.mouseMoveRiskBox}
+                        </a>
+                    </Row>
+                ) : null}
+            </Col>
         </div>
     )
 }

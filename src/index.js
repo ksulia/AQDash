@@ -50,7 +50,7 @@ class App extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('did update', this.state)
+//         console.log('did update', this.state)
                 
         if (this.state.clicked) this.getCompleteTime()
         if (this.state.fetchData && this.state.completeTime) {
@@ -61,7 +61,7 @@ class App extends Component {
             console.log('rawData', this.state.rawData)
 
         window.addEventListener('resize', this.updateDimensions)
-        if (prevState.width != this.state.width)console.log('width/height', this.state.width, this.state.height)
+//         if (prevState.width != this.state.width)console.log('width/height', this.state.width, this.state.height)
     }
     
     
@@ -72,7 +72,7 @@ class App extends Component {
   render() {
     return (      
        <BrowserRouter>
-        <div id='header'>
+        <div id='header' style={{width:'100%'}}>
           <Navigation />
             <Routes>
              <Route path="/" element={<RealTime 

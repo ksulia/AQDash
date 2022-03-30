@@ -9,7 +9,7 @@ import ReactMapboxGl, {
 import * as MapboxGL from 'mapbox-gl';
 import { Container, Row, Col } from 'react-bootstrap'
 import {getLegend} from '../functions/legends.js';
-import {_onMouseMove,_onClick} from '../functions/mouseFunctions.js';
+import {_onMouseMove,_onClick,_onMove} from '../functions/mouseFunctions.js';
 
 const { token_real, styles } = require('./config.json')
 
@@ -36,25 +36,11 @@ export class RealTimeMap extends React.Component {
                     center={[this.props.state.lng, this.props.state.lat]}
                     zoom={[this.props.state.zoom]}
                     containerStyle={mapStyle}
-                    onMouseMove={(map,e)=>_onMouseMove(
-                        map,e,this.props)}
-                    onClick={(map,e)=>_onClick(
-                        map,e,this.props)}
+                    fitBounds={this.props.state.fitBounds}
+                    onMouseMove={(map,e)=>_onMouseMove(map,e,this.props)}
+                    onMove={(map,e)=>_onMove(map,e,this.props)}
+                    onClick={(map,e)=>_onClick(map,e,this.props)}
                 >
-
-                    {this.props.state.rawData &&
-                    this.props.state.rawData.data_risk &&
-                     this.props.state.riskChecked ? (
-                        <GeoJSONLayer
-                            key={'riskPolygons'}
-                            id={'riskPolygons'}
-                            data={this.props.state.rawData.data_risk}
-                            fillPaint={{
-                                'fill-color': ['get', 'color'],
-                                'fill-opacity': ['get', 'alpha'],
-                            }}
-                        />
-                    ) : null}
                     
                     {this.props.state.goesDataAOD &&
                     this.props.state.GOESa ? (

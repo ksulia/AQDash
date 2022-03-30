@@ -52,7 +52,11 @@ export default async function fetchData(state,handleChange) {
     let AODon = false, Airnowon = false, Lidaron = false;
     let airnow24hr = {}
     
-    await fetch(`https://xcitedb.asrc.albany.edu/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
+    
+    
+    
+    await fetch(`http://169.226.68.133:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
+//     await fetch(`https://xcitedb.asrc.albany.edu/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
     .then(async (response) => await response.json())
     .then(async (responseJson) => rawData = responseJson) //setState
     .then(async () => {

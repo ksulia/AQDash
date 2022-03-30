@@ -12,6 +12,14 @@ export function _onMouseMove(map, e, props){
     //         console.log(features)
 }
 
+export function _onMove (map, e, props){
+    props.handleChange({
+        lng: map.getCenter().lng,
+        lat: map.getCenter().lat,
+        zoom: map.getZoom(),
+    })
+}
+
 export function _queryFeatures(f,handleChange) {
     var flag1 = false,
         flag2 = false,

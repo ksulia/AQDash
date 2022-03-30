@@ -10,7 +10,7 @@ import * as MapboxGL from 'mapbox-gl';
 import { Container, Row, Col } from 'react-bootstrap'
 const { token_fore, styles } = require('./config.json')
 import {getLegend} from '../functions/legends.js';
-import {_onMouseMove,_onClick} from '../functions/mouseFunctions.js';
+import {_onMouseMove,_onClick, _onMove} from '../functions/mouseFunctions.js';
 
 
 const Map = ReactMapboxGl({ accessToken: token_fore })
@@ -34,11 +34,24 @@ export default class ForecastMap extends React.Component {
                     center={[this.props.state.lng, this.props.state.lat]}
                     zoom={[this.props.state.zoom]}
                     containerStyle={mapStyle}
-                    onMouseMove={(map,e)=>_onMouseMove(
-                        map,e,this.props)}
-                    onClick={(map,e)=>_onClick(
-                        map,e,this.props)}
+                    onMouseMove={(map,e)=>_onMouseMove(map,e,this.props)}
+                    onMove={(map,e)=>_onMove(map,e,this.props)}
+                    onClick={(map,e)=>_onClick(map,e,this.props)}
                 >
+                    
+                    {this.props.state.rawData &&
+                    this.props.state.rawData.data_risk &&
+                     this.props.state.riskChecked ? (
+                        <GeoJSONLayer
+                            key={'riskPolygons'}
+                            id={'riskPolygons'}
+                            data={this.props.state.rawData.data_risk}
+                            fillPaint={{
+                                'fill-color': ['get', 'color'],
+                                'fill-opacity': ['get', 'alpha'],
+                            }}
+                        />
+                    ) : null}
                     {this.props.state.viirsObj != null && this.props.state.AODon ? (
                         <GeoJSONLayer
                             id={'viirsobj'}

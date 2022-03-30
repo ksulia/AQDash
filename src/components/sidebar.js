@@ -72,7 +72,7 @@ const Sidebar = (props) => {
 
                    <div >
                             
-                       {props.realtime && (props.state.rawData && props.state.rawData.data_risk) ? (
+                       {!props.realtime && (props.state.rawData && props.state.rawData.data_risk) ? (
                            <div style={{display:'flex',justifyContent:'flex-start'}}>
                                <div style={{ alignItems: 'center', }} >
                                    <Checkbox

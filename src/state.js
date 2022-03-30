@@ -59,6 +59,7 @@ export const state = {
     lidarWidth: 0,
     lng: -77.093,
     lat: 43.3802,
+    fitBounds: [[-80, 40.1],[-71.5,45.2]],
     zoom: 4.5,
     clicked: true,
     geoJsonWind: null,

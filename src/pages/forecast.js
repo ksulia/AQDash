@@ -54,9 +54,9 @@ export class Forecast extends React.Component {
         
         
         return (
-            <div style={{justifyContent:'center',width:'100%',padding:0, maxWidth:'100%'}}>
+            <div style={{justifyContent:'center',width:'100%',maxWidth:'100%'}}>
             <Row id='main-body-flex' style={{width:'100%',height:undefined,justifyContent:'center'}}>
-                <Col id='sidebar' style={{width:'100px',backgroundColor:'#EEB211',padding:10}}>
+                <Col id='sidebar' style={{width:'100px',backgroundColor:'#EEB211',padding:10,paddingLeft:'20px'}}>
                     <Sidebar state={this.props.state} fetchData={fetchData} handleChange={this.handleChange} realtime={false}/>
                 </Col>
                 <Col id='body' xs={10} md={20} lg={30} style={{width:'100%',backgroundColor:'#F8F7F7', justifyContent:'center'}}>
