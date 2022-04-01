@@ -5,7 +5,7 @@ import getRiskData from '../functions/getRiskData.js';
 
 
 export function _onMouseMove(map, e, props){
-    console.log("mouseMove",map, e)
+//     console.log("mouseMove",map, e)
     const features = map.queryRenderedFeatures(e.point)
     _queryFeatures(features,props.handleChange)
     props.handleChange({ mouseMoveLL: e.lngLat })

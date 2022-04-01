@@ -24,12 +24,12 @@ export default async function fetchData(state,handleChange) {
             riskHighlight: false,
             riskData: null,
             rawData: null,
-            AODon: false,
-            GOESd: false,
-            GOESs: false,
-            GOESa: false,
-            Airnowon: false,
-            Lidaron: false,
+//             AODon: false,
+//             GOESd: false,
+//             GOESs: false,
+//             GOESa: false,
+//             Airnowon: false,
+//             Lidaron: false,
             plotsToDisplay: [],
         };
 
@@ -113,17 +113,18 @@ export default async function fetchData(state,handleChange) {
 //                     }
                     goesDataSmoke = JSON.parse(rawData.data[k].smoke) //setState
                     goesDataDust = JSON.parse(rawData.data[k].dust) //setState
+//                     goesDataSmoke = rawData.timeseries_data.smoke //setState
+//                     goesDataDust =rawData.timeseries_data.dust //setState
 //                     smokeCB = smokeCB //setState
 //                     dustCB = dustCB //setState
                     
                     console.log('GOES2', k, goesDataSmoke)
                 } else if (k.includes('GOES_AOD')) {
-                    console.log('GOES_AOD', k, rawData.data[k])
+//                     console.log('GOES_AOD', k, rawData.timeseries_data.aod)
                     goesDataAOD = JSON.parse(rawData.data[k])
-                } else if (
-                    k.includes('VIIRSaerosolEntHRS') &&
-                    Object.keys(rawData.data[k]).length > 0
-                ) {
+//                     goesDataAOD = rawData.timeseries_data.aod
+                    
+                } else if (k.includes('VIIRSaerosolEntHRS') &&Object.keys(rawData.data[k]).length > 0) {
                     let temp_time = Object.keys(rawData.data[k])[0]
                     console.log('VIIRSEnt1',k,rawData.data[k])
                     console.log('temp_time', temp_time)
@@ -138,10 +139,7 @@ export default async function fetchData(state,handleChange) {
                     viirsData36 = rawData.data[k] //setState
                     aodCB36 = aodCB1 //setState
                     console.log('VIIRSEnt2',k,rawData.data[k])
-                } else if (
-                    k.includes('VIIRSaerosolJ') &&
-                    Object.keys(rawData.data[k]).length > 0
-                ) {
+                } else if (k.includes('VIIRSaerosolJ') &&Object.keys(rawData.data[k]).length > 0) {
                     console.log('VIIRSJ1', k,rawData.data[k])
                     let temp_time = Object.keys(rawData.data[k])[0]
                     console.log('temp_time', temp_time)
@@ -157,10 +155,7 @@ export default async function fetchData(state,handleChange) {
                     aodCB48J = aodCB2 //setState
                     
                     console.log('VIIRSJ2',k,rawData.data[k])
-                } else if (
-                    k.includes('VIIRSaerosolS') &&
-                    Object.keys(rawData.data[k]).length > 0
-                ) {
+                } else if (k.includes('VIIRSaerosolS') &&Object.keys(rawData.data[k]).length > 0) {
                     console.log( 'VIIRSS1', k,rawData.data[k])
                     let temp_time = Object.keys(rawData.data[k])[0]
                     let minp = rawData.data[k][temp_time].features[0].properties.minP
@@ -173,7 +168,7 @@ export default async function fetchData(state,handleChange) {
                     viirsData48S =rawData.data[k] //setState
                     aodCB48S = aodCB3 //setState
                     
-                    console.log('VIIRSS2',k,rawData.data[k])
+                    console.log('VIIRSS2',k,rawData.data[k],viirsData48S)
                     //                             let temp_obj = {}
                     //                             this.state.rawData.data[k].features[0].properties.all_times.forEach((t)=>{
                     //                                 temp_obj[t] = {}
@@ -214,7 +209,9 @@ export default async function fetchData(state,handleChange) {
         }
     })
     .then(async () => {
+        console.log('HERE IN VIIRS1')
         if (viirsData48S ||viirsData48J ||viirsData36) {
+            console.log('HERE IN VIIRS2')
             let keys36 = [], keys48J = [], keys48S = []
             if (viirsData36) keys36 = Object.keys(viirsData36)
             if (viirsData48J) keys48J = Object.keys(viirsData48J)
@@ -237,6 +234,7 @@ export default async function fetchData(state,handleChange) {
                 }
             })
             viirsObj = viirs_obj  //setState
+            console.log('viirsObj',viirsObj)
         }
     })
     .catch((e) => console.log(e))
@@ -264,9 +262,9 @@ export default async function fetchData(state,handleChange) {
         riskHighlight: riskHighlight,
         riskData: riskData,
         rawData: rawData,
-        AODon: AODon,
-        Airnowon: Airnowon,
-        Lidaron: Lidaron,
+//         AODon: AODon,
+//         Airnowon: Airnowon,
+//         Lidaron: Lidaron,
     };
     
 //     Object.keys(setStates).map(k=>{

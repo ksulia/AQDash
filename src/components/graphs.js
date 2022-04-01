@@ -85,95 +85,94 @@ function onlyUnique(value, index, self) {
 }
 
 export function AirnowPlot24hr (props) {
-    console.log('airnow24 props',props.state.airnow24hr)
-    
-    let names = {'#00e400':'Good','#ffff00':'Moderate',
-                 '#ff7e00':'Unhealthy Sensitive Groups',
-                 '#ff0000':'Unhealthy','#8f3f97':'Very Unhealthy',
-                 '#7e0023':'Hazardous'}
-        
-    let lats = [], colors = [], utc = [], aqi = [];
-    let plot_by_color = {}
-    Object.keys(props.state.airnow24hr).map((k)=>{
-        let features = props.state.airnow24hr[k]
-        features.map((f)=>{
-            let temp_obj;
-            if(f.properties.color in plot_by_color){
-                temp_obj = plot_by_color[f.properties.color]
-                temp_obj['lats'].push(f.geometry.coordinates[1])
-                temp_obj['colors'].push(f.properties.color)
-                temp_obj['utc'].push(f.properties.UTC)
-                temp_obj['aqi'].push(f.properties.AQI)
-            }else{
-                temp_obj = plot_by_color[f.properties.color]={
-                    'lats':[f.geometry.coordinates[1]],
-                    'colors':[f.properties.color],
-                    'utc':[f.properties.UTC],
-                    'aqi':[f.properties.AQI]
+    if (props.state.plotsToDisplay.includes('airnow24hr')){
+        console.log('airnow24 props',props.state.airnow24hr)
+
+        let names = {'#00e400':'Good','#ffff00':'Moderate',
+                     '#ff7e00':'Unhealthy Sensitive Groups',
+                     '#ff0000':'Unhealthy','#8f3f97':'Very Unhealthy',
+                     '#7e0023':'Hazardous'}
+
+        let lats = [], colors = [], utc = [], aqi = [];
+        let plot_by_color = {}
+        Object.keys(props.state.airnow24hr).map((k)=>{
+            let features = props.state.airnow24hr[k]
+            features.map((f)=>{
+                let temp_obj;
+                if(f.properties.color in plot_by_color){
+                    temp_obj = plot_by_color[f.properties.color]
+                    temp_obj['lats'].push(f.geometry.coordinates[1])
+                    temp_obj['colors'].push(f.properties.color)
+                    temp_obj['utc'].push(f.properties.UTC)
+                    temp_obj['aqi'].push(f.properties.AQI)
+                }else{
+                    temp_obj = plot_by_color[f.properties.color]={
+                        'lats':[f.geometry.coordinates[1]],
+                        'colors':[f.properties.color],
+                        'utc':[f.properties.UTC],
+                        'aqi':[f.properties.AQI]
+                    }
                 }
-            }
-            plot_by_color[f.properties.color] = temp_obj
+                plot_by_color[f.properties.color] = temp_obj
 
+            })
         })
-    })
-    
-    console.log('plot_by_color',plot_by_color)
-    let all_data = []
-    Object.keys(plot_by_color).map((c)=>{
-        all_data.push({
-            x: plot_by_color[c]['utc'],
-            y: plot_by_color[c]['lats'],
-            type: 'scatter',
-//             text: props.text,
-            textposition: 'center',
-            line: { width: 0 },
-            marker: {
-                size: 10,
-                color: c,
-                line: { width: 1, color: 'grey' },
-            },
-            mode:'markers',
-            name:names[c]
-        })
-    })
-    
-    
-    if (props.state.plotsToDisplay.includes('airnow24hr'))
-    return(
-        props.state.airnow24hr?
-        <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
-        backgroundColor:'white',}}>
-            <Plot
-                style={{
-                    width: '100%',
-                    height: '100%',
-                }}
-                data={all_data}
-                useResizeHandler={true}
-                layout={{
-                    title: props.name,
-                    autosize: true,
-                    width: undefined,
-                    height: undefined,
-                    xaxis: { title: 'Time' },
-                    yaxis: { title: "Latitude" },
-                    margin: {
-                        r: 0,
-                        t: 30,
-                        pad: 0,
-                    },
-                    legend: {orientation:"h",y:1}
-                }}
-            />
 
-        </Col>:null
-    )
-    else return null
+        console.log('plot_by_color',plot_by_color)
+        let all_data = []
+        Object.keys(plot_by_color).map((c)=>{
+            all_data.push({
+                x: plot_by_color[c]['utc'],
+                y: plot_by_color[c]['lats'],
+                type: 'scatter',
+    //             text: props.text,
+                textposition: 'center',
+                line: { width: 0 },
+                marker: {
+                    size: 10,
+                    color: c,
+                    line: { width: 1, color: 'grey' },
+                },
+                mode:'markers',
+                name:names[c]
+            })
+        })
+
+        return(
+            props.state.airnow24hr?
+            <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
+            backgroundColor:'white',}}>
+                <Plot
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                    }}
+                    data={all_data}
+                    useResizeHandler={true}
+                    layout={{
+                        title: props.name,
+                        autosize: true,
+                        width: undefined,
+                        height: undefined,
+                        xaxis: { title: 'Time' },
+                        yaxis: { title: "Latitude" },
+                        margin: {
+                            r: 0,
+                            t: 30,
+                            pad: 0,
+                        },
+                        legend: {orientation:"h",y:1}
+                    }}
+                />
+
+            </Col>:null
+        )}
+        else return null
 }
 
 
 export function LidarPlotSca (props) {
-    console.log('getting to LidarPlot')
+//     console.log('getting to LidarPlot')
     if(props.state.plotsToDisplay.includes('lidar'))
         return(
             props.state.Lidaron && props.state.lidarData && 
@@ -204,7 +203,7 @@ export function LidarPlotSca (props) {
 }
 
 export function LidarPlotCnr (props) {
-    console.log('getting to LidarPlot')
+//     console.log('getting to LidarPlot')
     if(props.state.plotsToDisplay.includes('lidar'))
         return(
             props.state.Lidaron && props.state.lidarData && 

@@ -29,6 +29,10 @@ export default class ForecastMap extends React.Component {
 
             <div style={{ width: '100%'}}>
                 {console.log('virrsobjnow',this.props.state.viirsObjnow)}
+                {this.props.state.AODon && 
+                    (this.props.state.AODclick36 || this.props.state.AODclick48J || this.props.state.AODclick48S)?
+                    <a style={{color:"black",textAlign:'left'}}>{this.props.state.viirsTimeNow}</a>
+                    :null}
                 <Map
                     style={styles.light}
                     center={[this.props.state.lng, this.props.state.lat]}
@@ -52,17 +56,21 @@ export default class ForecastMap extends React.Component {
                             }}
                         />
                     ) : null}
-                    {this.props.state.viirsObj != null && this.props.state.AODon ? (
+                    
+                    {this.props.state.viirsObj != null && this.props.state.AODon && 
+                        (this.props.state.AODclick48S||this.props.state.AODclick36||this.props.state.AODclick48J)? (
                         <GeoJSONLayer
                             id={'viirsobj'}
                             key={'viirsobj'}
                             data={this.props.state.viirsObjnow}
                             circlePaint={{
-                                'circle-color': ['get', 'color_pres'],
+                                'circle-color':['get', 'color_pres'],
                                 'circle-radius': 2,
                                 'circle-stroke-color': 'grey',
                                 'circle-stroke-width': 1,
                             }}
+                            
+                            
                         />
                     ) : null}
                     

@@ -7,7 +7,9 @@ import Sidebar from '../components/sidebar.js';
 import fetchData from '../functions/fetchData.js';
 import RealTimeMap from '../components/map.js';
 import {GoesPlot, AirnowPlot, AirnowPlot24hr, LidarPlotSca, LidarPlotCnr} from '../components/graphs.js';
-import {getRiskLegend, getAirnowLegend, getGOESCB,getCB} from '../functions/legends.js';
+import {getAirnowLegend, getGOESCB,getCB} from '../functions/legends.js';
+
+const moment = require('moment')
 
 
 
@@ -50,7 +52,26 @@ export class RealTime extends React.Component {
         
         
     }
+    
+    getNewTime(){
+        console.log('currTime',this.props.state.mapTime)
         
+        if (this.props.state.goesDataAOD){
+            let keys = Object.keys(this.props.state.goesDataAOD)
+            if(keys.includes(this.props.state.mapTime)){
+                let index = keys.indexOf(this.props.state.mapTime)
+                if(index+1 >= keys.length) this.handleChange({mapTime:keys[0]})
+                else this.handleChange({mapTime:keys[index+1]})
+            }
+
+
+        }
+        
+        
+//         this.handleChange({mapTime:this.getNewTime(this.props.state.mapTime)
+        
+        
+    }        
     
     
 
@@ -72,9 +93,15 @@ export class RealTime extends React.Component {
                                                       marginBottom: 10, justifyContent:'center'}}>
                                 <RealTimeMap id='real-time-map' state={this.props.state} handleChange={this.handleChange}/>
                                     
-                                {getRiskLegend(this.props.state, this.handleChange)}
                                 {getAirnowLegend(this.props.state)}
                                 {getGOESCB(this.props.state)}
+                                {/*
+                                <button
+                            style={{ marginTop:15, fontSize:20, fontFamily: 'Roboto', fontWeight: 'bold',
+                                   backgroundColor:'black', borderRadius:5,color:'white' }}
+                            onClick={()=>this.getNewTime()}
+                        > Next </button>
+                        */}
                                 
 
                             </Row>

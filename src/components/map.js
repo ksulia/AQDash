@@ -6,7 +6,8 @@ import ReactMapboxGl, {
     Layer,
     Feature,
 } from 'react-mapbox-gl';
-import * as MapboxGL from 'mapbox-gl';
+import DrawControl from 'react-mapbox-gl-draw';
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { Container, Row, Col } from 'react-bootstrap'
 import {getLegend} from '../functions/legends.js';
 import {_onMouseMove,_onClick,_onMove} from '../functions/mouseFunctions.js';
@@ -16,14 +17,33 @@ const { token_real, styles } = require('./config.json')
 const Map = ReactMapboxGl({ accessToken: token_real })
 const mapStyle = {height: '50vh', borderRadius:5}
 
-
 export class RealTimeMap extends React.Component {
     
     constructor(props) {
         super(props)
     } 
     
-
+    componentDidMount(){
+        console.log("MAP",this.mapRef)
+    }
+    onDrawCreate = ({ features }) => {
+        console.log('create',features[0].geometry.coordinates,this.props);
+        let coords = features[0].geometry.coordinates[0]
+        let minLat=1000, maxLat=-1000, minLon=1000, maxLon=-1000
+        coords.forEach((e)=>{
+            console.log('coords',e)
+            minLon = Math.min(minLon,e[0])
+            minLat = Math.min(minLat,e[1])
+            maxLon = Math.max(maxLon,e[0])
+            maxLat = Math.max(maxLat,e[1])
+        })
+        console.log(minLat,minLon,maxLat,maxLon)
+        this.props.handleChange({fitBounds:[[minLon, minLat],[maxLon,maxLat]]})
+        
+    };
+    onDrawUpdate = ({ features }) => {
+        console.log(features);
+    };
     
     
     render(){
@@ -32,6 +52,7 @@ export class RealTimeMap extends React.Component {
         
             <div style={{ width: '100%'}}>
                 <Map
+                    ref={ map => this.mapRef = map }
                     style={styles.light}
                     center={[this.props.state.lng, this.props.state.lat]}
                     zoom={[this.props.state.zoom]}
@@ -41,12 +62,25 @@ export class RealTimeMap extends React.Component {
                     onMove={(map,e)=>_onMove(map,e,this.props)}
                     onClick={(map,e)=>_onClick(map,e,this.props)}
                 >
+                    <DrawControl 
+                        position="top-right" 
+                        onDrawCreate={this.onDrawCreate} 
+                        onDrawUpdate={this.onDrawUpdate}
+                        displayControlsDefault = {false} 
+                        controls={{polygon: true,trash: true}}
+                    />
                     
+                    {this.props.state.goesDataAOD? console.log('AOD!!',this.props.state.goesDataAOD,this.props.state.completeTime,JSON.parse(this.props.state.goesDataAOD[this.props.state.completeTime])):null}
+
                     {this.props.state.goesDataAOD &&
                     this.props.state.GOESa ? (
                         <GeoJSONLayer
                             key={'goesaod'}
                             id={'goesaod'}
+//                             data={JSON.parse(
+//                                   this.props.state.goesDataAOD[
+//                                   this.props.state.mapTime
+//                                   ])}
                             data={this.props.state.goesDataAOD}
                             fillPaint={{
                                 'fill-color': ['get', 'fill'],

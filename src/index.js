@@ -27,6 +27,7 @@ class App extends Component {
 
         this.handleChange({
             completeTime: `${this.state.year}-${month_num}-${this.state.day}T${this.state.hour}`,
+            mapTime: `${this.state.year}-${month_num}-${this.state.day}T${this.state.hour}`,
             clicked: false,
         })
     }
