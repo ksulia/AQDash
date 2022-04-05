@@ -74,42 +74,55 @@ export function getLegend(props) {
 
 
 export function getAODCB(cb, name) {
+    console.log(cb,name)
+    let numbers = [0,50,100,150,200,250,300,350,400,450,500]
     return (
         <Row style={{width:'100%',justifyContent:'center'}}>
-                <Col className='col-12' style={{alignItems:'center'}}>
-                    <a style={{color: 'black',marginRight: 5,}}>{name} </a>
-                </Col>
+                <Row style={{width:'100%',display:'flex',justifyContent:'center'}}>
+                    <a style={{color: 'black',}}>{name} </a>
+                </Row>
+                <Row style={{width:'100%',display:'flex',justifyContent:'center'}}>
                 {Object.keys(cb).map((k, i) => (
                     <Col 
                         key={'AODcb' + k}
                         style={{
-                            backgroundColor: k,
-                            border: '1px solid rgba(160,160,160,0.5)',
+                            backgroundColor: cb[k],
+                            border: '1px solid rgba(160,160,160,0.1)',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            width:100/Object.keys(cb).length+'%',
+                            width:100/(Object.keys(cb).length)+'%',
                             padding:0
                         }}
                     >
-                        <a style={{color:'rgba(0,0,0,0)',display:'block'}}>{cb[k]}</a>
+                        <a style={{color:'rgba(0,0,0,0)',display:'block'}}>{Math.round(k,0)}</a>
                     </Col>
                 ))}
+                </Row>
+                <Row style={{width:'100%',display:'flex',justifyContent:'center'}}>
                 {Object.keys(cb).map((k, i) => (
                     <Col 
                         key={'AODcb' + k}
                         style={{
                             backgroundColor: 'rgba(0,0,0,0)',
-                            justifyContent: 'center',
+                            justifyContent: 'flex-start',
                             alignItems: 'center',
-                            width:100/Object.keys(cb).length+'%',
+                            width:100/(Object.keys(cb).length)+'%',
                             padding:0,
                             transform: "rotate(90deg)"
                         }}
                     >
-                        <a style={{color:'black',display:'block'}}>
-                            {Math.round(cb[k],0)}</a>
+                        {numbers.includes(Math.ceil(k,0))?
+                            <a style={{color:'black',display:'block'}}>
+                                {Math.ceil(k,0)}
+                            </a>
+                        : <a style={{color:numbers.includes(Math.floor(k,0))?
+                            'black':'rgba(0,0,0,0)',display:'block'}}>
+                                {Math.floor(k,0)}
+                            </a>
+                        }
                     </Col>
                 ))}
+                </Row>
         </Row>
     )
 }

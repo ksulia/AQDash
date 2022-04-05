@@ -62,6 +62,8 @@ export class RealTimeMap extends React.Component {
                     onMove={(map,e)=>_onMove(map,e,this.props)}
                     onClick={(map,e)=>_onClick(map,e,this.props)}
                 >
+                    
+                    {/*
                     <DrawControl 
                         position="top-right" 
                         onDrawCreate={this.onDrawCreate} 
@@ -69,18 +71,14 @@ export class RealTimeMap extends React.Component {
                         displayControlsDefault = {false} 
                         controls={{polygon: true,trash: true}}
                     />
-                    
-                    {this.props.state.goesDataAOD? console.log('AOD!!',this.props.state.goesDataAOD,this.props.state.completeTime,JSON.parse(this.props.state.goesDataAOD[this.props.state.completeTime])):null}
+                    */}
+                
 
                     {this.props.state.goesDataAOD &&
                     this.props.state.GOESa ? (
                         <GeoJSONLayer
                             key={'goesaod'}
                             id={'goesaod'}
-//                             data={JSON.parse(
-//                                   this.props.state.goesDataAOD[
-//                                   this.props.state.mapTime
-//                                   ])}
                             data={this.props.state.goesDataAOD}
                             fillPaint={{
                                 'fill-color': ['get', 'fill'],

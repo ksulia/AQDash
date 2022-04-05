@@ -96,18 +96,24 @@ export class Forecast extends React.Component {
 
 
                                 <Col style={{width:'100%',justifyContent:'center'}}>
+                                    <Row style={{width:'100%',justifyContent:'center',paddingBottom:10}}>
                                 {this.props.state.AODon && this.props.state.aodCB36 && 
                                  this.props.state.AODclick36 ? 
-                                 getAODCB(this.props.state.aodCB36,'Hi-Res Trajectory Pressure (mb)')
+                                 getAODCB(this.props.state.aodCB36,'Hi-Res Surface Minus Trajectory Pressure (mb)')
                                  : null}
+                                 </Row>
+                                    <Row style={{width:'100%',justifyContent:'center',paddingBottom:10}}>
                                 {this.props.state.AODon && this.props.state.aodCB48J && 
                                     this.props.state.AODclick48J ? 
-                                    getAODCB(this.props.state.aodCB48J,'JPSS Trajectory Pressure (mb)')
+                                    getAODCB(this.props.state.aodCB48J,'JPSS Surface Minus Trajectory Pressure (mb)')
                                 : null}
+                                </Row>
+                                <Row style={{width:'100%',justifyContent:'center'}}>
                                 {this.props.state.AODon && this.props.state.aodCB48S && 
                                     this.props.state.AODclick48S ? 
-                                    getAODCB(this.props.state.aodCB48S,'SNPP Trajectory Pressure (mb)')
+                                    getAODCB(this.props.state.aodCB48S,'SNPP Surface Minus Trajectory Pressure (mb)')
                                 : null}
+                                </Row>
                                 </Col>
                             </Row>
                                             

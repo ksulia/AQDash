@@ -1,3 +1,6 @@
+import {redMap, blueMap, greenMap} from './colorMaps.js';
+let cbMax = 501, cbMin = 0;
+
 export default async function fetchData(state,handleChange) {
     console.log('fetch data!',state,handleChange)
     
@@ -42,7 +45,7 @@ export default async function fetchData(state,handleChange) {
     console.log('fetch2',state.fetchData,state.completeTime,state.res)
 
     let fetching = 'Fetching data, please wait...';
-    let smokeCB = {},dustCB = {},aodCB1 = {},aodCB2 = {},aodCB3 = {};
+    let smokeCB = {},dustCB = {};
     let airnowData = null,goesDataDust = null, goesDataAOD = null, lidarData = null;
     let goesDataSmoke = null,dustDB = null, viirsData36 = null, lidarSites = null;
     let viirsData48J = null, viirsData48S = null, viirsTimeNow = '';
@@ -124,55 +127,24 @@ export default async function fetchData(state,handleChange) {
                     goesDataAOD = JSON.parse(rawData.data[k])
 //                     goesDataAOD = rawData.timeseries_data.aod
                     
+                
+                   
+                    
                 } else if (k.includes('VIIRSaerosolEntHRS') &&Object.keys(rawData.data[k]).length > 0) {
-                    let temp_time = Object.keys(rawData.data[k])[0]
                     console.log('VIIRSEnt1',k,rawData.data[k])
-                    console.log('temp_time', temp_time)
-                    let minp = rawData.data[k][temp_time].features[0].properties.minP
-                    let maxp = rawData.data[k][temp_time].features[0].properties.maxP
-                    let cbcolors = rawData.data[k][temp_time].features[0].properties.cb
-                    let val = (maxp - minp) / cbcolors.length
-                    cbcolors.forEach((c, i) => {
-                        aodCB1[c] = (minp + val * i).toFixed(2)
-                    })
-                    console.log('aodCB1', aodCB1)
-                    viirsData36 = rawData.data[k] //setState
-                    aodCB36 = aodCB1 //setState
-                    console.log('VIIRSEnt2',k,rawData.data[k])
+                    let x = remapColorBar(redMap,rawData.data[k])
+                    viirsData36 = x[1] //setState
+                    aodCB36 = x[0] //setState
                 } else if (k.includes('VIIRSaerosolJ') &&Object.keys(rawData.data[k]).length > 0) {
                     console.log('VIIRSJ1', k,rawData.data[k])
-                    let temp_time = Object.keys(rawData.data[k])[0]
-                    console.log('temp_time', temp_time)
-                    let minp = rawData.data[k][temp_time].features[0].properties.minP
-                    let maxp = rawData.data[k][temp_time].features[0].properties.maxP
-                    let cbcolors = rawData.data[k][temp_time].features[0].properties.cb
-                    let val = (maxp - minp) / cbcolors.length
-                    cbcolors.forEach((c, i) => {
-                        aodCB2[c] = (minp + val * i).toFixed(2)
-                    })
-                    console.log('aodCB2', aodCB2)
-                    viirsData48J = rawData.data[k] //setState
-                    aodCB48J = aodCB2 //setState
-                    
-                    console.log('VIIRSJ2',k,rawData.data[k])
+                    let x = remapColorBar(blueMap,rawData.data[k])
+                    viirsData48J = x[1] //setState
+                    aodCB48J = x[0] //setState
                 } else if (k.includes('VIIRSaerosolS') &&Object.keys(rawData.data[k]).length > 0) {
                     console.log( 'VIIRSS1', k,rawData.data[k])
-                    let temp_time = Object.keys(rawData.data[k])[0]
-                    let minp = rawData.data[k][temp_time].features[0].properties.minP
-                    let maxp = rawData.data[k][temp_time].features[0].properties.maxP
-                    let cbcolors = rawData.data[k][temp_time].features[0].properties.cb
-                    let val = (maxp - minp) / cbcolors.length
-                    cbcolors.forEach((c, i) => {
-                        aodCB3[c] = (minp + val * i).toFixed(2)
-                    })
-                    viirsData48S =rawData.data[k] //setState
-                    aodCB48S = aodCB3 //setState
-                    
-                    console.log('VIIRSS2',k,rawData.data[k],viirsData48S)
-                    //                             let temp_obj = {}
-                    //                             this.state.rawData.data[k].features[0].properties.all_times.forEach((t)=>{
-                    //                                 temp_obj[t] = {}
-                    //                             })
+                    let x = remapColorBar(greenMap,rawData.data[k])
+                    viirsData48S =x[1] //setState
+                    aodCB48S = x[0] //setState
                 }
             })
             if (rawData.lidar) {
@@ -273,3 +245,63 @@ export default async function fetchData(state,handleChange) {
     handleChange(setStates)
 
 };
+
+
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function remapColorBar(colormap,data){
+    let temp_time = Object.keys(data)[0]
+    //we need to overwrite the colorbar and pressure data so that it is the 
+    //surface value minus the traj pressure level
+    let updatedVIIRSObj = {}, aodCB1 = {};
+    //first map over the keys in the object, which is time
+    Object.keys(data).map((t)=>{
+        let newFeatColl = []
+        //now need to map through all the features
+        let feat = data[t].features
+        Object.keys(feat).forEach((f)=>{
+            let temp_props = feat[f].properties
+            let newCB = []
+            temp_props['press_diff'] = 1013.25-temp_props['press']
+            colormap.forEach((r)=>{newCB.push(rgbToHex(r[0], r[1], r[2]))})
+            temp_props['cb'] = newCB
+
+            let color_index = colormap.length*temp_props['press_diff']/cbMax
+            let lowerCBVal = colormap[Math.floor(color_index)]
+            let upperCBVal = colormap[Math.ceil(color_index)]
+            let weight = color_index - Math.floor(color_index)
+            let red = (upperCBVal[0]-lowerCBVal[0])*weight + lowerCBVal[0]
+            let green = (upperCBVal[1]-lowerCBVal[1])*weight + lowerCBVal[1]
+            let blue = (upperCBVal[2]-lowerCBVal[2])*weight + lowerCBVal[2]
+            let hexCode = rgbToHex(Math.round(red,0), 
+                                   Math.round(green,0), 
+                                   Math.round(blue,0))
+            temp_props['color_pres'] = hexCode
+            newFeatColl.push({'type':"Feature",
+                              'geometry':feat[f].geometry,
+                              'properties':temp_props})
+        })
+        updatedVIIRSObj[t]={'type': "FeatureCollection", 'features': newFeatColl};
+    })
+
+    console.log('temp_time', temp_time)
+    let minp = cbMin//rawData.data[k][temp_time].features[0].properties.minP
+    let maxp = cbMax//rawData.data[k][temp_time].features[0].properties.maxP
+//        let cbcolors = rawData.data[k][temp_time].features[0].properties.cb
+    let cbcolors = updatedVIIRSObj[temp_time].features[0].properties.cb
+    let val = (maxp - minp) / cbcolors.length
+//     console.log('COLORS',val,cbcolors,cbcolors.length)
+    cbcolors.forEach((c, i) => {
+        aodCB1[(minp + val * i).toFixed(2)] = c
+    })
+//     console.log('aodCB1', aodCB1)
+    return [aodCB1,updatedVIIRSObj]
+    
+}
