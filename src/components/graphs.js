@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 
 export function GoesPlot (props) {
-    console.log('goes!',props)
+//     console.log('goes!',props)
     let times = [], aod = [], dust = [], smoke = []
     if(props.state.rawData && props.state.rawData.aod_adp_timeseries){
         Object.entries(props.state.rawData.aod_adp_timeseries).map((e)=>{
@@ -16,7 +16,7 @@ export function GoesPlot (props) {
         })
     }
     
-    console.log(times,aod,dust,smoke)
+//     console.log(times,aod,dust,smoke)
     let data = []
     if(props.state.GOESa) data.push({x:times,y:aod,type:'line',line:{width:2,color:'blue'},name:'AOD'})
     if(props.state.GOESs) data.push({x:times,y:smoke,type:'line',line:{width:2,color:'black'},name:'Smoke',yaxis:'y2',})
@@ -86,7 +86,7 @@ function onlyUnique(value, index, self) {
 
 export function AirnowPlot24hr (props) {
     if (props.state.plotsToDisplay.includes('airnow24hr')){
-        console.log('airnow24 props',props.state.airnow24hr)
+//         console.log('airnow24 props',props.state.airnow24hr)
 
         let names = {'#00e400':'Good','#ffff00':'Moderate',
                      '#ff7e00':'Unhealthy Sensitive Groups',
@@ -118,7 +118,7 @@ export function AirnowPlot24hr (props) {
             })
         })
 
-        console.log('plot_by_color',plot_by_color)
+//         console.log('plot_by_color',plot_by_color)
         let all_data = []
         Object.keys(plot_by_color).map((c)=>{
             all_data.push({
@@ -180,7 +180,7 @@ export function LidarPlotSca (props) {
                 <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
                     backgroundColor:'white',}}>
                     <LidarComponent
-                        name=" SCA [m/s]"
+                        name=" Backscatter [1/(m sr)]"
                         width={props.state.scawidth}
                         height={props.state.scaheight}
                         x={props.state.scax}
@@ -211,7 +211,7 @@ export function LidarPlotCnr (props) {
                 <Col style={{borderRadius:5, border:'1px solid rgba(0, 0, 0, 0.1)', padding:20,
                 backgroundColor:'white',}}>
                      <LidarComponent
-                         name=" CNR [DB]"
+                         name=" CNR [dB]"
                          width={props.state.cnrwidth}
                          height={props.state.cnrheight}
                          x={props.state.cnrx}
@@ -237,6 +237,22 @@ export function LidarPlotCnr (props) {
 
 const LidarComponent = (props) => {
     console.log('lidarcomp',props)
+    let cscale = 'Jet', cbar = {thickness: 20};
+    if (props.name.includes('CNR')){
+        cscale = [['0.0', 'rgb(58,84,176)'],
+                  ['0.135', 'rgb(79,118,234)'],
+                  ['0.136', 'rgb(3,99,30,255)'],
+                  ['0.42', 'rgb(79,245,69)'],
+                  ['0.43', 'rgb(253,247,39)'],
+                  ['0.855', 'rgb(188,1,0)'],
+                  ['0.856', 'rgb(230,5,202)'],
+                  ['1.0', 'rgb(253,132,250)']
+                ]
+        cbar = { thickness: 20, tickmode: 'array',cmin:-100,
+                tickvals:[-30,-25,-20,-15,-10,-5,0,5],
+                ticktext:['-30','-25','-20','-15','-10','-5','0','5']
+               }
+    }
 
         return (
                 <Plot
@@ -249,10 +265,9 @@ const LidarComponent = (props) => {
                             z: props.data.Z,
                             x: props.data.Y,
                             y: props.data.X,
-                            type: 'contour',
-                            colorscale: 'Jet',
-                            line: { width: 0 },
-                            colorbar: { thickness: 5 },
+                            type: 'heatmap',
+                            colorscale: cscale,
+                            colorbar: cbar
                         },
                     ]}
                     useResizeHandler={true}

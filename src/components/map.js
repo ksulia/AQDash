@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ReactMapboxGl, {
     GeoJSONLayer,
+    Popup,
     Marker,
     Image,
     Layer,
@@ -153,6 +154,7 @@ export class RealTimeMap extends React.Component {
                                 'circle-stroke-color': 'grey',
                                 'circle-stroke-width': 1,
                             }}
+                            
                         />
                     ) : null}
 
@@ -202,6 +204,14 @@ export class RealTimeMap extends React.Component {
                             }}
                         />
                     ) : null}
+                    
+                    {this.props.state.airnowPopup? 
+                    <Popup coordinates={this.props.state.airnowLoc}>
+                        <a>PM 2.5: {this.props.state.airnowPopupProps.props.value} μg m⁻³</a><br/>
+                        <a>AQI: {this.props.state.airnowPopupProps.props.AQI}</a>
+                         
+                     </Popup>
+                     :null}
 
                     {getLegend(this.props.state, this.props.handleChange)}
                     

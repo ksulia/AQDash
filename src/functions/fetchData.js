@@ -147,7 +147,7 @@ export default async function fetchData(state,handleChange) {
                     aodCB48S = x[0] //setState
                 }
             })
-            if (rawData.lidar) {
+            if (rawData.lidar && Object.entries(rawData.lidar).length>0) {
                 console.log('LIDAR1', rawData.lidar)
                 let features = []
                 Object.entries(rawData.lidar).map((e) => {
@@ -269,13 +269,15 @@ function remapColorBar(colormap,data){
         Object.keys(feat).forEach((f)=>{
             let temp_props = feat[f].properties
             let newCB = []
-            temp_props['press_diff'] = 1013.25-temp_props['press']
+            temp_props['press_diff'] = Math.max(1013.25-temp_props['press'],0)
             colormap.forEach((r)=>{newCB.push(rgbToHex(r[0], r[1], r[2]))})
             temp_props['cb'] = newCB
 
             let color_index = colormap.length*temp_props['press_diff']/cbMax
-            let lowerCBVal = colormap[Math.floor(color_index)]
-            let upperCBVal = colormap[Math.ceil(color_index)]
+            let color_index_lower = Math.min(Math.floor(color_index),colormap.length-1)
+            let color_index_upper = Math.min(Math.ceil(color_index),colormap.length-1)
+            let lowerCBVal = colormap[color_index_lower]
+            let upperCBVal = colormap[color_index_upper]
             let weight = color_index - Math.floor(color_index)
             let red = (upperCBVal[0]-lowerCBVal[0])*weight + lowerCBVal[0]
             let green = (upperCBVal[1]-lowerCBVal[1])*weight + lowerCBVal[1]

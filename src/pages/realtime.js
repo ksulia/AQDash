@@ -93,6 +93,8 @@ export class RealTime extends React.Component {
                                                       marginBottom: 10, justifyContent:'center'}}>
                                 <RealTimeMap id='real-time-map' state={this.props.state} handleChange={this.handleChange}/>
                                     
+                                
+                                    
                                 {getAirnowLegend(this.props.state)}
                                 {getGOESCB(this.props.state)}
                                 {/*

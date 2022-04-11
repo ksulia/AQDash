@@ -74,11 +74,19 @@ const Sidebar = (props) => {
                             
                        {!props.realtime && (props.state.rawData && props.state.rawData.data_risk) ? (
                                <div style={{display:'flex',justifyContent:'flex-start', alignItems:'center'}} >
+                                   {/*
                                    <Checkbox
                                         style={{color:"white"}} checked={ props.state.riskChecked } onClick={() => 
                                         props.handleChange({ riskChecked: !props.state.riskChecked})}
                                    />
                                    <a style={{color:"white",textAlign:'left'}}>Risk</a>
+                                    */}
+                                   <Checkbox disabled
+                                        style={{color:"grey"}} checked={ props.state.riskChecked } onClick={() => 
+                                        props.handleChange({ riskChecked: !props.state.riskChecked})} 
+                                   />
+                                   <a style={{color:"grey",textAlign:'left'}}>Risk</a>
+                
                                </div>
                        ) : null}
                        {props.realtime && (props.state.goesDataAOD) ? (
@@ -124,6 +132,24 @@ const Sidebar = (props) => {
                          
                            </div>
                        ) : null}
+                       
+                       {!props.realtime && (props.state.rawData ) ? (
+                               <div style={{display:'flex',justifyContent:'flex-start', alignItems:'center'}} >
+                                   {/*
+                                   <Checkbox
+                                        style={{color:"white"}} checked={ props.state.riskChecked } onClick={() => 
+                                        props.handleChange({ riskChecked: !props.state.riskChecked})}
+                                   />
+                                   <a style={{color:"white",textAlign:'left'}}>WRF-CHEM</a>
+                                    */}
+                                   <Checkbox disabled
+                                        style={{color:"grey"}} checked={ false } 
+                                   />
+                                   <a style={{color:"grey",textAlign:'left'}}>WRF-CHEM</a>
+                
+                               </div>
+                       ) : null}
+                       
                        {!props.realtime && props.state.viirsData48J && props.state.AODon? (
                            <div style={{display:'flex',justifyContent:'flex-start', alignItems:'center',
                            paddingLeft:10}}>

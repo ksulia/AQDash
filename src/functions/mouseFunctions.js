@@ -1,15 +1,17 @@
 import * as React from 'react';
 import getRiskData from '../functions/getRiskData.js';
-
-
+import {airnowSites} from '../state.js'
 
 
 export function _onMouseMove(map, e, props){
-//     console.log("mouseMove",map, e)
+    console.log("mouseMove",map, e, e.lngLat.lng, e.lngLat.lat)
+    
+    
+    
     const features = map.queryRenderedFeatures(e.point)
-    _queryFeatures(features,props.handleChange)
+    _queryFeatures(features,props.handleChange,e.point,e.lngLat)
     props.handleChange({ mouseMoveLL: e.lngLat })
-    //         console.log(features)
+            
 }
 
 export function _onMove (map, e, props){
@@ -20,22 +22,29 @@ export function _onMove (map, e, props){
     })
 }
 
-export function _queryFeatures(f,handleChange) {
+export function _queryFeatures(f,handleChange,pt,lngLat) {
     var flag1 = false,
         flag2 = false,
         flag3 = false,
         flag4 = false,
         flag5 = false
-    //       console.log("LAYERS",f)
+          console.log("LAYERS",f,pt,lngLat)
+    
+    handleChange({
+            airnowPopup:false,
+            airnowLoc: null,
+            airnowPopupProps: null})
+    
+    
     for (var i = 0; i < f.length; i++) {
         const id = f[i].layer.id
-        if (id.includes('symbol')) {
-            handleChange({
-                mouseMoveWS: f[i].properties.speed,
-                mouseMoveWD: this._degToCompass(f[i].properties.dir),
-            })
-            flag1 = true
-        }
+//         if (id.includes('symbol')) {
+//             handleChange({
+//                 mouseMoveWS: f[i].properties.speed,
+//                 mouseMoveWD: this._degToCompass(f[i].properties.dir),
+//             })
+//             flag1 = true
+//         }
         if (id.includes('goessmoke')) {
             handleChange({ mouseMoveGoesSmoke: true })
             flag2 = true
@@ -45,7 +54,22 @@ export function _queryFeatures(f,handleChange) {
             flag3 = true
         }
         if (id.includes('pm2.5')) {
-            handleChange({ mouseMovePM: f[i].properties.value })
+            console.log('PM',f[i].properties.site,airnowSites)
+//             Object.keys(airnowSites).map((k)=>{
+//                 if (f[i].properties.site.includes(k)||
+//                     k.includes(f[i].properties.site)){
+//                     console.log(airnowSites[k])
+//                 }
+                    
+//             })
+            
+            
+            handleChange({ 
+                mouseMovePM: f[i].properties.value,
+                airnowPopup:true,
+                airnowLoc: [lngLat.lng,lngLat.lat],
+                airnowPopupProps: {'props':f[i].properties}
+            })
             flag4 = true
         }
         if (id.includes('risk')) {
