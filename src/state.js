@@ -129,8 +129,9 @@ export const state = {
     airnowPopupProps: null
 };
 
+
 export const airnowSites = {
-'Tonawanda II ':{'lat':42.998136,'lon':-78.899312,'region':9 },
+'Tonawanda II':{'lat':42.998136,'lon':-78.899312,'region':9 },
 'Amherst':{'lat':42.99328,'lon':-78.7715 ,'region':9 },
 'Buffalo Near-road':{'lat':42.92111,'lon':-78.76611,'region':9 },
 'Buffalo':{'lat':42.876951,'lon':-78.809743 ,'region':9 },

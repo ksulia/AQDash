@@ -4,7 +4,7 @@ import {airnowSites} from '../state.js'
 
 
 export function _onMouseMove(map, e, props){
-    console.log("mouseMove",map, e, e.lngLat.lng, e.lngLat.lat)
+//     console.log("mouseMove",map, e, e.lngLat.lng, e.lngLat.lat)
     
     
     
@@ -28,7 +28,7 @@ export function _queryFeatures(f,handleChange,pt,lngLat) {
         flag3 = false,
         flag4 = false,
         flag5 = false
-          console.log("LAYERS",f,pt,lngLat)
+//           console.log("LAYERS",f,pt,lngLat)
     
     handleChange({
             airnowPopup:false,

@@ -159,11 +159,11 @@ export class RealTimeMap extends React.Component {
                             key={'pm2.5'}
                             id={'pm2.5'}
                             data={this.props.state.airnowData}
-                            symbolLayout={{
+                            /*symbolLayout={{
                                 'text-field': ['get', 'value'],
                                 'text-size': 5,
                                 'text-allow-overlap': true,
-                            }}
+                            }}*/
                             circlePaint={{
                                 'circle-color': ['get', 'color'],
                                 'circle-opacity': 0.3,
