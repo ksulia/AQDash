@@ -27,6 +27,21 @@ export class RealTimeMap extends React.Component {
     componentDidMount(){
         console.log("MAP",this.mapRef)
     }
+    
+    
+    popUpTextRow(name, value){
+        return (
+            <Row>
+                <Col style={{paddingRight:5}}>
+                    <a class="text-nowrap" >{name}</a>
+                </Col>
+                <Col>
+                    <a class="text-nowrap">{value}</a>
+                </Col>
+            </Row>
+        )
+    }
+    
     onDrawCreate = ({ features }) => {
         console.log('create',features[0].geometry.coordinates,this.props);
         let coords = features[0].geometry.coordinates[0]
@@ -45,6 +60,8 @@ export class RealTimeMap extends React.Component {
     onDrawUpdate = ({ features }) => {
         console.log(features);
     };
+
+
     
     
     render(){
@@ -206,10 +223,12 @@ export class RealTimeMap extends React.Component {
                     ) : null}
                     
                     {this.props.state.airnowPopup? 
-                    <Popup coordinates={this.props.state.airnowLoc}>
-                        <a>PM 2.5: {this.props.state.airnowPopupProps.props.value} μg m⁻³</a><br/>
-                        <a>AQI: {this.props.state.airnowPopupProps.props.AQI}</a>
-                         
+                    <Popup coordinates={this.props.state.airnowLoc}
+                             style={{textAlign:'left',width:'undefined'}}>
+                        {this.popUpTextRow('Site:',this.props.state.airnowPopupProps.site_props.site)}
+                        {this.popUpTextRow('PM 2.5:',this.props.state.airnowPopupProps.props.value+' μg m⁻³')}
+                        {this.popUpTextRow('AQI:',this.props.state.airnowPopupProps.props.AQI)}
+                        {this.popUpTextRow('Region:',this.props.state.airnowPopupProps.site_props.region)}
                      </Popup>
                      :null}
 

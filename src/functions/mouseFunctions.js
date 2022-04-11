@@ -55,20 +55,21 @@ export function _queryFeatures(f,handleChange,pt,lngLat) {
         }
         if (id.includes('pm2.5')) {
             console.log('PM',f[i].properties.site,airnowSites)
-//             Object.keys(airnowSites).map((k)=>{
-//                 if (f[i].properties.site.includes(k)||
-//                     k.includes(f[i].properties.site)){
-//                     console.log(airnowSites[k])
-//                 }
+            let site_props = {}
+            Object.keys(airnowSites).map((k)=>{
+                if (f[i].properties.site==k){
+                    console.log(airnowSites[k])
+                    site_props = {'site':k,'region':airnowSites[k].region}
+                }
                     
-//             })
+            })
             
             
             handleChange({ 
                 mouseMovePM: f[i].properties.value,
                 airnowPopup:true,
                 airnowLoc: [lngLat.lng,lngLat.lat],
-                airnowPopupProps: {'props':f[i].properties}
+                airnowPopupProps: {'props':f[i].properties,'site_props':site_props}
             })
             flag4 = true
         }
