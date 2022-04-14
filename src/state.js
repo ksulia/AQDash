@@ -1,5 +1,5 @@
 import moment from 'moment';
-export const years = ['2020', '2021', '2022']
+export const years = ['2022']
 export const months = [
     'Jan',
     'Feb',
@@ -148,8 +148,8 @@ export const airnowSites = {
 'Newburgh':{'lat':41.49918,'lon':-74.008886 ,'region':3} ,
 'White Plains':{'lat':41.051896,'lon':-73.763648 ,'region':3 },
 'Manhattan/IS143':{'lat':40.848913,'lon':-73.930604 ,'region':2 },
-'Morrisania':{'lat': 40.8367, 'lon': -73.9214, 'region': 'n/a'},
-'IS 52':{'lat':40.816,'lon':-73.902 ,'region':2 },
+'Morrisania':{'lat': 40.8367, 'lon': -73.9214, 'region': 2},
+'Bronx - IS52':{'lat':40.816,'lon':-73.902 ,'region':2 },
 'CCNY':{'lat':40.819732,'lon':-73.948239 ,'region':2 },
 'PS 274':{'lat':40.69454,'lon':-73.92769 ,'region':2 },
 'Division Street':{'lat':40.714454,'lon':-73.995206 ,'region':2 },
@@ -163,5 +163,5 @@ export const airnowSites = {
 'Queens Near-road':{'lat':40.739264 ,'lon':-73.817694 ,'region':2 },
 'Eisenhower Park':{'lat':40.743156 ,'lon':-73.585513 ,'region':1 },
 'Suffolk County':{'lat':40.828022 ,'lon':-73.057548 ,'region':1 },
-'Holtsville':{'lat': 40.8278, 'lon': -73.0575, 'region':'n/a'}
+'Holtsville':{'lat': 40.8278, 'lon': -73.0575, 'region':1}
 }

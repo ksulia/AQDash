@@ -101,6 +101,7 @@ function onlyUnique(value, index, self) {
 const average = (array) => array.reduce((a, b) => a + b) / array.length;
 
 export function AirnowPlot24hr (props) {
+    console.log('airnowsites',airnowSites)
     if (props.state.plotsToDisplay.includes('airnow24hr')){
         console.log('airnow24 props',props.state.airnow24hr,props.state.completeTime)
 
@@ -110,26 +111,29 @@ export function AirnowPlot24hr (props) {
                      '#7e0023':'Hazardous'}
 
         let lats = [], colors = [], utc = [], aqi = [];
-        let plot_by_color = {}, plot_by_region = {}
+        let plot_by_color = {}, plot_by_region = {};
         Object.keys(props.state.airnow24hr).map((k)=>{
             let features = props.state.airnow24hr[k]
             features.map((f)=>{
-//                 console.log('feature',k,f,airnowSites[f.properties.site].region)
-                //identify the region of this site
-                let region = (airnowSites[f.properties.site].region).toString()
-            
-                //if the region does not already exists in our obj, create it
-                if (!Object.keys(plot_by_region).includes(region)) plot_by_region[region]={}
-                //store the sub-object, which is the region information
-                let temp_reg_obj = plot_by_region[region];
-                //if the current time does not already exist in region sub-obj, create it,
-                //then, push this new value to it
-                if (!Object.keys(temp_reg_obj).includes(k)) 
-                    temp_reg_obj[k]={'value':[],'aqi':[]}
-                temp_reg_obj[k]['value'].push(f.properties.value)
-                temp_reg_obj[k]['aqi'].push(f.properties.AQI)
+//                 console.log('feature',k,f.properties)
                 
-                plot_by_region[region]=temp_reg_obj                
+                if(f.properties.site){//only if the new data exists with the site name
+                    //identify the region of this site
+                    let region = (airnowSites[f.properties.site].region).toString()
+
+                    //if the region does not already exists in our obj, create it
+                    if (!Object.keys(plot_by_region).includes(region)) plot_by_region[region]={}
+                    //store the sub-object, which is the region information
+                    let temp_reg_obj = plot_by_region[region];
+                    //if the current time does not already exist in region sub-obj, create it,
+                    //then, push this new value to it
+                    if (!Object.keys(temp_reg_obj).includes(k)) 
+                        temp_reg_obj[k]={'value':[],'aqi':[]}
+                    temp_reg_obj[k]['value'].push(f.properties.value)
+                    temp_reg_obj[k]['aqi'].push(f.properties.AQI)
+
+                    plot_by_region[region]=temp_reg_obj   
+                }
                 
                 let temp_obj;
                 if(f.properties.color in plot_by_color){
@@ -150,44 +154,48 @@ export function AirnowPlot24hr (props) {
 
             })
         })
-        Object.keys(plot_by_region).map((r)=>{
-            let temp_obj = {'time':[],'value':[],'aqi':[],'color':[]}
-            Object.keys(plot_by_region[r]).map((t)=>{
-                let val = average(plot_by_region[r][t]['aqi']),c;
-                if(val <= 50) c = airnowColors[0]
-                else if (val <= 100) c = airnowColors[1]
-                else if (val <= 150) c = airnowColors[2]
-                else if (val <= 300) c = airnowColors[3]
-                else if (val <= 300) c = airnowColors[4]
-                else c = airnowColors[5]
-                temp_obj['time'].push(t)
-                temp_obj['value'].push(average(plot_by_region[r][t]['value']))
-                temp_obj['aqi'].push(val)
-                temp_obj['color'].push(c)
-            })
-            plot_by_region[r] = temp_obj
-            
-        })
+        //only plot by region if the site info is available in the data (new data)
         let all_data_regional = [];
-        console.log('plt by region',plot_by_region)
-        Object.keys(plot_by_region).map((r)=>{
-            if(r!="n/a"){
-                all_data_regional.push({
-                    x: plot_by_region[r].time,
-                    y: plot_by_region[r].value,
-                    type:'scatter',
-                    line:{width:1},
-                    marker:{
-                        size:10,
-                        color:plot_by_region[r].color,
-                        symbol:airnowShapes[r],
-                        line: { width: 1, color: 'grey' },
-                    },
-                    mode:'markers',
-                    name:'region '+r
+        if (Object.keys(plot_by_region).length>0){
+            Object.keys(plot_by_region).map((r)=>{
+                let temp_obj = {'time':[],'value':[],'aqi':[],'color':[]}
+                Object.keys(plot_by_region[r]).map((t)=>{
+                    let val = average(plot_by_region[r][t]['aqi']),c;
+                    if(val <= 50) c = airnowColors[0]
+                    else if (val <= 100) c = airnowColors[1]
+                    else if (val <= 150) c = airnowColors[2]
+                    else if (val <= 300) c = airnowColors[3]
+                    else if (val <= 300) c = airnowColors[4]
+                    else c = airnowColors[5]
+                    temp_obj['time'].push(t)
+                    temp_obj['value'].push(average(plot_by_region[r][t]['value']))
+                    temp_obj['aqi'].push(val)
+                    temp_obj['color'].push(c)
                 })
-            }
-        })
+                plot_by_region[r] = temp_obj
+
+            })
+            
+            console.log('plt by region',plot_by_region)
+            Object.keys(plot_by_region).map((r)=>{
+                if(r!="n/a"){
+                    all_data_regional.push({
+                        x: plot_by_region[r].time,
+                        y: plot_by_region[r].value,
+                        type:'scatter',
+                        line:{width:1},
+                        marker:{
+                            size:10,
+                            color:plot_by_region[r].color,
+                            symbol:airnowShapes[r],
+                            line: { width: 1, color: 'grey' },
+                        },
+                        mode:'markers',
+                        name:'region '+r
+                    })
+                }
+            })
+        }
 
         
         let all_data = []
@@ -218,7 +226,7 @@ export function AirnowPlot24hr (props) {
                         width: '100%',
                         height: '100%',
                     }}
-                    data={all_data_regional}
+                    data={all_data_regional.length>0? all_data_regional : all_data}
                     useResizeHandler={true}
                     layout={{
                         title: props.name,
@@ -226,7 +234,7 @@ export function AirnowPlot24hr (props) {
                         width: undefined,
                         height: undefined,
                         xaxis: { title: 'Time' },
-                        yaxis: { title: "PM 2.5" },
+                        yaxis: { title: all_data_regional.length>0?"PM 2.5":"Latitude"},
                         margin: {
                             r: 0,
                             t: 30,

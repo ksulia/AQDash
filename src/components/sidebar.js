@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import Checkbox from '@mui/material/Checkbox'
-import {state, months, hours, res} from '../state.js';
+import {state, months, hours, res, years} from '../state.js';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css'
 
@@ -22,7 +22,7 @@ const Sidebar = (props) => {
                         <div>
                             <a style={{color:fontColor}}>Year</a>
                             <Dropdown
-                                options={['2020', '2021', '2022']}
+                                options={years}
                                 onChange={(e)=>props.handleChange({year:e.value,clicked:true})}
                                 value={props.state.year}
                             />
@@ -133,6 +133,47 @@ const Sidebar = (props) => {
                            </div>
                        ) : null}
                        
+                        {!props.realtime && props.state.viirsData36 && props.state.AODon ? (
+                           <div style={{display:'flex',justifyContent:'flex-start', alignItems:'center',
+                           paddingLeft:10}}>
+                                   <Checkbox style={{color:"white",size:10}}
+                                       size="small"
+                                       checked={props.state.AODclick36}
+                                       onClick={() =>props.handleChange({AODclick36: !props.state.AODclick36})}
+                                   />
+                                   <a style={{color:"white",textAlign:'left',fontSize:15}}>Hi-Res (SNPP)</a>
+                         
+                           </div>
+                       ) : null}
+                       
+                       {!props.realtime && props.state.viirsData48S  && props.state.AODon? (
+                           <div style={{display:'flex',justifyContent:'flex-start', alignItems:'center',
+                           paddingLeft:10}}>
+                                   <Checkbox style={{color:"white"}}
+                                       size='small'
+                                       checked={props.state.AODclick48S}
+                                       onClick={() =>props.handleChange({AODclick48S: !props.state.AODclick48S})}
+                                   />
+                                   <a style={{color:"white",textAlign:'left',fontSize:15}}>Lo-Res (SNPP)</a>
+                         
+                           </div>
+                       ) : null}
+                       
+                       {!props.realtime && props.state.viirsData48J && props.state.AODon? (
+                           <div style={{display:'flex',justifyContent:'flex-start', alignItems:'center',
+                           paddingLeft:10}}>
+                                   <Checkbox style={{color:"white"}}
+                                       size="small"
+                                       checked={props.state.AODclick48J}
+                                       onClick={() =>props.handleChange({AODclick48J: !props.state.AODclick48J,})}
+                                   />
+                                   <a style={{color:"white",textAlign:'left',fontSize:15}}>Lo-Res (JPSS)</a>
+                         
+                           </div>
+                       ) : null}
+                       
+                      
+                       
                        {!props.realtime && (props.state.rawData ) ? (
                                <div style={{display:'flex',justifyContent:'flex-start', alignItems:'center'}} >
                                    {/*
@@ -150,42 +191,6 @@ const Sidebar = (props) => {
                                </div>
                        ) : null}
                        
-                       {!props.realtime && props.state.viirsData48J && props.state.AODon? (
-                           <div style={{display:'flex',justifyContent:'flex-start', alignItems:'center',
-                           paddingLeft:10}}>
-                                   <Checkbox style={{color:"white"}}
-                                       size="small"
-                                       checked={props.state.AODclick48J}
-                                       onClick={() =>props.handleChange({AODclick48J: !props.state.AODclick48J,})}
-                                   />
-                                   <a style={{color:"white",textAlign:'left',fontSize:15}}>Lo-Res (JPSS)</a>
-                         
-                           </div>
-                       ) : null}
-                       {!props.realtime && props.state.viirsData48S  && props.state.AODon? (
-                           <div style={{display:'flex',justifyContent:'flex-start', alignItems:'center',
-                           paddingLeft:10}}>
-                                   <Checkbox style={{color:"white"}}
-                                       size='small'
-                                       checked={props.state.AODclick48S}
-                                       onClick={() =>props.handleChange({AODclick48S: !props.state.AODclick48S})}
-                                   />
-                                   <a style={{color:"white",textAlign:'left',fontSize:15}}>Lo-Res (SNPP)</a>
-                         
-                           </div>
-                       ) : null}
-                       {!props.realtime && props.state.viirsData36 && props.state.AODon ? (
-                           <div style={{display:'flex',justifyContent:'flex-start', alignItems:'center',
-                           paddingLeft:10}}>
-                                   <Checkbox style={{color:"white",size:10}}
-                                       size="small"
-                                       checked={props.state.AODclick36}
-                                       onClick={() =>props.handleChange({AODclick36: !props.state.AODclick36})}
-                                   />
-                                   <a style={{color:"white",textAlign:'left',fontSize:15}}>Hi-Res (SNPP)</a>
-                         
-                           </div>
-                       ) : null}
 
 
                        {props.realtime && props.state.AODon && props.state.aodCBValSave ? (
