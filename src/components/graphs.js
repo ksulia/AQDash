@@ -117,7 +117,7 @@ export function AirnowPlot24hr (props) {
             features.map((f)=>{
 //                 console.log('feature',k,f.properties)
                 
-                if(f.properties.site){//only if the new data exists with the site name
+                if(f.properties.site && Object.keys(airnowSites).includes(f.properties.site)){//only if the new data exists with the site name
                     //identify the region of this site
                     let region = (airnowSites[f.properties.site].region).toString()
 

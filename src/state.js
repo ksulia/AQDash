@@ -159,6 +159,7 @@ export const airnowSites = {
 'PS 19':{'lat':40.730043,'lon':-73.98445 ,'region':2 },
 'Bklyn - PS 314' :{'lat':40.64182 ,'lon':-74.01871 ,'region':2} ,
 'JHS 126':{'lat':40.71961 ,'lon':-73.94771 ,'region':2 },
+'Queens':{'lat':40.7375 ,'lon':-73.8244 ,'region':2 },
 'Queens College':{'lat':40.73614 ,'lon':-73.82153 ,'region':2 },
 'Queens Near-road':{'lat':40.739264 ,'lon':-73.817694 ,'region':2 },
 'Eisenhower Park':{'lat':40.743156 ,'lon':-73.585513 ,'region':1 },
