@@ -72,7 +72,7 @@ class App extends Component {
     
   render() {
     return (      
-       <BrowserRouter>
+       <BrowserRouter >
         <div id='header' style={{width:'100%'}}>
           <Navigation />
             <Routes>
