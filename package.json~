@@ -1,10 +1,11 @@
 {
   "name": "aqdash",
     "version": "1.0.0",
-    "proxy": "http://10.233.88.253:3005/",
+//    "proxy": "http://10.233.88.253:3005/",
   "description": "AQ Dash",
     "main": "index.js",
-    "homepage": "https://xcitedb.asrc.albany.edu/aq",
+    "homepage": ".",
+//    "homepage": "https://xcitedb.asrc.albany.edu/aq",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --config webpack.config.js"
