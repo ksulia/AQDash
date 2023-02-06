@@ -60,10 +60,12 @@ export default async function fetchData(state,handleChange) {
     
 //    await fetch(`http://169.226.68.133:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
     //await fetch(`https://xcitedb.asrc.albany.edu/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
-    await fetch(`http://169.226.68.133:30718/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
+    // await fetch(`https://10.233.88.253:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
     // await fetch(`http://10.233.31.186:3011/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}/`)
     
 	// /api?time=2022-12-11T19
+    
+    await fetch(`api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
     .then(async (response) => await response.json())
     .then(async (responseJson) => rawData = responseJson) //setState
     .then(async () => {

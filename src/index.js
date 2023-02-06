@@ -72,7 +72,7 @@ class App extends Component {
     
   render() {
     return (      
-       <BrowserRouter >
+       <BrowserRouter basename="/aq">
         <div id='header' style={{width:'100%'}}>
           <Navigation />
             <Routes>
@@ -101,4 +101,4 @@ class App extends Component {
 export default App;
 
 
-ReactDOM.render(<App />, document.getElementById('app'));
+
