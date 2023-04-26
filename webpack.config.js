@@ -38,7 +38,7 @@ module.exports = {
     devServer: {
         compress: true,
         allowedHosts: 'all',
-        historyApiFallback: true,
+        historyApiFallback: { index: '/aq' },
         port: '3000',
         //        proxy: {
         //          '/api':{
