@@ -31,7 +31,11 @@ export default class ForecastMap extends React.Component {
                 {console.log('virrsobjnow', this.props.state.viirsObjnow)}
                 {this.props.state.AODon &&
                     (this.props.state.AODclick36 || this.props.state.AODclick48J || this.props.state.AODclick48S) ?
-                    <a style={{ color: "black", textAlign: 'left' }}>{this.props.state.viirsTimeNow}</a>
+                    <a style={{ color: "black", textAlign: 'left' }}>IDEA-NYS: {this.props.state.viirsTimeNow}    </a>
+                    : null}
+                {this.props.state.wrfChecked &&
+                    (this.props.state.pmChecked || this.props.state.o3Checked) ?
+                    <a style={{ color: "black", textAlign: 'left' }}>WRF CHEM: {this.props.state.wrfTimeNow}</a>
                     : null}
                 <Map
                     style={styles.light}
@@ -56,11 +60,12 @@ export default class ForecastMap extends React.Component {
                             }}
                         />
                     ) : null}
-                    {this.props.state.wrfChecked && this.props.state.wrfChem != null ?
+                    {this.props.state.wrfChecked && this.props.state.wrfObjnow &&
+                        (this.props.state.pmChecked || this.props.state.o3Checked) ?
                         <GeoJSONLayer
                             id={'wrfobj'}
                             key={'wrfobj'}
-                            data={this.props.state.wrfChem['2023-04-24T00:00:00']['o3']}
+                            data={this.props.state.wrfObjnow}
                             fillPaint={{
                                 'fill-color': ['get', 'fill'],
                                 'fill-opacity': ['get', 'fill-opacity'],

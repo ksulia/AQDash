@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import Checkbox from '@mui/material/Checkbox';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+// import CircleBorder from '@mui/icons-material/CircleBorder';
+// import Circle from '@mui/icons-material/Circle';
 import { state, months, hours, res, years } from '../state.js';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css'
@@ -69,7 +66,12 @@ const Sidebar = (props) => {
                         marginTop: 15, width: '100%', fontSize: 20, fontFamily: 'Roboto', fontWeight: 'bold',
                         backgroundColor: 'white', color: props.realtime ? '#461660' : '#EEB211', borderRadius: 5
                     }}
-                    onClick={(e) => props.handleChange({ fetchData: true })}
+                    onClick={(e) => props.handleChange({
+                        fetchData: true,
+                        GOESa: false, GOESd: false, GOESs: false, riskChecked: false,
+                        wrfChecked: false, o3Checked: false, pmChecked: false,
+                        AODon: false, AODclick36: false, AODclick48J: false, AODclick48S: false
+                    })}
                 > Fetch </button>
                 <a style={{ alignSelf: 'flex-end', fontSize: 10, color: fontColor, }} >
                     {props.state.fetching}
@@ -201,20 +203,25 @@ const Sidebar = (props) => {
                     </div>
                 ) : null}
 
-                {!props.realtime && props.state.rawData && props.state.wrfChem ? (
+                {!props.realtime && props.state.rawData && props.state.wrfChem && props.state.wrfChecked ? (
                     <div style={{
                         display: 'flex', justifyContent: 'flex-start', alignItems: 'center',
                         paddingLeft: 10
                     }}>
                         <Checkbox
                             style={{ color: "white" }} size="small" checked={props.state.o3Checked} onClick={() =>
-                                props.handleChange({ o3Checked: !props.state.o3Checked, pmChecked: !props.state.o3Checked ? false : props.state.pmChecked })}
+                                props.handleChange({
+                                    o3Checked: !props.state.o3Checked,
+                                    pmChecked: !props.state.o3Checked ? false : props.state.pmChecked
+                                })}
+                        // icon={<CircleBorder />}
+                        // checkedIcon={<Circle />}
                         />
                         <a style={{ color: "white", textAlign: 'left', fontSize: 15 }}>O3</a>
                     </div>
                 ) : null}
 
-                {!props.realtime && props.state.rawData && props.state.wrfChem ? (
+                {!props.realtime && props.state.rawData && props.state.wrfChem && props.state.wrfChecked ? (
                     <div style={{
                         display: 'flex', justifyContent: 'flex-start', alignItems: 'center',
                         paddingLeft: 10
@@ -222,6 +229,8 @@ const Sidebar = (props) => {
                         <Checkbox
                             style={{ color: "white" }} size="small" checked={props.state.pmChecked} onClick={() =>
                                 props.handleChange({ pmChecked: !props.state.pmChecked, o3Checked: !props.state.pmChecked ? false : props.state.o3Checked })}
+                        // icon={<CircleBorder />}
+                        // checkedIcon={<Circle />}
                         />
                         <a style={{ color: "white", textAlign: 'left', fontSize: 15 }}>PM2.5</a>
                     </div>

@@ -132,6 +132,7 @@ export const state = {
     wrfObjnow: { type: 'FeatureCollection', features: [] },
     o3Checked: false,
     pmChecked: false,
+    wrfTimeNow: '',
 };
 
 
