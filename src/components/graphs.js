@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Plot from 'react-plotly.js'
 import { Container, Row, Col } from 'react-bootstrap';
-import {airnowSites} from '../state.js'
+import {airnowSites, airnowShapes} from '../state.js'
 
 const airnowColors = ['#00e400','#ffff00','#ff7e00','#ff0000','#8f3f97','#7e0023']
-const airnowShapes = {'1':'circle','2':'diamond','3':'star-triangle-up','4':'square','5':'pentagon','6':'hexagon-open','7':'star','8':'bowtie','9':'hourglass'}
+
 export function GoesPlot (props) {
 //     console.log('goes!',props)
     let times = [], aod = [], dust = [], smoke = []

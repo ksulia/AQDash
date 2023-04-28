@@ -4,6 +4,7 @@ import Sidebar from '../components/sidebar.js';
 import fetchData from '../functions/fetchData.js';
 import ForecastMap from '../components/map_forecast.js';
 import { getRiskLegend, getAODCB } from '../functions/legends.js'
+// import Colorbar from "react-colors";
 
 export class Forecast extends React.Component {
 

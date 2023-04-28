@@ -10,24 +10,42 @@ module.exports = {
         path: path.resolve(__dirname, 'src'),
         publicPath: "/aq",
     },
-    //mode: 'production',
+    // mode: 'production',
     mode: 'development',
     performance: {
         hints: false,
         maxEntrypointSize: 512000,
         maxAssetSize: 512000
     },
+    resolve: {
+        extensions: ['', '.js'],
+        alias: {
+            webworkify: 'webworkify-webpack',
+            'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js')
+        }
+    },
     module: {
         rules: [{
-            test: /\.js$/,
+            test: /\.jsx?$/,
+            use: { loader: 'babel-loader' },
             exclude: /node_modules/,
-            use: {
-                loader: "babel-loader"
-            }
+            // query: {
+            //     presets: ['es2015', 'stage-0']
+            // }
+        },
+        {
+            test: /\.js$/,
+            include: path.resolve(__dirname, 'node_modules/webworkify/index.js'),
+            use: { loader: 'worker' }
         },
         {
             test: /\.css$/,
-            use: ["style-loader", "css-loader"]
+            use: [{ loader: "style-loader" }, { loader: "css-loader" }]
+        },
+        { test: /\.json$/, use: { loader: 'json-loader' }, type: 'javascript/auto' },
+        {
+            test: /mapbox-gl.+\.js$/,
+            use: { loader: 'transform-loader/?brfs' }
         },
         {
             test: /\.(jpe?g|png|gif|woff|woff2|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
@@ -38,7 +56,7 @@ module.exports = {
     devServer: {
         compress: true,
         allowedHosts: 'all',
-        historyApiFallback: true,
+        historyApiFallback: { index: '/aq' },
         port: '3000',
         //        proxy: {
         //          '/api':{

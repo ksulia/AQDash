@@ -1,19 +1,9 @@
 import * as React from 'react';
-import ReactMapboxGl, {
-    GeoJSONLayer,
-    Marker,
-    Image,
-    Layer,
-    Feature,
-} from 'react-mapbox-gl';
-import * as MapboxGL from 'mapbox-gl';
-import { Container, Row, Col } from 'react-bootstrap'
+import Map, { Marker, Source, Layer, Popup } from "react-map-gl";
 const { token_fore, styles } = require('./config.json')
 import { getLegend } from '../functions/legends.js';
 import { _onMouseMove, _onClick, _onMove } from '../functions/mouseFunctions.js';
 
-
-const Map = ReactMapboxGl({ accessToken: token_fore })
 const mapStyle = { height: '50vh', borderRadius: 5 }
 
 
@@ -37,58 +27,51 @@ export default class ForecastMap extends React.Component {
                     (this.props.state.pmChecked || this.props.state.o3Checked) ?
                     <a style={{ color: "black", textAlign: 'left' }}>WRF CHEM: {this.props.state.wrfTimeNow}</a>
                     : null}
+
                 <Map
-                    style={styles.light}
-                    center={[this.props.state.lng, this.props.state.lat]}
-                    zoom={[this.props.state.zoom]}
-                    containerStyle={mapStyle}
-                    onMouseMove={(map, e) => _onMouseMove(map, e, this.props)}
-                    onMove={(map, e) => _onMove(map, e, this.props)}
-                    onClick={(map, e) => _onClick(map, e, this.props)}
+                    ref={map => this.mapRef = map}
+                    initialViewState={{
+                        latitude: this.props.state.lat,
+                        longitude: this.props.state.lng,
+                        zoom: this.props.state.zoom
+                    }}
+                    style={mapStyle}
+                    mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+                    mapboxAccessToken={token_fore}
+                    onMouseMove={(e) => _onMouseMove(this.mapRef, e, this.props)}
+                    onMove={(e) => _onMove(this.mapRef, e, this.props)}
+                    onClick={(e) => _onClick(this.mapRef, e, this.props)}
                 >
 
-                    {this.props.state.rawData &&
-                        this.props.state.rawData.data_risk &&
-                        this.props.state.riskChecked ? (
-                        <GeoJSONLayer
-                            key={'riskPolygons'}
-                            id={'riskPolygons'}
-                            data={this.props.state.rawData.data_risk}
-                            fillPaint={{
-                                'fill-color': ['get', 'color'],
-                                'fill-opacity': ['get', 'alpha'],
-                            }}
-                        />
-                    ) : null}
                     {this.props.state.wrfChecked && this.props.state.wrfObjnow &&
                         (this.props.state.pmChecked || this.props.state.o3Checked) ?
-                        <GeoJSONLayer
-                            id={'wrfobj'}
-                            key={'wrfobj'}
-                            data={this.props.state.wrfObjnow}
-                            fillPaint={{
-                                'fill-color': ['get', 'fill'],
-                                'fill-opacity': ['get', 'fill-opacity'],
-                                'fill-outline-color': ['get', 'stroke'],
-                            }}
-                        />
+                        <Source id='wrfobj' type='geojson' data={this.props.state.wrfObjnow}>
+                            <Layer {...{
+                                type: 'fill',
+                                paint: {
+                                    'fill-color': ['get', 'fill'],
+                                    'fill-opacity': ['get', 'fill-opacity'],
+                                    'fill-outline-color': ['get', 'stroke'],
+                                }
+                            }} />
+                        </Source>
                         : null}
 
                     {this.props.state.viirsObj != null && this.props.state.AODon &&
                         (this.props.state.AODclick48S || this.props.state.AODclick36 || this.props.state.AODclick48J) ? (
-                        <GeoJSONLayer
-                            id={'viirsobj'}
-                            key={'viirsobj'}
-                            data={this.props.state.viirsObjnow}
-                            circlePaint={{
-                                'circle-color': ['get', 'color_pres'],
-                                'circle-radius': 2,
-                                'circle-stroke-color': 'grey',
-                                'circle-stroke-width': 1,
-                            }}
-                        />
-                    ) : null}
+                        <Source id='viirsobj' type='geojson' data={this.props.state.viirsObjnow}>
+                            <Layer {...{
+                                type: 'circle',
+                                paint: {
+                                    'circle-color': ['get', 'color_pres'],
+                                    'circle-radius': 2,
+                                    'circle-stroke-color': 'grey',
+                                    'circle-stroke-width': 1,
+                                }
+                            }} />
 
+                        </Source>
+                    ) : null}
                     {getLegend(this.props.state, this.state)}
                 </Map>
             </div>

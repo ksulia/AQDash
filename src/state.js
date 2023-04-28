@@ -135,6 +135,8 @@ export const state = {
     wrfTimeNow: '',
 };
 
+export const airnowShapes = { '1': 'circle', '2': 'diamond', '3': 'star-triangle-up', '4': 'square', '5': 'pentagon', '6': 'hexagon-open', '7': 'star', '8': 'bowtie', '9': 'hourglass' };
+
 
 export const airnowSites = {
     'Tonawanda II': { 'lat': 42.998136, 'lon': -78.899312, 'region': 9 },
@@ -172,3 +174,4 @@ export const airnowSites = {
     'Suffolk County': { 'lat': 40.828022, 'lon': -73.057548, 'region': 1 },
     'Holtsville': { 'lat': 40.8278, 'lon': -73.0575, 'region': 1 }
 }
+

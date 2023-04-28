@@ -1,20 +1,18 @@
 import * as React from 'react';
 import getRiskData from '../functions/getRiskData.js';
-import {airnowSites} from '../state.js'
+import { airnowSites } from '../state.js'
 
 
-export function _onMouseMove(map, e, props){
-//     console.log("mouseMove",map, e, e.lngLat.lng, e.lngLat.lat)
-    
-    
-    
+export function _onMouseMove(map, e, props) {
+    // console.log("mouseMove", map, e)
+
     const features = map.queryRenderedFeatures(e.point)
-    _queryFeatures(features,props.handleChange,e.point,e.lngLat)
+    _queryFeatures(features, props.handleChange, e.point, e.lngLat)
     props.handleChange({ mouseMoveLL: e.lngLat })
-            
+
 }
 
-export function _onMove (map, e, props){
+export function _onMove(map, e, props) {
     props.handleChange({
         lng: map.getCenter().lng,
         lat: map.getCenter().lat,
@@ -22,29 +20,31 @@ export function _onMove (map, e, props){
     })
 }
 
-export function _queryFeatures(f,handleChange,pt,lngLat) {
+export function _queryFeatures(f, handleChange, pt, lngLat) {
     var flag1 = false,
         flag2 = false,
         flag3 = false,
         flag4 = false,
         flag5 = false
-//           console.log("LAYERS",f,pt,lngLat)
-    
+    // console.log("LAYERS", f, pt, lngLat)
+
     handleChange({
-            airnowPopup:false,
-            airnowLoc: null,
-            airnowPopupProps: null})
-    
-    
+        airnowPopup: false,
+        airnowLoc: null,
+        airnowPopupProps: null
+    })
+
+
     for (var i = 0; i < f.length; i++) {
-        const id = f[i].layer.id
-//         if (id.includes('symbol')) {
-//             handleChange({
-//                 mouseMoveWS: f[i].properties.speed,
-//                 mouseMoveWD: this._degToCompass(f[i].properties.dir),
-//             })
-//             flag1 = true
-//         }
+        const id = f[i].layer.source
+        //         if (id.includes('symbol')) {
+        //             handleChange({
+        //                 mouseMoveWS: f[i].properties.speed,
+        //                 mouseMoveWD: this._degToCompass(f[i].properties.dir),
+        //             })
+        //             flag1 = true
+        //         }
+        // console.log("SOURCE", id)
         if (id.includes('goessmoke')) {
             handleChange({ mouseMoveGoesSmoke: true })
             flag2 = true
@@ -54,22 +54,21 @@ export function _queryFeatures(f,handleChange,pt,lngLat) {
             flag3 = true
         }
         if (id.includes('pm2.5')) {
-            console.log('PM',f[i].properties.site,airnowSites)
+            // console.log('PM', f[i].properties.site, airnowSites)
             let site_props = {}
-            Object.keys(airnowSites).map((k)=>{
-                if (f[i].properties.site==k){
-                    console.log(airnowSites[k])
-                    site_props = {'site':k,'region':airnowSites[k].region}
+            Object.keys(airnowSites).map((k) => {
+                if (f[i].properties.site == k) {
+                    // console.log(airnowSites[k])
+                    site_props = { 'site': k, 'region': airnowSites[k].region }
                 }
-                    
+
             })
-            
-            
-            handleChange({ 
+
+            handleChange({
                 mouseMovePM: f[i].properties.value,
-                airnowPopup:true,
-                airnowLoc: [lngLat.lng,lngLat.lat],
-                airnowPopupProps: {'props':f[i].properties,'site_props':site_props}
+                airnowPopup: true,
+                airnowLoc: [lngLat.lng, lngLat.lat],
+                airnowPopupProps: { 'props': f[i].properties, 'site_props': site_props }
             })
             flag4 = true
         }
@@ -85,9 +84,9 @@ export function _queryFeatures(f,handleChange,pt,lngLat) {
     if (!flag5) handleChange({ mouseMoveRiskBox: null })
 }
 
-export function _onClick (map, e, props) {
+export function _onClick(map, e, props) {
     props.handleChange({ riskClick: false })
-       props.handleChange({ riskClick: false })
+    props.handleChange({ riskClick: false })
     const features = map.queryRenderedFeatures(e.point)
     console.log('FEATURES', features)
     for (var i = 0; i < features.length; i++) {
@@ -128,7 +127,7 @@ export function _onClick (map, e, props) {
                     viirsPlotOn: riskObj.viirs.length > 0 ? true : false,
                     riskHighlight: {
                         type: 'FeatureCollection',
-                        features: [{type: 'Feature', geometry: {type: 'Polygon',coordinates: coords,},properties: {},},],
+                        features: [{ type: 'Feature', geometry: { type: 'Polygon', coordinates: coords, }, properties: {}, },],
                     },
                 })
             } catch (e) {
@@ -136,6 +135,6 @@ export function _onClick (map, e, props) {
             }
         }
     }
-//     console.log('onclick', features, this.props.state.riskData)
+    //     console.log('onclick', features, this.props.state.riskData)
 }
 
