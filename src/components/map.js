@@ -7,32 +7,31 @@ import ReactMapboxGl, {
     Layer,
     Feature,
 } from 'react-mapbox-gl';
-import DrawControl from 'react-mapbox-gl-draw';
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { Container, Row, Col } from 'react-bootstrap'
-import {getLegend} from '../functions/legends.js';
-import {_onMouseMove,_onClick,_onMove} from '../functions/mouseFunctions.js';
+import { getLegend } from '../functions/legends.js';
+import { _onMouseMove, _onClick, _onMove } from '../functions/mouseFunctions.js';
 
 const { token_real, styles } = require('./config.json')
 
 const Map = ReactMapboxGl({ accessToken: token_real })
-const mapStyle = {height: '50vh', borderRadius:5}
+const mapStyle = { height: '50vh', borderRadius: 5 }
 
 export class RealTimeMap extends React.Component {
-    
+
     constructor(props) {
         super(props)
-    } 
-    
-    componentDidMount(){
-        console.log("MAP",this.mapRef)
     }
-    
-    
-    popUpTextRow(name, value){
+
+    componentDidMount() {
+        console.log("MAP", this.mapRef)
+    }
+
+
+    popUpTextRow(name, value) {
         return (
             <Row>
-                <Col style={{paddingRight:5}}>
+                <Col style={{ paddingRight: 5 }}>
                     <a class="text-nowrap" >{name}</a>
                 </Col>
                 <Col>
@@ -41,107 +40,98 @@ export class RealTimeMap extends React.Component {
             </Row>
         )
     }
-    
+
     onDrawCreate = ({ features }) => {
-        console.log('create',features[0].geometry.coordinates,this.props);
+        console.log('create', features[0].geometry.coordinates, this.props);
         let coords = features[0].geometry.coordinates[0]
-        let minLat=1000, maxLat=-1000, minLon=1000, maxLon=-1000
-        coords.forEach((e)=>{
-            console.log('coords',e)
-            minLon = Math.min(minLon,e[0])
-            minLat = Math.min(minLat,e[1])
-            maxLon = Math.max(maxLon,e[0])
-            maxLat = Math.max(maxLat,e[1])
+        let minLat = 1000, maxLat = -1000, minLon = 1000, maxLon = -1000
+        coords.forEach((e) => {
+            console.log('coords', e)
+            minLon = Math.min(minLon, e[0])
+            minLat = Math.min(minLat, e[1])
+            maxLon = Math.max(maxLon, e[0])
+            maxLat = Math.max(maxLat, e[1])
         })
-        console.log(minLat,minLon,maxLat,maxLon)
-        this.props.handleChange({fitBounds:[[minLon, minLat],[maxLon,maxLat]]})
-        
+        console.log(minLat, minLon, maxLat, maxLon)
+        this.props.handleChange({ fitBounds: [[minLon, minLat], [maxLon, maxLat]] })
+
     };
     onDrawUpdate = ({ features }) => {
         console.log(features);
     };
 
 
-    
-    
-    render(){
-        
+
+
+    render() {
+
         return (
-        
-            <div style={{ width: '100%'}}>
+
+            <div style={{ width: '100%' }}>
                 <Map
-                    ref={ map => this.mapRef = map }
+                    ref={map => this.mapRef = map}
                     style={styles.light}
                     center={[this.props.state.lng, this.props.state.lat]}
                     zoom={[this.props.state.zoom]}
                     containerStyle={mapStyle}
                     fitBounds={this.props.state.fitBounds}
-                    onMouseMove={(map,e)=>_onMouseMove(map,e,this.props)}
-                    onMove={(map,e)=>_onMove(map,e,this.props)}
-                    onClick={(map,e)=>_onClick(map,e,this.props)}
+                    onMouseMove={(map, e) => _onMouseMove(map, e, this.props)}
+                    onMove={(map, e) => _onMove(map, e, this.props)}
+                    onClick={(map, e) => _onClick(map, e, this.props)}
                 >
-                    
-                    {/*
-                    <DrawControl 
-                        position="top-right" 
-                        onDrawCreate={this.onDrawCreate} 
-                        onDrawUpdate={this.onDrawUpdate}
-                        displayControlsDefault = {false} 
-                        controls={{polygon: true,trash: true}}
-                    />
-                    */}
-                
+
+
 
                     {this.props.state.goesDataAOD &&
-                    this.props.state.GOESa ? (
+                        this.props.state.GOESa ? (
                         <GeoJSONLayer
                             key={'goesaod'}
                             id={'goesaod'}
                             data={this.props.state.goesDataAOD}
                             fillPaint={{
                                 'fill-color': ['get', 'fill'],
-                                'fill-opacity': ['get','fill-opacity'],
-                                'fill-outline-color':['get','stroke']
+                                'fill-opacity': ['get', 'fill-opacity'],
+                                'fill-outline-color': ['get', 'stroke']
                             }}
                         />
                     ) : null}
 
                     {this.props.state.goesDataDust &&
-                    this.props.state.GOESd ? (
+                        this.props.state.GOESd ? (
                         <GeoJSONLayer
                             key={'goesdust'}
                             id={'goesdust'}
                             data={this.props.state.goesDataDust}
                             fillPaint={{
                                 'fill-color': ['get', 'fill'],
-                                'fill-opacity': ['get','fill-opacity'],
-                                'fill-outline-color':['get','stroke']
+                                'fill-opacity': ['get', 'fill-opacity'],
+                                'fill-outline-color': ['get', 'stroke']
                             }}
                         />
                     ) : null}
-                    
-                    {this.props.state.goesDataSmoke&&
-                    this.props.state.GOESs ? (
+
+                    {this.props.state.goesDataSmoke &&
+                        this.props.state.GOESs ? (
                         <GeoJSONLayer
                             key={'goessmoke'}
                             id={'goessmoke'}
                             data={this.props.state.goesDataSmoke}
                             fillPaint={{
                                 'fill-color': ['get', 'fill'],
-                                'fill-opacity': ['get','fill-opacity'],
-                                'fill-outline-color':['get','stroke']
+                                'fill-opacity': ['get', 'fill-opacity'],
+                                'fill-outline-color': ['get', 'stroke']
                             }}
                         />
                     ) : null}
 
 
                     {this.props.state.geoJsonWind != null &&
-                    this.props.state.Windon ? (
+                        this.props.state.Windon ? (
                         <GeoJSONLayer
                             key={'WIND'}
                             data={
                                 this.props.state.geoJsonWind[
-                                    this.props.state.Windkeys[0]
+                                this.props.state.Windkeys[0]
                                 ]
                             }
                             symbolLayout={{
@@ -154,7 +144,7 @@ export class RealTimeMap extends React.Component {
                     ) : null}
 
                     {this.props.state.airnowData != null &&
-                    this.props.state.Airnowon ? (
+                        this.props.state.Airnowon ? (
                         <GeoJSONLayer
                             key={'pm2.5'}
                             id={'pm2.5'}
@@ -171,7 +161,7 @@ export class RealTimeMap extends React.Component {
                                 'circle-stroke-color': 'grey',
                                 'circle-stroke-width': 1,
                             }}
-                            
+
                         />
                     ) : null}
 
@@ -200,14 +190,14 @@ export class RealTimeMap extends React.Component {
                             }}
                             symbolOnClick={(e) =>
                                 this.props.handleChange({
-                                    chosenSite:e.features[0].properties.site,
+                                    chosenSite: e.features[0].properties.site,
                                     scaPlotOn: true,
                                     cnrPlotOn: true,
                                 })
                             }
                             circleOnClick={(e) =>
                                 this.props.handleChange({
-                                    chosenSite:e.features[0].properties.site,
+                                    chosenSite: e.features[0].properties.site,
                                     scaPlotOn: true,
                                     cnrPlotOn: true,
                                 })
@@ -221,23 +211,23 @@ export class RealTimeMap extends React.Component {
                             }}
                         />
                     ) : null}
-                    
-                    {this.props.state.airnowPopup? 
-                    <Popup coordinates={this.props.state.airnowLoc}
-                             style={{textAlign:'left',width:'undefined'}}>
-                        {this.popUpTextRow('Site:',this.props.state.airnowPopupProps.site_props.site)}
-                        {this.popUpTextRow('PM 2.5:',this.props.state.airnowPopupProps.props.value+' μg m⁻³')}
-                        {this.popUpTextRow('AQI:',this.props.state.airnowPopupProps.props.AQI)}
-                        {this.popUpTextRow('Region:',this.props.state.airnowPopupProps.site_props.region)}
-                     </Popup>
-                     :null}
+
+                    {this.props.state.airnowPopup ?
+                        <Popup coordinates={this.props.state.airnowLoc}
+                            style={{ textAlign: 'left', width: 'undefined' }}>
+                            {this.popUpTextRow('Site:', this.props.state.airnowPopupProps.site_props.site)}
+                            {this.popUpTextRow('PM 2.5:', this.props.state.airnowPopupProps.props.value + ' μg m⁻³')}
+                            {this.popUpTextRow('AQI:', this.props.state.airnowPopupProps.props.AQI)}
+                            {this.popUpTextRow('Region:', this.props.state.airnowPopupProps.site_props.region)}
+                        </Popup>
+                        : null}
 
                     {getLegend(this.props.state, this.props.handleChange)}
-                    
+
                 </Map>
             </div>
-                        
-        
+
+
         )
     }
 }
