@@ -4,6 +4,8 @@ let cbMax = 501, cbMin = 0;
 export default async function fetchData(state, handleChange) {
     console.log('fetch data!', state, handleChange)
 
+
+
     let setStates = {
         fetching: 'Fetching data, please wait...',
         airnowData: null,
@@ -15,11 +17,12 @@ export default async function fetchData(state, handleChange) {
         goesDataAOD: null,
         dustCB: null,
         smokeCB: null,
+        // map_realtime: map_realtime,
         viirsData36: null,
         viirsData48J: null,
         viirsData48S: null,
         viirsObj: null,
-        viirsObjnow: { type: 'FeatureCollection', features: [] },
+        viirsObjnow: null,
         viirsTimeNow: '',
         aodCB36: null,
         aodCB48J: null,
@@ -27,6 +30,8 @@ export default async function fetchData(state, handleChange) {
         riskHighlight: false,
         riskData: null,
         rawData: null,
+        wrfObjnow: null,
+        wrfTimeNow: '',
         //             AODon: false,
         //             GOESd: false,
         //             GOESs: false,
@@ -42,18 +47,23 @@ export default async function fetchData(state, handleChange) {
 
     handleChange(setStates)
 
-    console.log('fetch2', state.fetchData, state.completeTime, state.res)
+    // console.log('fetch2', state.fetchData, state.completeTime, state.res)
 
     let fetching = 'Fetching data, please wait...';
     let smokeCB = {}, dustCB = {};
     let airnowData = null, goesDataDust = null, goesDataAOD = null, lidarData = null;
     let goesDataSmoke = null, dustDB = null, viirsData36 = null, lidarSites = null;
     let viirsData48J = null, viirsData48S = null, viirsTimeNow = '';
-    let viirsObj = null, viirsObjnow = { type: 'FeatureCollection', features: [] };
-    let aodCB36 = null, aodCB48J = null, aodCB48S = null, wrf_chem = {};
+    let viirsObj = null, viirsObjnow = null;
+    let aodCB36 = null, aodCB48J = null, aodCB48S = null;
+    let wrfObjnow = null, wrfTimeNow = '', wrf_chem = null;
     let riskHighlight = false, riskData = null, rawData = null;
     let AODon = false, Airnowon = false, Lidaron = false;
     let airnow24hr = {}
+
+    //now we need to remove all sources from the map so that we can reload them
+
+
 
 
 
@@ -61,18 +71,18 @@ export default async function fetchData(state, handleChange) {
     //    await fetch(`http://169.226.68.133:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
     //await fetch(`https://xcitedb.asrc.albany.edu/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
     // await fetch(`https://10.233.88.253:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
-    // await fetch(`http://169.226.68.146:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}/`)
+    await fetch(`http://169.226.68.146:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}/`)
 
         // /api?time=2022-12-11T19
         // console.log(`api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`) 
-        await fetch(`api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
+        // await fetch(`api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
         .then(async (response) => await response.json())
         .then(async (responseJson) => rawData = responseJson) //setState
         .then(async () => {
-            console.log('here', rawData)
+            // console.log('here', rawData)
 
             if (rawData && rawData.status === 0) {
-                console.log('here1')
+                // console.log('here1')
                 //             if (rawData.data_risk && rawData.data_risk.features){
                 //                 Object.entries(rawData.data_risk.features).map((e)=>{
                 //                     if(e[1].properties.data.length>0){
@@ -90,13 +100,13 @@ export default async function fetchData(state, handleChange) {
 
 
                 Object.keys(rawData.data).map((k) => {
-                    console.log('here2', k)
+                    // console.log('here2', k)
                     if (k.includes('airnow_pm2.5')) {
-                        console.log('airnowpm1', k, rawData.data[k])
+                        // console.log('airnowpm1', k, rawData.data[k])
                         airnowData = rawData.data[k] //setState
-                        console.log('airnowpm2', k, rawData.data[k])
+                        // console.log('airnowpm2', k, rawData.data[k])
                     } else if (k.includes('airnow_24hr')) {
-                        console.log('airnow_24hr', rawData.data[k].features)
+                        // console.log('airnow_24hr', rawData.data[k].features)
                         rawData.data[k].features.map((an) => {
                             let airnow_time = an.properties.UTC
                             if (!(airnow_time in airnow24hr)) airnow24hr[airnow_time] = []
@@ -152,12 +162,12 @@ export default async function fetchData(state, handleChange) {
                         viirsData48S = x[1] //setState
                         aodCB48S = x[0] //setState
                     } else if (k.includes("WRF_CHEM") && Object.keys(rawData.data[k]).length > 0) {
+                        wrf_chem = {}
                         Object.keys(rawData.data[k]).map(key => {
                             let key1 = key.split(".")[0]
                             wrf_chem[key1] = {}
                             Object.keys(rawData.data[k][key]).map(ob => {
                                 wrf_chem[key1][ob] = JSON.parse(rawData.data[k][key][ob])
-
                             })
                         })
                         console.log("WRF_CHEM2", wrf_chem)
@@ -252,6 +262,8 @@ export default async function fetchData(state, handleChange) {
         riskData: riskData,
         rawData: rawData,
         wrfChem: wrf_chem,
+        wrfObjnow: wrfObjnow,
+        wrfTimeNow: wrfTimeNow,
         //         AODon: AODon,
         //         Airnowon: Airnowon,
         //         Lidaron: Lidaron,
@@ -313,7 +325,7 @@ function remapColorBar(colormap, data) {
         updatedVIIRSObj[t] = { 'type': "FeatureCollection", 'features': newFeatColl };
     })
 
-    console.log('temp_time', temp_time)
+    // console.log('temp_time', temp_time)
     let minp = cbMin//rawData.data[k][temp_time].features[0].properties.minP
     let maxp = cbMax//rawData.data[k][temp_time].features[0].properties.maxP
     //        let cbcolors = rawData.data[k][temp_time].features[0].properties.cb

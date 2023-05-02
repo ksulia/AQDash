@@ -4,15 +4,16 @@ import { airnowSites } from '../state.js'
 
 
 export function _onMouseMove(map, e, props) {
-    // console.log("mouseMove", map, e)
+    // console.log("mouseMove", map, e.lngLat)
 
     const features = map.queryRenderedFeatures(e.point)
     _queryFeatures(features, props.handleChange, e.point, e.lngLat)
     props.handleChange({ mouseMoveLL: e.lngLat })
 
+
 }
 
-export function _onMove(map, e, props) {
+export function _onMove(map, props) {
     props.handleChange({
         lng: map.getCenter().lng,
         lat: map.getCenter().lat,

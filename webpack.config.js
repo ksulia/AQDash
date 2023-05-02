@@ -9,6 +9,7 @@ module.exports = {
         filename: 'main.js',
         path: path.resolve(__dirname, 'src'),
         publicPath: "/aq",
+
     },
     // mode: 'production',
     mode: 'development',
@@ -45,6 +46,7 @@ module.exports = {
         { test: /\.json$/, use: { loader: 'json-loader' }, type: 'javascript/auto' },
         {
             test: /mapbox-gl.+\.js$/,
+            dependency: { not: ['url'] },
             use: { loader: 'transform-loader/?brfs' }
         },
         {

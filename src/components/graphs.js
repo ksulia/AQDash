@@ -73,7 +73,7 @@ export function GoesPlot (props) {
 }
 
 export function AirnowPlot (props) {
-    console.log('airnow props',props)
+    // console.log('airnow props',props)
     
     if (props.state.plotsToDisplay.includes('airnow'))
     return(
@@ -101,9 +101,9 @@ function onlyUnique(value, index, self) {
 const average = (array) => array.reduce((a, b) => a + b) / array.length;
 
 export function AirnowPlot24hr (props) {
-    console.log('airnowsites',airnowSites)
+    // console.log('airnowsites',airnowSites)
     if (props.state.plotsToDisplay.includes('airnow24hr')){
-        console.log('airnow24 props',props.state.airnow24hr,props.state.completeTime)
+        // console.log('airnow24 props',props.state.airnow24hr,props.state.completeTime)
 
         let names = {'#00e400':'Good','#ffff00':'Moderate',
                      '#ff7e00':'Unhealthy Sensitive Groups',
@@ -176,7 +176,7 @@ export function AirnowPlot24hr (props) {
 
             })
             
-            console.log('plt by region',plot_by_region)
+            // console.log('plt by region',plot_by_region)
             Object.keys(plot_by_region).map((r)=>{
                 if(r!="n/a"){
                     all_data_regional.push({

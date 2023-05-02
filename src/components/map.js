@@ -1,58 +1,186 @@
 import * as React from 'react';
-import Map, { Marker, Source, Layer, Popup } from "react-map-gl";
-import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+// import Map, { Marker, Source, Layer, Popup } from "react-map-gl";
+// import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { Container, Row, Col } from 'react-bootstrap'
 import { getLegend } from '../functions/legends.js';
 import { _onMouseMove, _onClick, _onMove } from '../functions/mouseFunctions.js';
+import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import { useClassNamesOverride } from '@mui/base/utils/ClassNameConfigurator.js';
 
 const { token_real, styles } = require('./config.json')
+mapboxgl.accessToken = token_real;
 
-// const Map = ReactMapboxGl({ accessToken: token_real })
-const mapStyle = { height: '50vh', borderRadius: 5 }
-const goesLayer = {
-    type: 'fill',
-    paint: {
-        'fill-color': ['get', 'fill'],
-        'fill-opacity': ['get', 'fill-opacity'],
-        'fill-outline-color': ['get', 'stroke']
-    }
-};
-const airnowLayer = {
-    type: 'circle',
-    paint: {
-        'circle-color': ['get', 'color'],
-        'circle-opacity': 0.3,
-        'circle-radius': 5.5,
-        'circle-stroke-color': 'grey',
-        'circle-stroke-width': 1,
-    }
-};
-const lidarLayer = {
-    type: 'symbol',
-    layout: {
-        'text-field': ['get', 'site'],
-        'text-size': 15,
-        'text-allow-overlap': true,
-        'text-anchor': 'bottom',
-    }
-    //NEED TO FIX THIS AND PUT THE HANDLER IN mouseFunctions 
-    // onClick: {(e) =>
-    //     this.props.handleChange({
-    //         chosenSite: e.features[0].properties.site,
-    //         scaPlotOn: true,
-    //         cnrPlotOn: true,
-    //     })
-    // }
-};
 
 export class RealTimeMap extends React.Component {
 
     constructor(props) {
         super(props)
+        this.mapContainer = React.createRef();
     }
 
     componentDidMount() {
         // console.log("MAP", this.mapRef)
+        const map = new mapboxgl.Map({
+            id: 'realtime_map',
+            container: this.mapContainer.current,
+            style: 'mapbox://styles/mapbox/light-v9',
+            center: [this.props.state.lng, this.props.state.lat],
+            zoom: this.props.state.zoom
+        });
+
+        // _onMouseMove(map, null, this.props)
+
+        map.on('move', () => _onMove(map, this.props))
+        map.on('mousemove', (e) => {
+            _onMouseMove(map, e, this.props)
+        })
+        map.on('mouseenter', 'pm2.5', (e) => {
+            console.log('pm2.5', e)
+        })
+
+        // this.goesLayer(map, 'goesaod', this.props.state.goesDataAOD)
+        map.once('load', async () => {
+            map.addSource('goesaod', {
+                'type': 'geojson',
+                'data': this.props.state.goesDataAOD
+            })
+            map.addLayer({
+                'id': 'goesaod',
+                'type': 'fill',
+                'source': 'goesaod',
+                'layout': { 'visibility': 'none' },
+            })
+
+            map.addSource('goesdust', {
+                'type': 'geojson',
+                'data': this.props.state.goesDataDust
+            })
+            map.addLayer({
+                'id': 'goesdust',
+                'type': 'fill',
+                'source': 'goesdust',
+                'layout': { 'visibility': 'none' },
+            })
+
+            map.addSource('goessmoke', {
+                'type': 'geojson',
+                'data': this.props.state.goesDataSmoke
+            })
+            map.addLayer({
+                'id': 'goessmoke',
+                'type': 'fill',
+                'source': 'goessmoke',
+                'layout': { 'visibility': 'none' },
+            })
+
+            map.addSource('pm2.5', {
+                'type': 'geojson',
+                'data': this.props.state.airnowData
+            })
+            map.addLayer({
+                'id': 'pm2.5',
+                'type': 'circle',
+                'source': 'pm2.5',
+                'layout': { 'visibility': 'none' },
+            })
+
+            setTimeout(async () => {
+                map.getSource('goesaod').setData(this.props.state.goesDataAOD);
+                map.getSource('goesdust').setData(this.props.state.goesDataDust);
+                map.getSource('goessmoke').setData(this.props.state.goesDataSmoke);
+                map.getSource('pm2.5').setData(this.props.state.airnowData);
+            }, 1000);
+            this.props.handleChange({ map_realtime: true })
+        })
+        this.map = map
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+
+        if (this.props.state.map_realtime) {
+            if (this.props.state.goesDataAOD != prevProps.state.goesDataAOD ||
+                this.props.state.GOESa != prevProps.state.GOESa) {
+                console.log('AOD', prevProps.state.goesDataAOD, this.props.state.goesDataAOD, prevProps.state.GOESa, this.props.state.GOESa)
+                if (this.props.state.goesDataAOD &&
+                    this.props.state.GOESa) {
+
+                    console.log("aod obj updating", this.props.state.goesDataAOD, typeof (this.props.state.goesDataAOD))
+                    console.log("aod map source", this.map.getSource('goesaod'))
+                    console.log('query', this.map.querySourceFeatures('goesaod', {
+                        sourceLayer: 'goesaod'
+                    }))
+                    this.map.getSource('goesaod').setData({ 'data': this.props.state.goesDataAOD })
+
+                    this.map.setLayoutProperty('goesaod', 'visibility', 'visible')
+                    this.map.setPaintProperty('goesaod', 'fill-color', ['get', 'fill'])
+                    this.map.setPaintProperty('goesaod', 'fill-opacity', ['get', 'fill-opacity'])
+                    this.map.setPaintProperty('goesaod', 'fill-outline-color', ['get', 'stroke'])
+
+                } else {
+                    this.map.setLayoutProperty('goesaod', 'visibility', 'none')
+                }
+            }
+            if (this.props.state.goesDataDust != prevProps.state.goesDataDust ||
+                this.props.state.GOESd != prevProps.state.GOESd) {
+                console.log('DUST', prevProps.state.goesDataDust, this.props.state.goesDataDust, prevProps.state.GOESd, this.props.state.GOESd)
+                if (this.props.state.goesDataDust &&
+                    this.props.state.GOESd) {
+
+                    this.map.getSource('goesdust').setData({ 'data': this.props.state.goesDataDust })
+                    this.map.setLayoutProperty('goesdust', 'visibility', 'visible')
+                    this.map.setPaintProperty('goesdust', 'fill-color', ['get', 'fill'])
+                    this.map.setPaintProperty('goesdust', 'fill-opacity', ['get', 'fill-opacity'])
+                    this.map.setPaintProperty('goesdust', 'fill-outline-color', ['get', 'stroke'])
+
+                } else {
+                    this.map.setLayoutProperty('goesdust', 'visibility', 'none')
+                }
+            }
+            if (this.props.state.goesDataSmoke != prevProps.state.goesDataSmoke ||
+                this.props.state.GOESs != prevProps.state.GOESs) {
+                console.log('SMOKE', prevProps.state.goesDataSmoke, this.props.state.goesDataSmoke, prevProps.state.GOESs, this.props.state.GOESs)
+                if (this.props.state.goesDataSmoke &&
+                    this.props.state.GOESs) {
+
+                    this.map.getSource('goessmoke').setData({ 'data': this.props.state.goesDataSmoke })
+                    this.map.setLayoutProperty('goessmoke', 'visibility', 'visible')
+                    this.map.setPaintProperty('goessmoke', 'fill-color', ['get', 'fill'])
+                    this.map.setPaintProperty('goessmoke', 'fill-opacity', ['get', 'fill-opacity'])
+                    this.map.setPaintProperty('goessmoke', 'fill-outline-color', ['get', 'stroke'])
+
+                } else {
+                    this.map.setLayoutProperty('goessmoke', 'visibility', 'none')
+                }
+
+            }
+
+
+            if (this.props.state.airnowData != prevProps.state.airnowData ||
+                this.props.state.Airnowon != prevProps.state.Airnowon) {
+                console.log('AIRNOW', prevProps.state.airnowData, this.props.state.airnowData, prevProps.state.Airnowon, this.props.state.Airnowon)
+                if (this.props.state.airnowData &&
+                    this.props.state.Airnowon) {
+                    this.map.getSource('pm2.5').setData({
+                        'data': this.props.state.airnowData
+                    })
+
+                    this.map.setLayoutProperty(
+                        'pm2.5', 'visibility', 'visible'
+                    )
+                    this.map.setPaintProperty('pm2.5', 'circle-color', ['get', 'color'])
+                    this.map.setPaintProperty('pm2.5', 'circle-opacity', 0.3)
+                    this.map.setPaintProperty('pm2.5', 'circle-radius', 5.5)
+                    this.map.setPaintProperty('pm2.5', 'circle-stroke-color', 'grey')
+                    this.map.setPaintProperty('pm2.5', 'circle-stroke-width', 1)
+
+
+                } else {
+                    this.map.setLayoutProperty(
+                        'pm2.5', 'visibility', 'none'
+                    )
+                }
+            }
+        }
     }
 
 
@@ -89,86 +217,14 @@ export class RealTimeMap extends React.Component {
     };
 
 
-
-
-
-
     render() {
 
         return (
 
             <div style={{ width: '100%' }}>
-                <Map
-                    ref={map => this.mapRef = map}
-                    initialViewState={{
-                        latitude: this.props.state.lat,
-                        longitude: this.props.state.lng,
-                        zoom: this.props.state.zoom
-                    }}
-                    style={mapStyle}
-                    mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
-                    mapboxAccessToken={token_real}
-                    onMouseMove={(e) => _onMouseMove(this.mapRef, e, this.props)}
-                    onMove={(e) => _onMove(this.mapRef, e, this.props)}
-                    onClick={(e) => _onClick(this.mapRef, e, this.props)}
-                >
-                    {this.props.state.goesDataAOD &&
-                        this.props.state.GOESa ? (
-                        <Source id='goesaod' type='geojson' data={this.props.state.goesDataAOD}>
-                            <Layer {...goesLayer} />
-                        </Source>
-                    ) : null}
-
-                    {this.props.state.goesDataDust &&
-                        this.props.state.GOESd ? (
-                        <Source id='goesdust' type='geojson' data={this.props.state.goesDataDust}>
-                            <Layer {...goesLayer} />
-                        </Source>
-                    ) : null}
-
-                    {this.props.state.goesDataSmoke &&
-                        this.props.state.GOESs ? (
-                        <Source id='goessmoke' type='geojson' data={this.props.state.goesDataSmoke}>
-                            <Layer {...goesLayer} />
-                        </Source>
-                    ) : null}
-
-                    {this.props.state.airnowData != null &&
-                        this.props.state.Airnowon ? (
-                        <Source id='pm2.5' type='geojson' data={this.props.state.airnowData}>
-                            <Layer {...airnowLayer} />
-                        </Source>
-                    ) : null}
-
-                    {this.props.state.lidarSites && this.props.state.Lidaron ? (
-                        <Source id='lidarSites' type='geojson' data={this.props.state.lidarSites}>
-                            <Layer {...lidarLayer} />
-                        </Source>
-                    ) : null}
-
-                    {console.log('this.props.state.airnowLoc', this.props.state.airnowPopup)}
-                    {this.props.state.airnowPopup ?
-                        <Popup
-                            longitude={this.props.state.airnowLoc[0]}
-                            latitude={this.props.state.airnowLoc[1]}
-                            style={{ textAlign: 'left', width: 'undefined' }}>
-                            {this.popUpTextRow('Site:', this.props.state.airnowPopupProps.site_props.site)}
-                            {this.popUpTextRow('PM 2.5:', this.props.state.airnowPopupProps.props.value + ' μg m⁻³')}
-                            {this.popUpTextRow('AQI:', this.props.state.airnowPopupProps.props.AQI)}
-                            {this.popUpTextRow('Region:', this.props.state.airnowPopupProps.site_props.region)}
-                        </Popup>
-                        : null}
-
-                    {getLegend(this.props.state, this.props.handleChange)}
-
-
-
-                </Map>
-
-
-
+                <div ref={this.mapContainer} style={{ height: '50vh' }} />
+                {getLegend(this.props.state, this.props.handleChange)}
             </div >
-
 
         )
     }

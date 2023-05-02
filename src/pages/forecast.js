@@ -90,8 +90,9 @@ export class Forecast extends React.Component {
 
                     ///VIIRS///////////////
                     if (k['viirs'] && this.props.state.AODon) {
-                        let curr_features = this.props.state.viirsObjnow.features
-                        if (i == 0) curr_features = []
+                        let curr_features;
+                        if (i == 0 || this.props.state.viirsObjnow == null) curr_features = []
+                        else curr_features = this.props.state.viirsObjnow.features
                         let new_features = []
                         this.props.state.viirsObj[k['viirs']].features.forEach((f) => {
                             //                    console.log('feature',f.properties.key)
@@ -154,7 +155,7 @@ export class Forecast extends React.Component {
                 (this.props.state.pmChecked != prevProps.state.pmChecked)
             ) {
                 //reset the trajectory feature collection to empty
-                this.handleChange({ viirsObjnow: { type: 'FeatureCollection', features: [] }, viirsTimeNow: '', wrfObjnow: { type: 'FeatureCollection', features: [] }, wrfTimeNow: '' })
+                this.handleChange({ viirsObjnow: null, viirsTimeNow: '', wrfObjnow: null, wrfTimeNow: '' })
                 //now fill up the feature collection
                 this.createAnimation(0, this.props.state.AODclick36,
                     this.props.state.AODclick48J, this.props.state.AODclick48S, this.props.state.o3Checked, this.props.state.pmChecked) //check why passing through state variables 
