@@ -139,7 +139,7 @@ export const state = {
 
 export const airnowShapes = { '1': 'circle', '2': 'diamond', '3': 'star-triangle-up', '4': 'square', '5': 'pentagon', '6': 'hexagon-open', '7': 'star', '8': 'bowtie', '9': 'hourglass' };
 
-
+//https://www.nycwatershed.org/wp-content/uploads/2015/10/DEC_Regional_Offices_Contact_Info_Map.pdf
 export const airnowSites = {
     'Tonawanda II': { 'lat': 42.998136, 'lon': -78.899312, 'region': 9 },
     'Amherst': { 'lat': 42.99328, 'lon': -78.7715, 'region': 9 },
@@ -150,6 +150,7 @@ export const airnowSites = {
     'Rochester Near-road': { 'lat': 43.145021, 'lon': -77.557608, 'region': 8 },
     'Pinnacle State Park': { 'lat': 42.091154, 'lon': -77.209883, 'region': 8 },
     'East Syracuse': { 'lat': 43.0523, 'lon': -76.05921, 'region': 7 },
+    'E Syracuse': { 'lat': 43.0523, 'lon': -76.05921, 'region': 7 },
     'Utica': { 'lat': 43.098908, 'lon': -75.22507, 'region': 6 },
     'Whiteface Mtn': { 'lat': 44.393136, 'lon': -73.858953, 'region': 5 },
     'Albany County HD': { 'lat': 42.642253, 'lon': -73.754576, 'region': 4 },
@@ -160,6 +161,7 @@ export const airnowSites = {
     'Manhattan/IS143': { 'lat': 40.848913, 'lon': -73.930604, 'region': 2 },
     'Morrisania': { 'lat': 40.8367, 'lon': -73.9214, 'region': 2 },
     'Bronx - IS52': { 'lat': 40.816, 'lon': -73.902, 'region': 2 },
+    'Bronx - IS74': { 'lat': 40.816, 'lon': -73.902, 'region': 2 },
     'CCNY': { 'lat': 40.819732, 'lon': -73.948239, 'region': 2 },
     'PS 274': { 'lat': 40.69454, 'lon': -73.92769, 'region': 2 },
     'Division Street': { 'lat': 40.714454, 'lon': -73.995206, 'region': 2 },
@@ -168,6 +170,7 @@ export const airnowSites = {
     'Port Richmond': { 'lat': 40.63306, 'lon': -74.137156, 'region': 2 },
     'PS 19': { 'lat': 40.730043, 'lon': -73.98445, 'region': 2 },
     'Bklyn - PS 314': { 'lat': 40.64182, 'lon': -74.01871, 'region': 2 },
+    'Bklyn - PS274': { 'lat': 40.64182, 'lon': -74.01871, 'region': 2 },
     'JHS 126': { 'lat': 40.71961, 'lon': -73.94771, 'region': 2 },
     'Queens': { 'lat': 40.7375, 'lon': -73.8244, 'region': 2 },
     'Queens College': { 'lat': 40.73614, 'lon': -73.82153, 'region': 2 },

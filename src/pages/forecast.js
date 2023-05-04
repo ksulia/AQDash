@@ -4,6 +4,8 @@ import Sidebar from '../components/sidebar.js';
 import fetchData from '../functions/fetchData.js';
 import ForecastMap from '../components/map_forecast.js';
 import { getRiskLegend, getAODCB } from '../functions/legends.js'
+import { o3_colors, pm_colors, aodNumbers, pmNumbers, o3Numbers } from '../functions/colorMaps.js'
+
 // import Colorbar from "react-colors";
 
 export class Forecast extends React.Component {
@@ -138,6 +140,7 @@ export class Forecast extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         console.log('did update forecast', this.props.state.viirsObjnow, this.props.state.wrfChem)
+        console.log('color', this.props.state.aodCB36)
 
         //first check to make sure that there is viirs data, that the layer is on, 
         //and one of the viirs options are chosen
@@ -146,7 +149,8 @@ export class Forecast extends React.Component {
             (this.props.state.wrfChem && this.props.state.wrfChecked &&
                 (this.props.state.o3Checked || this.props.state.pmChecked))) {
             //now check to see if the dataset has changed at all, or if the user has checked/unchecked a box
-            if ((this.props.state.viirsObj != prevProps.state.viirsObj) ||
+            if (
+                (this.props.state.viirsObj != prevProps.state.viirsObj) ||
                 (this.props.state.AODclick36 != prevProps.state.AODclick36) ||
                 (this.props.state.AODclick48J != prevProps.state.AODclick48J) ||
                 (this.props.state.AODclick48S != prevProps.state.AODclick48S) ||
@@ -213,22 +217,30 @@ export class Forecast extends React.Component {
 
 
                             <Col style={{ width: '100%', justifyContent: 'center' }}>
+                                <Row style={{ width: '100%', justifyContent: 'center' }}>
+                                    {this.props.state.wrfChecked ?
+                                        this.props.state.o3Checked ?
+                                            getAODCB(o3_colors, 'O3 (ppmv)', o3Numbers)
+                                            : this.props.state.pmChecked ?
+                                                getAODCB(pm_colors, 'PM2.5 (μg m⁻³)', pmNumbers) : null
+                                        : null}
+                                </Row>
                                 <Row style={{ width: '100%', justifyContent: 'center', paddingBottom: 10 }}>
                                     {this.props.state.AODon && this.props.state.aodCB36 &&
                                         this.props.state.AODclick36 ?
-                                        getAODCB(this.props.state.aodCB36, 'Hi-Res Surface Minus Trajectory Pressure (mb)')
+                                        getAODCB(this.props.state.aodCB36, 'Hi-Res Surface Minus Trajectory Pressure (mb)', aodNumbers)
                                         : null}
                                 </Row>
                                 <Row style={{ width: '100%', justifyContent: 'center', paddingBottom: 10 }}>
                                     {this.props.state.AODon && this.props.state.aodCB48J &&
                                         this.props.state.AODclick48J ?
-                                        getAODCB(this.props.state.aodCB48J, 'JPSS Surface Minus Trajectory Pressure (mb)')
+                                        getAODCB(this.props.state.aodCB48J, 'JPSS Surface Minus Trajectory Pressure (mb)', aodNumbers)
                                         : null}
                                 </Row>
                                 <Row style={{ width: '100%', justifyContent: 'center' }}>
                                     {this.props.state.AODon && this.props.state.aodCB48S &&
                                         this.props.state.AODclick48S ?
-                                        getAODCB(this.props.state.aodCB48S, 'SNPP Surface Minus Trajectory Pressure (mb)')
+                                        getAODCB(this.props.state.aodCB48S, 'SNPP Surface Minus Trajectory Pressure (mb)', aodNumbers)
                                         : null}
                                 </Row>
                             </Col>

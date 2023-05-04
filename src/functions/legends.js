@@ -12,7 +12,7 @@ export function getLegend(props) {
             style={{
                 position: 'absolute',
                 opacity: 0.8,
-                   width: 'undefined',
+                width: 'undefined',
                 top: 0,
                 margin: 10,
                 padding: 10,
@@ -32,8 +32,8 @@ export function getLegend(props) {
                         Lat: {Math.round(props.mouseMoveLL.lat * 10) / 10}
                     </a>
                 </Row>
-                    
-            
+
+
                 {props.Windon && props.mouseMoveWS ? (
                     <Row >
                         <a style={{ color: 'white' }}>
@@ -73,92 +73,94 @@ export function getLegend(props) {
 }
 
 
-export function getAODCB(cb, name) {
-    console.log(cb,name)
-    let numbers = [0,50,100,150,200,250,300,350,400,450,500]
+export function getAODCB(cb, name, numbers) {
+    console.log(cb, name, numbers, Object.keys(cb).length)
     return (
-        <Row style={{width:'100%',justifyContent:'center'}}>
-                <Row style={{width:'100%',display:'flex',justifyContent:'center'}}>
-                    <a style={{color: 'black',}}>{name} </a>
-                </Row>
-                <Row style={{width:'100%',display:'flex',justifyContent:'center'}}>
+        <Row style={{ width: '100%', justifyContent: 'center' }}>
+            <Row style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                <a style={{ color: 'black', }}>{name} </a>
+            </Row>
+            <Row style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 {Object.keys(cb).map((k, i) => (
-                    <Col 
+                    <Col
                         key={'AODcb' + k}
                         style={{
                             backgroundColor: cb[k],
                             border: '1px solid rgba(160,160,160,0.1)',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            width:100/(Object.keys(cb).length)+'%',
-                            padding:0
+                            width: 100 / (Object.keys(cb).length) + '%',
+                            padding: 0
                         }}
                     >
-                        <a style={{color:'rgba(0,0,0,0)',display:'block'}}>{Math.round(k,0)}</a>
+                        <a style={{ color: 'rgba(0,0,0,0)', display: 'block' }}>{Math.round(k, 0)}</a>
                     </Col>
                 ))}
-                </Row>
-                <Row style={{width:'100%',display:'flex',justifyContent:'center'}}>
+            </Row>
+            <Row style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 {Object.keys(cb).map((k, i) => (
-                    <Col 
+                    <Col
                         key={'AODcb' + k}
                         style={{
                             backgroundColor: 'rgba(0,0,0,0)',
                             justifyContent: 'flex-start',
-                            alignItems: 'center',
-                            width:100/(Object.keys(cb).length)+'%',
-                            padding:0,
-                            transform: "rotate(90deg)"
+                            // border: '2px solid red',
+                            alignItems: 'flex-start',
+                            width: 100 / (Object.keys(cb).length) + '%',
+                            padding: 0,
+                            // transform: "rotate(90deg)"
                         }}
                     >
-                        {numbers.includes(Math.ceil(k,0))?
-                            <a style={{color:'black',display:'block'}}>
-                                {Math.ceil(k,0)}
+                        {numbers.includes(Math.ceil(k, 0)) ?
+                            <a style={{ color: 'black', display: 'block', transform: "rotate(90deg)" }}>
+                                {Math.ceil(k, 0)}
                             </a>
-                        : <a style={{color:numbers.includes(Math.floor(k,0))?
-                            'black':'rgba(0,0,0,0)',display:'block'}}>
-                                {Math.floor(k,0)}
+                            : <a style={{
+                                color: numbers.includes(Math.floor(k, 0)) ?
+                                    'black' : 'rgba(0,0,0,0)', display: 'block', transform: "rotate(90deg)"
+                            }}>
+                                {Math.floor(k, 0)}
                             </a>
                         }
                     </Col>
                 ))}
-                </Row>
+            </Row>
         </Row>
     )
 }
-export function getRiskLegend(state,handleChange){
-//     console.log('risklegend',state, handleChange)
-    return(
-        state.rawData && state.rawData.data_risk && state.riskChecked?
-            <div style={{width:'100%'}}>
-            {state.cbHover ? (
-                <div
-                    style={{
-                        backgroundColor:'rgba(255,255,255,0.8)',
-                        borderRadius: 5,
-                        border:'1px solid rgba(160,160,160,0.8)',
-                        padding: 5,
-                        position: 'absolute',
-                        top: state.cbHoverValue.loc.y,
-                        left: state.cbHoverValue.loc.x,
-                    }}
-                >
-                    <a style={{ fontSize: 10 }}>
-                        {state.cbHoverValue.value}
-                    </a>
-                </div>
-            ) : null}
+export function getRiskLegend(state, handleChange) {
+    //     console.log('risklegend',state, handleChange)
+    return (
+        state.rawData && state.rawData.data_risk && state.riskChecked ?
+            <div style={{ width: '100%' }}>
+                {state.cbHover ? (
+                    <div
+                        style={{
+                            backgroundColor: 'rgba(255,255,255,0.8)',
+                            borderRadius: 5,
+                            border: '1px solid rgba(160,160,160,0.8)',
+                            padding: 5,
+                            position: 'absolute',
+                            top: state.cbHoverValue.loc.y,
+                            left: state.cbHoverValue.loc.x,
+                        }}
+                    >
+                        <a style={{ fontSize: 10 }}>
+                            {state.cbHoverValue.value}
+                        </a>
+                    </div>
+                ) : null}
 
-            {state.rawData &&
-            state.rawData.data_risk ? (
-                <div
-                    style={{
-                        position: 'relative',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                    }}
-                >
+                {state.rawData &&
+                    state.rawData.data_risk ? (
+                    <div
+                        style={{
+                            position: 'relative',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                        }}
+                    >
 
                         {Object.keys(
                             state.rawData.risk_colors
@@ -170,7 +172,7 @@ export function getRiskLegend(state,handleChange){
                                         cbHover: true,
                                         cbHoverValue: {
                                             value: state.rawData.risk_colors[k].toFixed(0).toString(),
-                                            loc: {x: e.pageX,y: e.pageY - 40,},
+                                            loc: { x: e.pageX, y: e.pageY - 40, },
                                         },
                                     })
                                 }}
@@ -183,7 +185,7 @@ export function getRiskLegend(state,handleChange){
                                     backgroundColor: k,
                                     border:
                                         '1px solid rgba(160,160,160,0.5)',
-                                    flex:1,
+                                    flex: 1,
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                 }}
@@ -199,116 +201,125 @@ export function getRiskLegend(state,handleChange){
                             </div>
                         ))}
 
-                </div>
-            ) : null}
-            {state.rawData &&
-            state.rawData.data_risk ? (
-                <div>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        position: 'relative',
-                    }}
-                >
+                    </div>
+                ) : null}
+                {state.rawData &&
+                    state.rawData.data_risk ? (
+                    <div>
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                position: 'relative',
+                            }}
+                        >
 
-                        {Object.keys(
-                            state.rawData.risk_colors
-                        ).map((k, i) => (
-                            <div
-                                key={state.rawData.risk_colors[
-                                    k
-                                ]
-                                    .toFixed(1)
-                                    .toString()}
-                                style={{
-                                    width: '2.5%',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <a style={{ fontSize: 10 }}>
-                                    {i % 4 === 0
-                                        ? state.rawData.risk_colors[
-                                              k
-                                          ].toFixed(1)
-                                        : null}
-                                </a>
-                            </div>
-                        ))}
-                </div>
-                <div>Risk Count</div>
-                </div>
-            ) : null}
-            </div>:null
+                            {Object.keys(
+                                state.rawData.risk_colors
+                            ).map((k, i) => (
+                                <div
+                                    key={state.rawData.risk_colors[
+                                        k
+                                    ]
+                                        .toFixed(1)
+                                        .toString()}
+                                    style={{
+                                        width: '2.5%',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <a style={{ fontSize: 10 }}>
+                                        {i % 4 === 0
+                                            ? state.rawData.risk_colors[
+                                                k
+                                            ].toFixed(1)
+                                            : null}
+                                    </a>
+                                </div>
+                            ))}
+                        </div>
+                        <div>Risk Count</div>
+                    </div>
+                ) : null}
+            </div> : null
 
     )
 }
 
-function airnowTrace(title,color){
-    return(
-        <Col style={{borderStyle:'solid',borderWidth:1,borderColor:'rgb(200,200,200)',
-        display:'flex',alignItems:'center',justifyContent:'center'}}>
-            <Row style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+function airnowTrace(title, color) {
+    return (
+        <Col style={{
+            borderStyle: 'solid', borderWidth: 1, borderColor: 'rgb(200,200,200)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>
+            <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Col>
-                    <Row style={{display:'flex',justifyContent:'center'}}>
-                        <div style={{display:'flex',width:'10px',height:'10px',
-                                    backgroundColor:color,borderRadius: '50%',
-                                    margin:2,border:'1px',borderColor:'rgb(100,100,100)',
-                                    borderStyle:'solid'
-                                   }}/>
+                    <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div style={{
+                            display: 'flex', width: '10px', height: '10px',
+                            backgroundColor: color, borderRadius: '50%',
+                            margin: 2, border: '1px', borderColor: 'rgb(100,100,100)',
+                            borderStyle: 'solid'
+                        }} />
                     </Row>
-                    <Row style={{display:'flex',justifyContent:'center'}}>
+                    <Row style={{ display: 'flex', justifyContent: 'center' }}>
                         <a style={{ fontSize: 14, }}>{title}</a>
                     </Row>
                 </Col>
             </Row>
         </Col>
-    
+
     )
 }
 
-export function getAirnowLegend(state){
-    if(state.Airnowon && state.airnowData){
+export function getAirnowLegend(state) {
+    if (state.Airnowon && state.airnowData) {
         return (
-            <Row style={{width:'100%'}}>
-                {airnowTrace('Good','rgb(0,228,0)')}
-                {airnowTrace('Moderate','rgb(255,255,0)')}
-                {airnowTrace('Unhealthy Sensitive Groups','rgb(255,126,0)')}
-                {airnowTrace('Unhealthy','rgb(255,0,0)')}
-                {airnowTrace('Very Unhealthy','rgb(143,63,151)')}
-                {airnowTrace('Hazardous','rgb(126,0,35)')}
+            <Row style={{ width: '100%' }}>
+                {airnowTrace('Good', 'rgb(0,228,0)')}
+                {airnowTrace('Moderate', 'rgb(255,255,0)')}
+                {airnowTrace('Unhealthy Sensitive Groups', 'rgb(255,126,0)')}
+                {airnowTrace('Unhealthy', 'rgb(255,0,0)')}
+                {airnowTrace('Very Unhealthy', 'rgb(143,63,151)')}
+                {airnowTrace('Hazardous', 'rgb(126,0,35)')}
             </Row>
         )
-    }else return null
-    
+    } else return null
+
 }
 
 
 export function getGOESCB(props) {
-//     console.log('AODCD',props)
+    //     console.log('AODCD',props)
     return (
-        <Row style={{width:'100%', justifyContent:'center'}}>
-            {props.GOESd?
-                <Col style={{display:'flex',
-                            alignItems:'center',
-                            justifyContent:'center'}}>
-                    <img src={dustCB} style={{width:'120px'}}/>
-                </Col>:null}
+        <Row style={{ width: '100%', justifyContent: 'center' }}>
+            {props.GOESd ?
+                <Col style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <img src={dustCB} style={{ width: '120px' }} />
+                </Col> : null}
 
-            {props.GOESa?
-                <Col style={{display:'flex',
-                            alignItems:'center',
-                            justifyContent:'center'}}>
-                    <img src={aodCB} style={{width:'250px'}}/>
-                </Col>:null}
-            {props.GOESs?
-                <Col style={{display:'flex',
-                            alignItems:'center',
-                            justifyContent:'center'}}>
-                    <img src={smokeCB} style={{width:'120px'}}/>
-                </Col>:null}
-            
+            {props.GOESa ?
+                <Col style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <img src={aodCB} style={{ width: '250px' }} />
+                </Col> : null}
+            {props.GOESs ?
+                <Col style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <img src={smokeCB} style={{ width: '120px' }} />
+                </Col> : null}
+
         </Row>
     )
 }
@@ -316,17 +327,19 @@ export function getGOESCB(props) {
 export function getCB(cb, color, name) {
     return (
         <div style={{ width: '100%', justifyContent: 'center' }}>
-            <div style={{ marginLeft: 10, justifyContent: 'flex-start', alignItems: 'center'}}>
+            <div style={{ marginLeft: 10, justifyContent: 'flex-start', alignItems: 'center' }}>
                 {Object.keys(cb).sort((a, b) => a[1] - b[1]).map((k, i) => (
-                        <div key={'cb' + k}
-                            style={{ backgroundColor: k, border: '1px solid rgba(160,160,160,0.5)',
-                                                                 paddingLeft: 10, paddingRight: 10,
-                                                                 justifyContent: 'center',alignItems: 'center'}}>
-                            <a style={{ color: 'white', textAlign: 'center', fontSize: 10, }}>
-                                {cb[k].slice(9, 11) + ':' + cb[k].slice(11, 13)}
-                            </a>
-                        </div>
-                    ))}
+                    <div key={'cb' + k}
+                        style={{
+                            backgroundColor: k, border: '1px solid rgba(160,160,160,0.5)',
+                            paddingLeft: 10, paddingRight: 10,
+                            justifyContent: 'center', alignItems: 'center'
+                        }}>
+                        <a style={{ color: 'white', textAlign: 'center', fontSize: 10, }}>
+                            {cb[k].slice(9, 11) + ':' + cb[k].slice(11, 13)}
+                        </a>
+                    </div>
+                ))}
                 <a style={{ color: color, marginLeft: 5, fontSize: 10 }}>
                     {name}
                 </a>

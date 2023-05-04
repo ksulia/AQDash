@@ -13,6 +13,7 @@ export function _onMouseMove(map, e, props) {
 
 }
 
+
 export function _onMove(map, props) {
     props.handleChange({
         lng: map.getCenter().lng,
