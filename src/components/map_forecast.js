@@ -16,6 +16,7 @@ export default class ForecastMap extends React.Component {
     }
 
     componentDidMount() {
+        console.log('compoennt did mount map_forecast')
         const map = new mapboxgl.Map({
             // id: 'forecast_map',
             container: this.mapContainer.current,
@@ -24,10 +25,12 @@ export default class ForecastMap extends React.Component {
             zoom: this.props.state.zoom
         });
 
-        map.on('move', () => _onMove(map, this.props))
-        map.on('mousemove', (e) => {
-            _onMouseMove(map, e, this.props)
-        })
+        // Create a popup, but don't add it to the map yet.
+        const popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
+
 
         map.once('load', async () => {
             map.addSource('wrfchem', {
@@ -62,6 +65,27 @@ export default class ForecastMap extends React.Component {
                     'circle-stroke-width': 1,
                 }
             })
+
+            map.on('move', () => _onMove(map, this.props))
+            map.on('mousemove', (e) => {
+                _onMouseMove(map, e, this.props)
+            })
+
+            map.on('mouseenter', 'viirs', (e) => {
+                console.log('viirs mouse', e)
+                map.getCanvas().style.cursor = 'pointer';
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const description = `<a><strong>AOD: </strong>${Math.round(e.features[0].properties.aod * 1000) / 1000}</a><br/><a><strong>Pressure: </strong>${Math.round(e.features[0].properties.press)} mb</a><br/><a><strong>Pressure Difference: </strong>${Math.round(e.features[0].properties.press_diff)} mb</a><br/><a><strong>Time: </strong>${e.features[0].properties.time}</a>`;
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+                popup.setLngLat(coordinates).setHTML(description).addTo(map);
+            })
+            map.on('mouseleave', 'viirs', () => {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+
             setInterval(async () => {
                 map.getSource('wrfchem').setData(this.props.state.wrfObjnow);
                 map.getSource('viirs').setData(this.props.state.viirsObjnow);
@@ -86,6 +110,7 @@ export default class ForecastMap extends React.Component {
                 if (this.props.state.wrfObjnow && this.props.state.wrfChecked &&
                     (this.props.state.pmChecked || this.props.state.o3Checked)) {
 
+                    this.map.getSource('wrfchem').setData(this.props.state.wrfObjnow);
                     this.map.setLayoutProperty('wrfchem', 'visibility', 'visible')
                 } else
                     this.map.setLayoutProperty('wrfchem', 'visibility', 'none')
@@ -99,6 +124,7 @@ export default class ForecastMap extends React.Component {
                 if (this.props.state.viirsObjnow && this.props.state.AODon &&
                     (this.props.state.AODclick48S || this.props.state.AODclick36 || this.props.state.AODclick48J)) {
 
+                    this.map.getSource('viirs').setData(this.props.state.viirsObjnow);
                     this.map.setLayoutProperty('viirs', 'visibility', 'visible')
                 } else
                     this.map.setLayoutProperty('viirs', 'visibility', 'none')

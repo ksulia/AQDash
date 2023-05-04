@@ -16,7 +16,8 @@ export class RealTimeMap extends React.Component {
     }
 
     componentDidMount() {
-        // console.log("MAP", this.mapRef)
+        console.log('compoennt did mount map')
+
         const map = new mapboxgl.Map({
             id: 'realtime_map',
             container: this.mapContainer.current,
@@ -142,11 +143,14 @@ export class RealTimeMap extends React.Component {
             // setInterval(async () => console.log(map.querySourceFeatures('goesaod')), 1000)
 
 
+            //map.getSource('goesaod').setData({'data':this.props.state.goesDataAOD});
+            //dont use this method! It does not properly load the layer on refresh
+
             setTimeout(() => {
-                map.getSource('goesaod').setData({ 'data': this.props.state.goesDataAOD });
-                map.getSource('goesdust').setData({ 'data': this.props.state.goesDataDust });
-                map.getSource('goessmoke').setData({ 'data': this.props.state.goesDataSmoke });
-                map.getSource('pm2.5').setData({ 'data': this.props.state.airnowData });
+                map.getSource('goesaod').setData(this.props.state.goesDataAOD);
+                map.getSource('goesdust').setData(this.props.state.goesDataDust);
+                map.getSource('goessmoke').setData(this.props.state.goesDataSmoke);
+                map.getSource('pm2.5').setData(this.props.state.airnowData);
             }, 1000);
 
             this.props.handleChange({ map_realtime: true })
@@ -165,6 +169,7 @@ export class RealTimeMap extends React.Component {
                 if (this.props.state.goesDataAOD &&
                     this.props.state.GOESa) {
 
+                    this.map.getSource('goesaod').setData(this.props.state.goesDataAOD);
                     this.map.setLayoutProperty('goesaod', 'visibility', 'visible')
                 } else {
                     this.map.setLayoutProperty('goesaod', 'visibility', 'none')
@@ -176,6 +181,7 @@ export class RealTimeMap extends React.Component {
                 if (this.props.state.goesDataDust &&
                     this.props.state.GOESd) {
 
+                    this.map.getSource('goesdust').setData(this.props.state.goesDataDust);
                     this.map.setLayoutProperty('goesdust', 'visibility', 'visible')
                 } else {
                     this.map.setLayoutProperty('goesdust', 'visibility', 'none')
@@ -187,6 +193,7 @@ export class RealTimeMap extends React.Component {
                 if (this.props.state.goesDataSmoke &&
                     this.props.state.GOESs) {
 
+                    this.map.getSource('goessmoke').setData(this.props.state.goesDataSmoke);
                     this.map.setLayoutProperty('goessmoke', 'visibility', 'visible')
                 } else {
                     this.map.setLayoutProperty('goessmoke', 'visibility', 'none')
@@ -201,6 +208,7 @@ export class RealTimeMap extends React.Component {
                 if (this.props.state.airnowData &&
                     this.props.state.Airnowon) {
 
+                    this.map.getSource('pm2.5').setData(this.props.state.airnowData);
                     this.map.setLayoutProperty('pm2.5', 'visibility', 'visible')
                 } else {
                     this.map.setLayoutProperty('pm2.5', 'visibility', 'none')

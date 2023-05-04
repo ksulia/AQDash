@@ -11,8 +11,8 @@ module.exports = {
         publicPath: "/aq",
 
     },
-    // mode: 'production',
-    mode: 'development',
+    mode: 'production',
+    // mode: 'development',
     performance: {
         hints: false,
         maxEntrypointSize: 512000,

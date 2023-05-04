@@ -65,17 +65,10 @@ export default async function fetchData(state, handleChange) {
 
 
 
+    // await fetch(`http://169.226.68.146:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}/`)
 
 
-
-    //    await fetch(`http://169.226.68.133:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
-    //await fetch(`https://xcitedb.asrc.albany.edu/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
-    // await fetch(`https://10.233.88.253:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
-    await fetch(`http://169.226.68.146:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}/`)
-
-        // /api?time=2022-12-11T19
-        // console.log(`api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`) 
-        // await fetch(`api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
+    await fetch(`api?time=${state.completeTime}&res=${stagit adte.res}&lidarRes=${state.lidarRes}`)
         .then(async (response) => await response.json())
         .then(async (responseJson) => rawData = responseJson) //setState
         .then(async () => {
