@@ -19,6 +19,7 @@ export function _onMove(map, props) {
         lng: map.getCenter().lng,
         lat: map.getCenter().lat,
         zoom: map.getZoom(),
+        mapBounds: map.getBounds()
     })
 }
 

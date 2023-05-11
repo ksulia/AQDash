@@ -98,7 +98,7 @@ const Sidebar = (props) => {
 
                     </div>
                 ) : null}
-                {props.realtime && (props.state.goesDataAOD) ? (
+                {props.realtime && (props.state.goesDataAOD && props.state.daytime) ? (
                     <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }} >
                         <Checkbox
                             style={{ color: "white" }} checked={props.state.GOESa} onClick={() =>
@@ -109,7 +109,7 @@ const Sidebar = (props) => {
                     </div>
                 ) : null}
 
-                {props.realtime && (props.state.goesDataSmoke) ? (
+                {props.realtime && (props.state.goesDataSmoke && props.state.daytime) ? (
                     <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }} >
                         <Checkbox
                             style={{ color: "white" }} checked={props.state.GOESs} onClick={() =>
@@ -119,7 +119,7 @@ const Sidebar = (props) => {
                     </div>
                 ) : null}
 
-                {props.realtime && (props.state.goesDataDust) ? (
+                {props.realtime && (props.state.goesDataDust && props.state.daytime) ? (
                     <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }} >
                         <Checkbox
                             style={{ color: "white" }} checked={props.state.GOESd} onClick={() =>

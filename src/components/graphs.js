@@ -5,15 +5,23 @@ import {airnowSites, airnowShapes} from '../state.js'
 
 const airnowColors = ['#00e400','#ffff00','#ff7e00','#ff0000','#8f3f97','#7e0023']
 
-export function GoesPlot (props) {
-//     console.log('goes!',props)
+export function GoesPlot(props) {
+    console.log('goes!',props.state.aod_adp_timeseries)
     let times = [], aod = [], dust = [], smoke = []
-    if(props.state.rawData && props.state.rawData.aod_adp_timeseries){
-        Object.entries(props.state.rawData.aod_adp_timeseries).map((e)=>{
+    // if(props.state.rawData && props.state.rawData.aod_adp_timeseries){
+    //     Object.entries(props.state.rawData.aod_adp_timeseries).map((e)=>{
+    //         times.push(e[0])
+    //         aod.push(e[1].aod_avg)
+    //         smoke.push(e[1].smoke_count)
+    //         dust.push(e[1].dust_count)
+    //     })
+    // }
+    if(props.state.aod_adp_timeseries){
+        Object.entries(props.state.aod_adp_timeseries).map((e)=>{
             times.push(e[0])
-            aod.push(e[1].aod_avg)
-            smoke.push(e[1].smoke_count)
-            dust.push(e[1].dust_count)
+            aod.push(e[1].aod)
+            // smoke.push(e[1].smoke_count)
+            // dust.push(e[1].dust_count)
         })
     }
     

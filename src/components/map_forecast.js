@@ -16,7 +16,6 @@ export default class ForecastMap extends React.Component {
     }
 
     componentDidMount() {
-        console.log('compoennt did mount map_forecast')
         const map = new mapboxgl.Map({
             // id: 'forecast_map',
             container: this.mapContainer.current,
@@ -41,7 +40,7 @@ export default class ForecastMap extends React.Component {
                 'id': 'wrfchem',
                 'type': 'fill',
                 'source': 'wrfchem',
-                'layout': { 'visibility': 'none' },
+                'layout': { 'visibility': this.props.state.wrfChecked ? 'visible' : 'none' },
                 'paint': {
                     'fill-color': ['get', 'fill'],
                     'fill-opacity': ['get', 'fill-opacity'],
@@ -57,7 +56,7 @@ export default class ForecastMap extends React.Component {
                 'id': 'viirs',
                 'type': 'circle',
                 'source': 'viirs',
-                'layout': { 'visibility': 'none' },
+                'layout': { 'visibility': this.props.state.pmChecked ? 'visible' : 'none' },
                 'paint': {
                     'circle-color': ['get', 'color_pres'],
                     'circle-radius': 2,

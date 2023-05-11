@@ -16,7 +16,6 @@ export class RealTimeMap extends React.Component {
     }
 
     componentDidMount() {
-        console.log('compoennt did mount map')
 
         const map = new mapboxgl.Map({
             id: 'realtime_map',
@@ -41,7 +40,7 @@ export class RealTimeMap extends React.Component {
                 'id': 'goesaod',
                 'type': 'fill',
                 'source': 'goesaod',
-                'layout': { 'visibility': 'none' },
+                'layout': { 'visibility': this.props.state.GOESa ? 'visible' : 'none' },
                 'paint': {
                     'fill-color': ['get', 'fill'],
                     'fill-opacity': ['get', 'fill-opacity'],
@@ -57,7 +56,7 @@ export class RealTimeMap extends React.Component {
                 'id': 'goesdust',
                 'type': 'fill',
                 'source': 'goesdust',
-                'layout': { 'visibility': 'none' },
+                'layout': { 'visibility': this.props.state.GOESd ? 'visible' : 'none' },
                 'paint': {
                     'fill-color': ['get', 'fill'],
                     'fill-opacity': ['get', 'fill-opacity'],
@@ -73,7 +72,7 @@ export class RealTimeMap extends React.Component {
                 'id': 'goessmoke',
                 'type': 'fill',
                 'source': 'goessmoke',
-                'layout': { 'visibility': 'none' },
+                'layout': { 'visibility': this.props.state.GOESs ? 'visible' : 'none' },
                 'paint': {
                     'fill-color': ['get', 'fill'],
                     'fill-opacity': ['get', 'fill-opacity'],
@@ -89,7 +88,7 @@ export class RealTimeMap extends React.Component {
                 'id': 'pm2.5',
                 'type': 'circle',
                 'source': 'pm2.5',
-                'layout': { 'visibility': 'none' },
+                'layout': { 'visibility': this.props.state.Airnowon ? 'visible' : 'none' },
                 'paint': {
                     'circle-color': ['get', 'color'],
                     'circle-opacity': 0.3,
@@ -151,7 +150,7 @@ export class RealTimeMap extends React.Component {
                 map.getSource('goesdust').setData(this.props.state.goesDataDust);
                 map.getSource('goessmoke').setData(this.props.state.goesDataSmoke);
                 map.getSource('pm2.5').setData(this.props.state.airnowData);
-            }, 1000);
+            }, 500);
 
             this.props.handleChange({ map_realtime: true })
         })
@@ -160,7 +159,6 @@ export class RealTimeMap extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
 
-
         if (this.props.state.map_realtime) {
 
             if (this.props.state.goesDataAOD != prevProps.state.goesDataAOD ||
@@ -168,6 +166,7 @@ export class RealTimeMap extends React.Component {
                 console.log('AOD', prevProps.state.goesDataAOD, this.props.state.goesDataAOD, prevProps.state.GOESa, this.props.state.GOESa)
                 if (this.props.state.goesDataAOD &&
                     this.props.state.GOESa) {
+                    console.log('get bounds', this.map.getBounds())
 
                     this.map.getSource('goesaod').setData(this.props.state.goesDataAOD);
                     this.map.setLayoutProperty('goesaod', 'visibility', 'visible')
@@ -214,6 +213,36 @@ export class RealTimeMap extends React.Component {
                     this.map.setLayoutProperty('pm2.5', 'visibility', 'none')
                 }
             }
+
+            //get AOD data in map bounds
+            if (this.props.state.rawData && this.props.state.mapBounds && this.props.state.mapBounds != prevProps.state.mapBounds) {
+                console.log('map bounds', this.props.state.mapBounds)
+                let min_lat = this.props.state.mapBounds._sw.lat, max_lat = this.props.state.mapBounds._ne.lat, min_lon = this.props.state.mapBounds._sw.lng, max_lon = this.props.state.mapBounds._ne.lng;
+                let timeseries = {}
+                Object.entries(this.props.state.rawData.timeseries_data.aod).map(e => { //loop over time
+                    console.log(e)
+                    let temp_obj = {}
+                    let total_area = 0, weighted_aod = 0;
+                    e[1].features.map(feature => { //loop over features in that time
+                        if (feature.geometry.coordinates[0] >= min_lon && feature.geometry.coordinates[0] <= max_lon &&
+                            feature.geometry.coordinates[1] >= min_lat && feature.geometry.coordinates[1] <= max_lat) {
+                            total_area += feature.properties.area
+                            weighted_aod += feature.properties.area * feature.properties.aod
+                        }
+                    });
+                    // console.log('avg_aod', )
+                    // temp_obj['aod'] = 
+                    timeseries[e[0]] = { 'aod': weighted_aod / total_area }
+                    // console.log(filteredFeatures)
+                })
+                this.props.handleChange({ aod_adp_timeseries: timeseries })
+
+            }
+
+            // _ne: bc {lng: -61.92913845606351, lat: 48.58138844207565}
+
+            // _sw: bc {lng: -91.87226279887133, lat: 38.57141225029039}
+
         }
     }
 
