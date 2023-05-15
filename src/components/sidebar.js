@@ -53,14 +53,14 @@ const Sidebar = (props) => {
                         value={props.state.hour}
                     />
                 </div>
-                <div>
+                {/* <div>
                     <a style={{ color: fontColor }}>Res (º)</a>
                     <Dropdown
                         options={res}
                         onChange={(e) => props.handleChange({ res: e.value })}
                         value={props.state.res}
                     />
-                </div>
+                </div> */}
                 <button
                     style={{
                         marginTop: 15, width: '100%', fontSize: 20, fontFamily: 'Roboto', fontWeight: 'bold',

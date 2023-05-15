@@ -65,7 +65,7 @@ export default async function fetchData(state, handleChange) {
 
 
 
-    // await fetch(`http://169.226.68.146:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}/`)
+    // await fetch(`http://169.226.68.146:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
 
 
     await fetch(`api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)

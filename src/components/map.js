@@ -97,6 +97,32 @@ export class RealTimeMap extends React.Component {
                     'circle-stroke-width': 1
                 }
             })
+
+            map.addSource('lidarSites', {
+                'type': 'geojson',
+                'data': this.props.state.lidarSites
+            })
+            map.addLayer({
+                'id': 'lidarSites',
+                'type': 'circle',
+                'source': 'lidarSites',
+                'layout': { 'visibility': this.props.state.Lidaron ? 'visible' : 'none' },
+                'paint': {
+                    'circle-color': 'blue',
+                    'circle-opacity': 0.3,
+                    'circle-radius': 5.5,
+                    'circle-stroke-color': 'grey',
+                    'circle-stroke-width': 1,
+                },
+                'symbol': {
+                    'text-field': ['get', 'site'],
+                    'text-size': 15,
+                    'text-allow-overlap': true,
+                    'text-anchor': 'bottom',
+                    'text-color': 'black'
+                }
+            })
+
             map.on('move', () => _onMove(map, this.props))
             map.on('mousemove', (e) => {
                 _onMouseMove(map, e, this.props)
@@ -139,6 +165,14 @@ export class RealTimeMap extends React.Component {
                 map.getCanvas().style.cursor = '';
                 popup.remove();
             });
+
+            map.on('click', 'lidarSites', (e) => {
+                console.log('click lidar', e.features[0].properties.site)
+                this.props.handleChange({
+                    chosenSite: e.features[0].properties.site,
+                    cnrPlotOn: true,
+                })
+            })
             // setInterval(async () => console.log(map.querySourceFeatures('goesaod')), 1000)
 
 
@@ -163,7 +197,6 @@ export class RealTimeMap extends React.Component {
 
             if (this.props.state.goesDataAOD != prevProps.state.goesDataAOD ||
                 this.props.state.GOESa != prevProps.state.GOESa) {
-                console.log('AOD', prevProps.state.goesDataAOD, this.props.state.goesDataAOD, prevProps.state.GOESa, this.props.state.GOESa)
                 if (this.props.state.goesDataAOD &&
                     this.props.state.GOESa) {
                     console.log('get bounds', this.map.getBounds())
@@ -176,7 +209,6 @@ export class RealTimeMap extends React.Component {
             }
             if (this.props.state.goesDataDust != prevProps.state.goesDataDust ||
                 this.props.state.GOESd != prevProps.state.GOESd) {
-                console.log('DUST', prevProps.state.goesDataDust, this.props.state.goesDataDust, prevProps.state.GOESd, this.props.state.GOESd)
                 if (this.props.state.goesDataDust &&
                     this.props.state.GOESd) {
 
@@ -188,7 +220,6 @@ export class RealTimeMap extends React.Component {
             }
             if (this.props.state.goesDataSmoke != prevProps.state.goesDataSmoke ||
                 this.props.state.GOESs != prevProps.state.GOESs) {
-                console.log('SMOKE', prevProps.state.goesDataSmoke, this.props.state.goesDataSmoke, prevProps.state.GOESs, this.props.state.GOESs)
                 if (this.props.state.goesDataSmoke &&
                     this.props.state.GOESs) {
 
@@ -200,10 +231,8 @@ export class RealTimeMap extends React.Component {
 
             }
 
-
             if (this.props.state.airnowData != prevProps.state.airnowData ||
                 this.props.state.Airnowon != prevProps.state.Airnowon) {
-                console.log('AIRNOW', prevProps.state.airnowData, this.props.state.airnowData, prevProps.state.Airnowon, this.props.state.Airnowon)
                 if (this.props.state.airnowData &&
                     this.props.state.Airnowon) {
 
@@ -211,6 +240,18 @@ export class RealTimeMap extends React.Component {
                     this.map.setLayoutProperty('pm2.5', 'visibility', 'visible')
                 } else {
                     this.map.setLayoutProperty('pm2.5', 'visibility', 'none')
+                }
+            }
+
+            if (this.props.state.lidarSites != prevProps.state.lidarSites ||
+                this.props.state.Lidaron != prevProps.state.Lidaron) {
+                if (this.props.state.lidarSites &&
+                    this.props.state.Lidaron) {
+
+                    this.map.getSource('lidarSites').setData(this.props.state.lidarSites);
+                    this.map.setLayoutProperty('lidarSites', 'visibility', 'visible')
+                } else {
+                    this.map.setLayoutProperty('lidarSites', 'visibility', 'none')
                 }
             }
 
@@ -230,18 +271,11 @@ export class RealTimeMap extends React.Component {
                             weighted_aod += feature.properties.area * feature.properties.aod
                         }
                     });
-                    // console.log('avg_aod', )
-                    // temp_obj['aod'] = 
                     timeseries[e[0]] = { 'aod': weighted_aod / total_area }
-                    // console.log(filteredFeatures)
                 })
                 this.props.handleChange({ aod_adp_timeseries: timeseries })
 
             }
-
-            // _ne: bc {lng: -61.92913845606351, lat: 48.58138844207565}
-
-            // _sw: bc {lng: -91.87226279887133, lat: 38.57141225029039}
 
         }
     }
