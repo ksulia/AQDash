@@ -36,6 +36,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mapbox/mapbox-gl-draw": "^1.4.1",
+    "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.2",
     "@turf/turf": "^6.5.0",
     "babel": "^6.23.0",

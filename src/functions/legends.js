@@ -13,7 +13,7 @@ export function getLegend(props) {
                 position: 'absolute',
                 opacity: 0.8,
                 width: 'undefined',
-                top: 0,
+                top: 40,
                 margin: 10,
                 padding: 10,
                 backgroundColor: 'grey',

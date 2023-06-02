@@ -5,8 +5,9 @@ import fetchData from '../functions/fetchData.js';
 import ForecastMap from '../components/map_forecast.js';
 import { getRiskLegend, getAODCB } from '../functions/legends.js'
 import { o3_colors, pm_colors, aodNumbers, pmNumbers, o3Numbers } from '../functions/colorMaps.js'
-
-// import Colorbar from "react-colors";
+import PauseIcon from '@mui/icons-material/Pause';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { Pause } from '@mui/icons-material';
 
 export class Forecast extends React.Component {
 
@@ -64,7 +65,8 @@ export class Forecast extends React.Component {
             }
         }
 
-        i = Math.min(iviirs, iwrf)
+        if (i == 0) i = Math.min(iviirs, iwrf)
+        console.log('ANIMATE', i)
         this.animate(i, key_arr, hires, loJ, loS, o3, pm)
 
     }
@@ -81,7 +83,8 @@ export class Forecast extends React.Component {
             this.props.state.pmChecked, pm,
             this.props.state.o3Checked, o3)
 
-        if (this.props.state.AODclick36 == hires &&
+        if (this.props.state.fcstPlay &&
+            this.props.state.AODclick36 == hires &&
             this.props.state.AODclick48J == loJ &&
             this.props.state.AODclick48S == loS &&
             this.props.state.pmChecked == pm &&
@@ -131,6 +134,7 @@ export class Forecast extends React.Component {
 
                     i++;
                     if (i == key_arr.length) i = 0;
+                    this.handleChange({ pauseLoc: i })
                     this.animate(i, key_arr, hires, loJ, loS, o3, pm);
                 }, 1000);
             }
@@ -139,12 +143,13 @@ export class Forecast extends React.Component {
 
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('did update forecast', this.props.state.viirsObjnow, this.props.state.wrfChem)
+        console.log('did update forecast', this.props.state.viirsObjnow, this.props.state.wrfChem, this.props.state.fcstPlay)
         console.log('color', this.props.state.aodCB36)
 
         //first check to make sure that there is viirs data, that the layer is on, 
         //and one of the viirs options are chosen
         if ((this.props.state.viirsObj && this.props.state.AODon &&
+            this.props.state.fcstPlay &&
             (this.props.state.AODclick36 || this.props.state.AODclick48J || this.props.state.AODclick48S)) ||
             (this.props.state.wrfChem && this.props.state.wrfChecked &&
                 (this.props.state.o3Checked || this.props.state.pmChecked))) {
@@ -159,10 +164,18 @@ export class Forecast extends React.Component {
                 (this.props.state.pmChecked != prevProps.state.pmChecked)
             ) {
                 //reset the trajectory feature collection to empty
-                this.handleChange({ viirsObjnow: null, viirsTimeNow: '', wrfObjnow: null, wrfTimeNow: '' })
+                this.handleChange({ viirsObjnow: null, viirsTimeNow: '', wrfObjnow: null, wrfTimeNow: '', pauseLoc: null })
                 //now fill up the feature collection
                 this.createAnimation(0, this.props.state.AODclick36,
-                    this.props.state.AODclick48J, this.props.state.AODclick48S, this.props.state.o3Checked, this.props.state.pmChecked) //check why passing through state variables 
+                    this.props.state.AODclick48J, this.props.state.AODclick48S, this.props.state.o3Checked, this.props.state.pmChecked)
+
+            }
+
+            if (this.props.state.pauseLoc && this.props.state.fcstPlay != prevProps.state.fcstPlay) {
+                console.log('PUASE LOC', this.props.state.pauseLoc)
+
+                this.createAnimation(this.props.state.pauseLoc, this.props.state.AODclick36,
+                    this.props.state.AODclick48J, this.props.state.AODclick48S, this.props.state.o3Checked, this.props.state.pmChecked)
 
             }
         }
@@ -211,7 +224,33 @@ export class Forecast extends React.Component {
                             padding: 20, backgroundColor: 'white', margin: 20,
                             marginBottom: 10
                         }}>
+
+
+
                             <ForecastMap id='forecast-map' state={this.props.state} handleChange={this.handleChange} />
+
+                            {this.props.state.wrfChecked || this.props.state.AODon ?
+                                < button
+                                    style={{
+                                        position: 'absolute',
+                                        right: 60,
+                                        border: "none",
+                                        backgroundColor: '#EEB211',
+                                        boxShadow: "0 0 4px 2px rgba(0,0,0,.2)",
+                                        cursor: "pointer",
+                                        height: 40,
+                                        outline: "none",
+                                        borderRadius: "100%",
+                                        width: 40
+                                    }}
+                                    onClick={() => this.handleChange({ fcstPlay: !this.props.state.fcstPlay })}
+                                >
+                                    {this.props.state.fcstPlay ?
+                                        <PauseIcon
+                                            style={{ color: 'white' }} />
+                                        : <PlayArrowIcon style={{ color: 'white' }} />}
+                                </button> : null
+                            }
 
                             {getRiskLegend(this.props.state, this.handleChange)}
 
@@ -248,8 +287,8 @@ export class Forecast extends React.Component {
 
 
                     </Col>
-                </Row>
-            </div>
+                </Row >
+            </div >
 
 
         )
