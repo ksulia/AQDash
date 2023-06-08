@@ -84,10 +84,10 @@ export const state = {
     mouseMoveGoesDust: null,
     mouseMovePM: null,
     mouseMoveRiskBox: null,
-    year: new Date(moment().subtract(1, 'days')).getUTCFullYear().toString(),
-    month: months[new Date(moment().subtract(1, 'days')).getUTCMonth()],
-    day: ('0' + new Date(moment().subtract(1, 'days')).getUTCDate().toString()).slice(-2),
-    hour: ('0' + new Date(moment().subtract(1, 'days')).getUTCHours().toString()).slice(-2),
+    year: new Date(moment().subtract(1, 'hours')).getUTCFullYear().toString(),
+    month: months[new Date(moment().subtract(1, 'hours')).getUTCMonth()],
+    day: ('0' + new Date(moment().subtract(1, 'hours')).getUTCDate().toString()).slice(-2),
+    hour: ('0' + new Date(moment().subtract(1, 'hours')).getUTCHours().toString()).slice(-2),
     daytime: false,
     res: '0.5',
     completeTime: null,
@@ -127,7 +127,7 @@ export const state = {
     lidarData: null,
     lidarSites: null,
     chosenSite: null,
-    lidarRes: '1',
+    lidarRes: '5',
     plotsToDisplay: [],
     airnowPopup: false,
     airnowLoc: null,
@@ -139,7 +139,7 @@ export const state = {
     pmChecked: false,
     wrfTimeNow: '',
     pauseLoc: null,
-    fcstPlay:true,
+    fcstPlay: true,
 };
 
 export const airnowShapes = { '1': 'circle', '2': 'diamond', '3': 'star-triangle-up', '4': 'square', '5': 'pentagon', '6': 'hexagon-open', '7': 'star', '8': 'bowtie', '9': 'hourglass' };
