@@ -42,10 +42,12 @@ class App extends Component {
         if (this.props) console.log('getcompletetime', this.state)
         this.getCompleteTime()
         if (this.state.completeTime && this.state.fetchData) {
-            console.log('fetch1', this.state.fetchData)
+            console.log('fetch1111111', this.state.fetchData)
             this.handleChange({ fetchData: false });
-            fetchData(this.state, this.handleChange);
-
+            fetchData(this.state, this.handleChange, 'data');
+            if (this.state.wrfChem) {
+                console.log('wrfchem')
+            }
         }
         window.addEventListener('load', this.updateDimensions)
     }
@@ -55,8 +57,10 @@ class App extends Component {
 
         if (this.state.clicked) this.getCompleteTime()
         if (this.state.fetchData && this.state.completeTime) {
+
             this.handleChange({ fetchData: false });
-            fetchData(this.state, this.handleChange);
+            fetchData(this.state, this.handleChange, 'data');
+            fetchData(this.state, this.handleChange, 'csv');
         }
         if (prevState.rawData != this.state.rawData)
             console.log('rawData', this.state.rawData)

@@ -6,6 +6,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { state, months, hours, res, years } from '../state.js';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css'
+import { exportToCsv } from '../functions/csvProcess.js'
 
 
 function getDaysInMonth(props) {
@@ -14,6 +15,8 @@ function getDaysInMonth(props) {
     for (var i = 1; i <= daysInMonth; i++) arr.push(('0' + i.toString()).slice(-2))
     return arr
 }
+
+
 
 const Sidebar = (props) => {
     let fontColor = 'white'
@@ -196,9 +199,12 @@ const Sidebar = (props) => {
                             style={{ color: "white" }} checked={props.state.wrfChecked} onClick={() =>
                                 props.handleChange({ wrfChecked: !props.state.wrfChecked })}
                         />
-                        <a style={{ color: "white", textAlign: 'left' }}>WRF-CHEM</a>
-
-
+                        <a style={{ color: "white", textAlign: 'left' }}>WRF-CHEM </a>
+                        {props.state.csv.status == 0 ?
+                            <a style={{ color: "white", textDecoration: 'underline' }}
+                                onClick={(e) => exportToCsv(e, props.state.csv, props.state.completeTime)}>
+                                (csv)
+                            </a> : null}
 
                     </div>
                 ) : null}
@@ -278,3 +284,4 @@ const Sidebar = (props) => {
 }
 
 export default Sidebar;
+

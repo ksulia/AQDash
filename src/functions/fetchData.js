@@ -1,271 +1,308 @@
 import { redMap, blueMap, greenMap } from './colorMaps.js';
+import { jsonToCSV } from 'react-papaparse'
+
 let cbMax = 501, cbMin = 0;
 
-export default async function fetchData(state, handleChange) {
-    console.log('fetch data!', state, handleChange)
+export default async function fetchData(state, handleChange, opt) {
+    console.log('fetch data!', state, handleChange, opt)
+
+    if (opt == 'data') {
+
+        let setStates = {
+            fetching: 'Fetching data, please wait...',
+            airnowData: null,
+            airnow24hr: null,
+            lidarData: null,
+            lidarSites: null,
+            goesDataDust: null,
+            goesDataSmoke: null,
+            goesDataAOD: null,
+            dustCB: null,
+            smokeCB: null,
+            // map_realtime: map_realtime,
+            viirsData36: null,
+            viirsData48J: null,
+            viirsData48S: null,
+            viirsObj: null,
+            viirsObjnow: null,
+            viirsTimeNow: '',
+            aodCB36: null,
+            aodCB48J: null,
+            aodCB48S: null,
+            riskHighlight: false,
+            riskData: null,
+            rawData: null,
+            wrfObjnow: null,
+            wrfTimeNow: '',
+            //             AODon: false,
+            //             GOESd: false,
+            //             GOESs: false,
+            //             GOESa: false,
+            //             Airnowon: false,
+            //             Lidaron: false,
+            plotsToDisplay: [],
+            csv: null,
+        };
+
+        //     Object.keys(setStates).map(k=>{
+        //         handleChange(k,setStates[k])
+        //     });
+
+        handleChange(setStates)
+
+        // console.log('fetch2', state.fetchData, state.completeTime, state.res)
+
+        let fetching = 'Fetching data, please wait...';
+        let smokeCB = {}, dustCB = {};
+        let airnowData = null, goesDataDust = null, goesDataAOD = null, lidarData = null;
+        let goesDataSmoke = null, dustDB = null, viirsData36 = null, lidarSites = null;
+        let viirsData48J = null, viirsData48S = null, viirsTimeNow = '';
+        let viirsObj = null, viirsObjnow = null;
+        let aodCB36 = null, aodCB48J = null, aodCB48S = null;
+        let wrfObjnow = null, wrfTimeNow = '', wrf_chem = null;
+        let riskHighlight = false, riskData = null, rawData = null;
+        let AODon = false, Airnowon = false, Lidaron = false;
+        let airnow24hr = {}, csv = null
+
+        // const myFile = new File('/home/ksulia/AQ/AQDash/src/wrfchem/wrfgsi.out.2023060900/Wx-AQ_2023060900Z.csv', {
+        //     type: 'csv',
+        //     // lastModified: new Date(),
+        // });
+        // var reader = new FileReader()
+        // reader.onload = function (e) {
+        //     const text = e.target.result;
+        //     console.log(text)
+        // }
+        // console.log(reader.readAsText(myFile))
+        // console.log('myFile', myFile, reader.readAsText(myFile))
+        // parseFile(myFile)
+        // Papa.parse(myFile, {
+        //     header: true,
+        //     skipEmptyLines: true,
+        //     complete: function (results) {
+        //         console.log('CSVCSV', results.data)
+        //     },
+        // });
+
+
+        //now we need to remove all sources from the map so that we can reload them
+
+        // await fetch(`http://169.226.68.146:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}&opt=csv`)
+        //     .then(async (response) => { console.log('CSVCSV', response.json()) })
+
+        // let url = `http://169.226.68.146:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}&opt=${opt}`
+
+        let url = `api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`
+
+        await fetch(url)
+
+            .then(async (response) => await response.json())
+            .then(async (responseJson) => rawData = responseJson) //setState
+            .then(async () => {
+                // console.log('here', rawData)
+
+                if (rawData && rawData.status === 0) {
+                    // console.log('here1')
+                    //             if (rawData.data_risk && rawData.data_risk.features){
+                    //                 Object.entries(rawData.data_risk.features).map((e)=>{
+                    //                     if(e[1].properties.data.length>0){
+                    // //                         console.log('feature1',e[1].properties.data)
+                    //                         Object.entries(e[1].properties.data).map((e1)=>{
+                    // //                             console.log(e1[1].props)
+                    //                             if(Object.keys(e1[1].props).includes('aod_avg')){
+                    //                                 console.log('aod_avg',e1[1])
+                    //                             }
+                    //                         })
+                    //                     }
+                    //                 })
+                    //             }
 
 
 
-    let setStates = {
-        fetching: 'Fetching data, please wait...',
-        airnowData: null,
-        airnow24hr: null,
-        lidarData: null,
-        lidarSites: null,
-        goesDataDust: null,
-        goesDataSmoke: null,
-        goesDataAOD: null,
-        dustCB: null,
-        smokeCB: null,
-        // map_realtime: map_realtime,
-        viirsData36: null,
-        viirsData48J: null,
-        viirsData48S: null,
-        viirsObj: null,
-        viirsObjnow: null,
-        viirsTimeNow: '',
-        aodCB36: null,
-        aodCB48J: null,
-        aodCB48S: null,
-        riskHighlight: false,
-        riskData: null,
-        rawData: null,
-        wrfObjnow: null,
-        wrfTimeNow: '',
-        //             AODon: false,
-        //             GOESd: false,
-        //             GOESs: false,
-        //             GOESa: false,
-        //             Airnowon: false,
-        //             Lidaron: false,
-        plotsToDisplay: [],
-    };
-
-    //     Object.keys(setStates).map(k=>{
-    //         handleChange(k,setStates[k])
-    //     });
-
-    handleChange(setStates)
-
-    // console.log('fetch2', state.fetchData, state.completeTime, state.res)
-
-    let fetching = 'Fetching data, please wait...';
-    let smokeCB = {}, dustCB = {};
-    let airnowData = null, goesDataDust = null, goesDataAOD = null, lidarData = null;
-    let goesDataSmoke = null, dustDB = null, viirsData36 = null, lidarSites = null;
-    let viirsData48J = null, viirsData48S = null, viirsTimeNow = '';
-    let viirsObj = null, viirsObjnow = null;
-    let aodCB36 = null, aodCB48J = null, aodCB48S = null;
-    let wrfObjnow = null, wrfTimeNow = '', wrf_chem = null;
-    let riskHighlight = false, riskData = null, rawData = null;
-    let AODon = false, Airnowon = false, Lidaron = false;
-    let airnow24hr = {}
-
-    //now we need to remove all sources from the map so that we can reload them
-
-
-
-    // await fetch(`http://169.226.68.146:3005/api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
-
-
-    await fetch(`api?time=${state.completeTime}&res=${state.res}&lidarRes=${state.lidarRes}`)
-        .then(async (response) => await response.json())
-        .then(async (responseJson) => rawData = responseJson) //setState
-        .then(async () => {
-            // console.log('here', rawData)
-
-            if (rawData && rawData.status === 0) {
-                // console.log('here1')
-                //             if (rawData.data_risk && rawData.data_risk.features){
-                //                 Object.entries(rawData.data_risk.features).map((e)=>{
-                //                     if(e[1].properties.data.length>0){
-                // //                         console.log('feature1',e[1].properties.data)
-                //                         Object.entries(e[1].properties.data).map((e1)=>{
-                // //                             console.log(e1[1].props)
-                //                             if(Object.keys(e1[1].props).includes('aod_avg')){
-                //                                 console.log('aod_avg',e1[1])
-                //                             }
-                //                         })
-                //                     }
-                //                 })
-                //             }
-
-
-
-                Object.keys(rawData.data).map((k) => {
-                    // console.log('here2', k)
-                    if (k.includes('airnow_pm2.5')) {
-                        // console.log('airnowpm1', k, rawData.data[k])
-                        airnowData = rawData.data[k] //setState
-                        // console.log('airnowpm2', k, rawData.data[k])
-                    } else if (k.includes('airnow_24hr')) {
-                        // console.log('airnow_24hr', rawData.data[k].features)
-                        rawData.data[k].features.map((an) => {
-                            let airnow_time = an.properties.UTC
-                            if (!(airnow_time in airnow24hr)) airnow24hr[airnow_time] = []
-                            airnow24hr[airnow_time].push(an)
-                        })
-                    } else if (k.includes('GOES_ADP')) {
-                        console.log('GOES_ADP', k, rawData.data[k])
-                        //                     if (rawData.data[k].smoke) {
-                        //                         rawData.data[k].smoke.features.map(
-                        //                             (s) => {
-                        //                                 smokeCB[s.properties.color] =
-                        //                                     s.properties.start
-                        //                             }
-                        //                         )
-                        //                     }
-                        //                     if (rawData.data[k].dust) {
-                        //                         rawData.data[k].dust.features.map(
-                        //                             (s) => {
-                        //                                 dustCB[s.properties.color] =
-                        //                                     s.properties.start
-                        //                             }
-                        //                         )
-                        //                     }
-                        goesDataSmoke = JSON.parse(rawData.data[k].smoke) //setState
-                        goesDataDust = JSON.parse(rawData.data[k].dust) //setState
-                        //                     goesDataSmoke = rawData.timeseries_data.smoke //setState
-                        //                     goesDataDust =rawData.timeseries_data.dust //setState
-                        //                     smokeCB = smokeCB //setState
-                        //                     dustCB = dustCB //setState
-
-                        console.log('GOES2', k, goesDataSmoke)
-                    } else if (k.includes('GOES_AOD')) {
-                        //                     console.log('GOES_AOD', k, rawData.timeseries_data.aod)
-                        goesDataAOD = JSON.parse(rawData.data[k])
-                        //                     goesDataAOD = rawData.timeseries_data.aod
-
-
-
-
-                    } else if (k.includes('VIIRSaerosolEntHRS') && Object.keys(rawData.data[k]).length > 0) {
-                        console.log('VIIRSEnt1', k, rawData.data[k])
-                        let x = remapColorBar(redMap, rawData.data[k])
-                        viirsData36 = x[1] //setState
-                        aodCB36 = x[0] //setState
-                    } else if (k.includes('VIIRSaerosolJ') && Object.keys(rawData.data[k]).length > 0) {
-                        console.log('VIIRSJ1', k, rawData.data[k])
-                        let x = remapColorBar(blueMap, rawData.data[k])
-                        viirsData48J = x[1] //setState
-                        aodCB48J = x[0] //setState
-                    } else if (k.includes('VIIRSaerosolS') && Object.keys(rawData.data[k]).length > 0) {
-                        console.log('VIIRSS1', k, rawData.data[k])
-                        let x = remapColorBar(greenMap, rawData.data[k])
-                        viirsData48S = x[1] //setState
-                        aodCB48S = x[0] //setState
-                    } else if (k.includes("WRF_CHEM") && Object.keys(rawData.data[k]).length > 0) {
-                        wrf_chem = {}
-                        Object.keys(rawData.data[k]).map(key => {
-                            let key1 = key.split(".")[0]
-                            wrf_chem[key1] = {}
-                            Object.keys(rawData.data[k][key]).map(ob => {
-                                wrf_chem[key1][ob] = JSON.parse(rawData.data[k][key][ob])
+                    Object.keys(rawData.data).map((k) => {
+                        // console.log('here2', k)
+                        if (k.includes('airnow_pm2.5')) {
+                            // console.log('airnowpm1', k, rawData.data[k])
+                            airnowData = rawData.data[k] //setState
+                            // console.log('airnowpm2', k, rawData.data[k])
+                        } else if (k.includes('airnow_24hr')) {
+                            // console.log('airnow_24hr', rawData.data[k].features)
+                            rawData.data[k].features.map((an) => {
+                                let airnow_time = an.properties.UTC
+                                if (!(airnow_time in airnow24hr)) airnow24hr[airnow_time] = []
+                                airnow24hr[airnow_time].push(an)
                             })
-                        })
-                        console.log("WRF_CHEM2", wrf_chem)
+                        } else if (k.includes('GOES_ADP')) {
+                            console.log('GOES_ADP', k, rawData.data[k])
+                            //                     if (rawData.data[k].smoke) {
+                            //                         rawData.data[k].smoke.features.map(
+                            //                             (s) => {
+                            //                                 smokeCB[s.properties.color] =
+                            //                                     s.properties.start
+                            //                             }
+                            //                         )
+                            //                     }
+                            //                     if (rawData.data[k].dust) {
+                            //                         rawData.data[k].dust.features.map(
+                            //                             (s) => {
+                            //                                 dustCB[s.properties.color] =
+                            //                                     s.properties.start
+                            //                             }
+                            //                         )
+                            //                     }
+                            goesDataSmoke = JSON.parse(rawData.data[k].smoke) //setState
+                            goesDataDust = JSON.parse(rawData.data[k].dust) //setState
+                            //                     goesDataSmoke = rawData.timeseries_data.smoke //setState
+                            //                     goesDataDust =rawData.timeseries_data.dust //setState
+                            //                     smokeCB = smokeCB //setState
+                            //                     dustCB = dustCB //setState
 
-                    }
-                })
-                if (rawData.lidar && Object.entries(rawData.lidar).length > 0) {
-                    console.log('LIDAR1', rawData.lidar)
-                    let features = []
-                    Object.entries(rawData.lidar).map((e) => {
-                        if (Object.keys(e[1]).length > 0) {
-                            //                                 console.log('LIDAR map', e[1])
-                            features.push({
-                                type: 'Feature',
-                                geometry: {
-                                    type: 'Point',
-                                    coordinates: [e[1].LON, e[1].LAT],
-                                },
-                                properties: {
-                                    site: e[0],
-                                },
+                            console.log('GOES2', k, goesDataSmoke)
+                        } else if (k.includes('GOES_AOD')) {
+                            //                     console.log('GOES_AOD', k, rawData.timeseries_data.aod)
+                            goesDataAOD = JSON.parse(rawData.data[k])
+                            //                     goesDataAOD = rawData.timeseries_data.aod
+
+
+
+
+                        } else if (k.includes('VIIRSaerosolEntHRS') && Object.keys(rawData.data[k]).length > 0) {
+                            console.log('VIIRSEnt1', k, rawData.data[k])
+                            let x = remapColorBar(redMap, rawData.data[k])
+                            viirsData36 = x[1] //setState
+                            aodCB36 = x[0] //setState
+                        } else if (k.includes('VIIRSaerosolJ') && Object.keys(rawData.data[k]).length > 0) {
+                            console.log('VIIRSJ1', k, rawData.data[k])
+                            let x = remapColorBar(blueMap, rawData.data[k])
+                            viirsData48J = x[1] //setState
+                            aodCB48J = x[0] //setState
+                        } else if (k.includes('VIIRSaerosolS') && Object.keys(rawData.data[k]).length > 0) {
+                            console.log('VIIRSS1', k, rawData.data[k])
+                            let x = remapColorBar(greenMap, rawData.data[k])
+                            viirsData48S = x[1] //setState
+                            aodCB48S = x[0] //setState
+                        } else if (k.includes("WRF_CHEM") && Object.keys(rawData.data[k]).length > 0) {
+                            wrf_chem = {}
+                            Object.keys(rawData.data[k]).map(key => {
+                                let key1 = key.split(".")[0]
+                                wrf_chem[key1] = {}
+                                Object.keys(rawData.data[k][key]).map(ob => {
+                                    wrf_chem[key1][ob] = JSON.parse(rawData.data[k][key][ob])
+                                })
                             })
+                            console.log("WRF_CHEM2", wrf_chem)
+
                         }
                     })
-                    let mesonet_sites = {
-                        type: 'FeatureCollection',
-                        features: features,
-                    }
-                    lidarData = rawData.lidar //setState
-                    lidarSites = mesonet_sites //setState
+                    if (rawData.lidar && Object.entries(rawData.lidar).length > 0) {
+                        console.log('LIDAR1', rawData.lidar)
+                        let features = []
+                        Object.entries(rawData.lidar).map((e) => {
+                            if (Object.keys(e[1]).length > 0) {
+                                //                                 console.log('LIDAR map', e[1])
+                                features.push({
+                                    type: 'Feature',
+                                    geometry: {
+                                        type: 'Point',
+                                        coordinates: [e[1].LON, e[1].LAT],
+                                    },
+                                    properties: {
+                                        site: e[0],
+                                    },
+                                })
+                            }
+                        })
+                        let mesonet_sites = {
+                            type: 'FeatureCollection',
+                            features: features,
+                        }
+                        lidarData = rawData.lidar //setState
+                        lidarSites = mesonet_sites //setState
 
+                    }
+                    fetching = 'Fetch successful!'  //setState
+                    console.log('LIDAR2', rawData.lidar)
+                } else {
+                    rawData = null //setState
+                    fetching = 'Error fetching data.' //setState
                 }
-                fetching = 'Fetch successful!'  //setState
-                console.log('LIDAR2', rawData.lidar)
-            } else {
-                rawData = null //setState
-                fetching = 'Error fetching data.' //setState
-            }
-        })
-        .then(async () => {
-            console.log('HERE IN VIIRS1')
-            if (viirsData48S || viirsData48J || viirsData36) {
-                console.log('HERE IN VIIRS2')
-                let keys36 = [], keys48J = [], keys48S = []
-                if (viirsData36) keys36 = Object.keys(viirsData36)
-                if (viirsData48J) keys48J = Object.keys(viirsData48J)
-                if (viirsData48S) keys48S = Object.keys(viirsData48S)
+            })
+            .then(async () => {
+                console.log('HERE IN VIIRS1')
+                if (viirsData48S || viirsData48J || viirsData36) {
+                    console.log('HERE IN VIIRS2')
+                    let keys36 = [], keys48J = [], keys48S = []
+                    if (viirsData36) keys36 = Object.keys(viirsData36)
+                    if (viirsData48J) keys48J = Object.keys(viirsData48J)
+                    if (viirsData48S) keys48S = Object.keys(viirsData48S)
 
-                let viirs_keys = keys36.concat(keys48J).concat(keys48S)
-                viirs_keys = [...new Set([...keys36, ...keys48J, ...keys48S]),]
-                let viirs_obj = {}
-                viirs_keys.forEach((k) => {
-                    let features36 = [],
-                        features48J = [],
-                        features48S = []
-                    if (viirsData36 && k in viirsData36) features36 = viirsData36[k].features
-                    if (viirsData48J && k in viirsData48J) features48J = viirsData48J[k].features
-                    if (viirsData48S && k in viirsData48S) features48S = viirsData48S[k].features
-                    let all_features = features36.concat(features48J).concat(features48S)
-                    viirs_obj[k] = {
-                        type: 'FeatureCollection',
-                        features: all_features,
-                    }
-                })
-                viirsObj = viirs_obj  //setState
-                console.log('viirsObj', viirsObj)
-            }
-        })
-        .catch((e) => console.log(e))
+                    let viirs_keys = keys36.concat(keys48J).concat(keys48S)
+                    viirs_keys = [...new Set([...keys36, ...keys48J, ...keys48S]),]
+                    let viirs_obj = {}
+                    viirs_keys.forEach((k) => {
+                        let features36 = [],
+                            features48J = [],
+                            features48S = []
+                        if (viirsData36 && k in viirsData36) features36 = viirsData36[k].features
+                        if (viirsData48J && k in viirsData48J) features48J = viirsData48J[k].features
+                        if (viirsData48S && k in viirsData48S) features48S = viirsData48S[k].features
+                        let all_features = features36.concat(features48J).concat(features48S)
+                        viirs_obj[k] = {
+                            type: 'FeatureCollection',
+                            features: all_features,
+                        }
+                    })
+                    viirsObj = viirs_obj  //setState
+                    console.log('viirsObj', viirsObj)
+                }
+            })
+            .catch((e) => console.log(e))
 
-    setStates = {
-        fetching: fetching,
-        airnowData: airnowData,
-        airnow24hr: airnow24hr,
-        lidarData: lidarData,
-        lidarSites: lidarSites,
-        goesDataDust: goesDataDust,
-        goesDataSmoke: goesDataSmoke,
-        goesDataAOD: goesDataAOD,
-        dustCB: dustCB,
-        smokeCB: smokeCB,
-        viirsData36: viirsData36,
-        viirsData48J: viirsData48J,
-        viirsData48S: viirsData48S,
-        viirsObj: viirsObj,
-        viirsObjnow: viirsObjnow,
-        viirsTimeNow: viirsTimeNow,
-        aodCB36: aodCB36,
-        aodCB48J: aodCB48J,
-        aodCB48S: aodCB48S,
-        riskHighlight: riskHighlight,
-        riskData: riskData,
-        rawData: rawData,
-        wrfChem: wrf_chem,
-        wrfObjnow: wrfObjnow,
-        wrfTimeNow: wrfTimeNow,
-        //         AODon: AODon,
-        //         Airnowon: Airnowon,
-        //         Lidaron: Lidaron,
-    };
+        setStates = {
+            fetching: fetching,
+            airnowData: airnowData,
+            airnow24hr: airnow24hr,
+            lidarData: lidarData,
+            lidarSites: lidarSites,
+            goesDataDust: goesDataDust,
+            goesDataSmoke: goesDataSmoke,
+            goesDataAOD: goesDataAOD,
+            dustCB: dustCB,
+            smokeCB: smokeCB,
+            viirsData36: viirsData36,
+            viirsData48J: viirsData48J,
+            viirsData48S: viirsData48S,
+            viirsObj: viirsObj,
+            viirsObjnow: viirsObjnow,
+            viirsTimeNow: viirsTimeNow,
+            aodCB36: aodCB36,
+            aodCB48J: aodCB48J,
+            aodCB48S: aodCB48S,
+            riskHighlight: riskHighlight,
+            riskData: riskData,
+            rawData: rawData,
+            wrfChem: wrf_chem,
+            wrfObjnow: wrfObjnow,
+            wrfTimeNow: wrfTimeNow,
+            //         AODon: AODon,
+            //         Airnowon: Airnowon,
+            //         Lidaron: Lidaron,
+        };
 
-    //     Object.keys(setStates).map(k=>{
-    //         handleChange(k,setStates[k])
-    //     });
-    handleChange(setStates)
+        //     Object.keys(setStates).map(k=>{
+        //         handleChange(k,setStates[k])
+        //     });
+        handleChange(setStates)
+    } else { //CSV
+        console.log('fetching csv')
+        await fetch(url)
+            .then(async (response) => await response.json())
+            .then(async (responseJson) => {
+                console.log('csv file', responseJson)
+                handleChange({ csv: responseJson })
+            })
+
+    }
 
 };
 
@@ -332,3 +369,12 @@ function remapColorBar(colormap, data) {
     return [aodCB1, updatedVIIRSObj]
 
 }
+
+const parseFile = file => {
+    Papa.parse(file, {
+        // header: true,
+        skipEmptyLines: true,
+        delimiter: ',',
+        complete: results => { console.log('results', results) }
+    });
+};

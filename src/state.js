@@ -140,6 +140,7 @@ export const state = {
     wrfTimeNow: '',
     pauseLoc: null,
     fcstPlay: true,
+    csv: null
 };
 
 export const airnowShapes = { '1': 'circle', '2': 'diamond', '3': 'star-triangle-up', '4': 'square', '5': 'pentagon', '6': 'hexagon-open', '7': 'star', '8': 'bowtie', '9': 'hourglass' };
